@@ -23,8 +23,8 @@ $system->sendMessage("log mode enabled.");
 $logMode = "on";
 $exit = new myExit;
 // register_shutdown_function("onCommand");
-$version = "1.4.5_Beta";
-$versiontype = "Beta";//{Release}->{Alpha}->{Beta}->{Dev}
+$version = "1.4.5_Dev";
+$versiontype = "Dev";//{Release}->{Alpha}->{Beta}->{Dev}
 $system->sendMessage("Starting environment variables system...");
 $valuepros = new environmentVariables;
 $valuepros->setvalue("version",$version);
