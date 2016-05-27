@@ -10,7 +10,6 @@ $addcom->addcommand("echo","default","文字列を出力。","<メッセージ>/
  */
 class myEcho extends systemProcessing{
 	function __construct(){
-
 	}
 	public function onCommand(){
 		global $aryTipeTxt;
@@ -35,6 +34,7 @@ class myEcho extends systemProcessing{
 						for ($i=1; $i < $messageCount; $i++) {
 							$message .= $aryTipeTxt[$i] . " ";
 						}
+						$environmentVariables = unserialize(file_get_contents("environmentVariables.dat"));
 						if (strstr($message, '%')) {
 								foreach ($environmentVariables as $key => $value){
 									// echo "key:" . $key . PHP_EOL;

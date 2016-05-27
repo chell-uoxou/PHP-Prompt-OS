@@ -46,6 +46,7 @@ include_once dirname(__FILE__) . '/../commands/extract.php';
 include_once dirname(__FILE__) . '/../commands/vars.php';
 //$system->sendMessage("\x1b[38;5;83mdefault command process\"install.php\" \x1b[38;5;227mloading...");
 include_once dirname(__FILE__) . '/../commands/install.php';
+include_once dirname(__FILE__) . '/../commands/cat.php';
 
 // var_dump($commands);
 //////////////////////
@@ -154,6 +155,10 @@ function runCommand() {
 		case 'install':
 			$install = new install;
 			$install->onCommand();
+			break;
+		case 'cat':
+			$cat = new cat;
+			$cat->onCommand();
 			break;
 	    default:
 			$filename = rtrim(dirname(__FILE__),"/src/PHPPO") . "/" . "scripts" . "/";

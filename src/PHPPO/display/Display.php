@@ -10,11 +10,13 @@ class display extends systemProcessing{
 		global $pr_info;
 		$pr_info = $str;
 	}
+
 	public function setThread($str){
 		$str = trim($str);
 		global $pr_thread;
 		$pr_thread = $str;
 	}
+	
 	public function reverseColor($auth){
 		if ($auth) {
 			echo "\033[7m";

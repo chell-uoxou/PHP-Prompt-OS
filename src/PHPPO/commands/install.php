@@ -18,15 +18,15 @@ class install extends systemProcessing{
 				$aryTipeTxt[1] = trim($aryTipeTxt[1]);
 				if ($aryTipeTxt[1] = "src") {
 					// try {
-						$oldsrcpath = trim($poPath . "\src");
-						$oldsrcpath_ = trim($oldsrcpath . "_old");
-						if(mkdir($oldsrcpath, 0777)){
-							echo "作成に成功しました";
-						}else{
-							echo "作成に失敗しました";
-						}
-						touch($oldsrcpath_ . ".zip");
-						$this->all_zip($oldsrcpath_ . ".zip", $oldsrcpath_);
+					rename($poPath . "\src", $poPath . "\src_old");
+						// $oldsrcpath = trim($poPath . "\src");
+						// $oldsrcpath_ = trim($oldsrcpath . "_old");
+						// $dir_name = "{$poPath}\src_old";
+						// if( !file_exists($dir_name) ){
+						// 	mkdir( $dir_name );
+						// }
+						// touch($oldsrcpath_ . ".zip");
+						// $this->all_zip($oldsrcpath_ . ".zip", $oldsrcpath_);
 						// echo $oldsrcpath . PHP_EOL;
 						// echo $oldsrcpath_ . PHP_EOL;
 						// $zip = new ZipArchive();

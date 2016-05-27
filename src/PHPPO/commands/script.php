@@ -35,9 +35,7 @@ class script extends systemProcessing{
 					if (file_exists($path)) {
 						$file = file_get_contents($path, true);
 					}else{
-						$display->setInfo("ERROR");
-						$this->sendMessage("スクリプトの読み込みに失敗しました。指定したスクリプトは存在しない可能性があります。{$path}");
-						$display->setInfo("INFO");
+						$this->sendMessage("スクリプトの読み込みに失敗しました。指定したスクリプトは存在しない可能性があります。{$path}","error");
 					}
 				}
 				$array = explode("\n", $file);
@@ -55,9 +53,7 @@ class script extends systemProcessing{
 					$conf = array_key_exists($aryTipeTxt[0], $commands);
 					if ($conf === false) {
 						$path = trim(rtrim(dirname(__FILE__),"commands\src\PHPPO") . "\\" . $path);
-						$display->setInfo("ERROR");
-						$this->sendMessage("Script error:確認されない命令\"{$value}\"が見つかりました。 in {$path} -> line{$line}");
-						$display->setInfo("INFO");
+						$this->sendMessage("Script error:確認されない命令\"{$value}\"が見つかりました。 in {$path} -> line{$line}","error");
 						break;
 					}
 				}

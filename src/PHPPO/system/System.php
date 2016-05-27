@@ -49,63 +49,80 @@ class systemProcessing {
 	public function sysCls($res){
 		global $revcFunc;
 		for($i = 0; $i < $res;$i++){
-		  	if ($revcFunc == true) {
-		  		echo "                                                                                                                                                     ";
+			if ($revcFunc == true) {
+				echo "                                                                                                                                                     ";
 				echo PHP_EOL;
-		  	}else {
-		  		echo PHP_EOL;
-		  	}
-	  	}
+			}else {
+				echo PHP_EOL;
+			}
+		}
 	}
-	public function sendMessage($pr_disp){
-	  global $pr_TipeTxt;
-	  global $pr_thread;
-	  global $pr_info;
-	  global $pr_time;
-	  global $prompt;
-	  global $writeData;
-	  global $stanby;
-	  global $logMode;
-	  global $tipe_text;
-	  global $echoFunc;
-	  date_default_timezone_set('Asia/Tokyo');
-	  $pr_time = date('A-H:i:s');
-	  if ($echoFunc != "off") {
-		  switch ($pr_info) {
-			case 'ERROR':
-				$prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread} Thread/{$pr_info}]" . "\x1b[38;5;203m ";
+
+
+
+
+
+
+	public function sendMessage($pr_disp,$type = "info"){
+		global $pr_TipeTxt;
+		global $pr_thread;
+		global $pr_info;
+		global $pr_time;
+		global $prompt;
+		global $writeData;
+		global $stanby;
+		global $logMode;
+		global $tipe_text;
+		global $echoFunc;
+		global $environmentVariables;
+		global $display;
+		$valuepros = new environmentVariables;
+		date_default_timezone_set('Asia/Tokyo');
+		$pr_time = date('A-H:i:s');
+		if ($echoFunc != "off") {
+			switch ($type) {
+				case 'error':
+				$display->setInfo("ERROR");
+				$prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread}/{$pr_info}]" . "\x1b[38;5;203m";
+				$display->setInfo("INFO");
 				break;
-			default:
-				$prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread} Thread/{$pr_info}]" . "\x1b[38;5;231m ";
+				default:
+				$prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread}/{$pr_info}]" . "\x1b[38;5;231m";
 				break;
-		  }
-	  }else {
-		switch ($pr_info) {
-			case 'ERROR':
+			}
+		}else{
+			switch ($type) {
+				case 'error':
 				$prompt = "\x1b[38;5;203m";
 				break;
-			default:
+				default:
 				$prompt = "\x1b[38;5;231m";
 				break;
-		}
-	  }
-	  echo "{$prompt}{$pr_disp}\n";
-	  ///ログを吐く
-	  if ($logMode == "on") {
-		  if (isset($writeData)){
-			if ($stanby) {
-
-			}else{
-				fwrite($writeData,"{$prompt} {$pr_disp}" . PHP_EOL);
 			}
-		  }
-	  }
+		}
+		$array = explode("\n", $pr_disp);
+		// $array = array_map('trim', $array);
+		$array = array_filter($array, 'strlen');
+		$array = array_values($array);
+
+		foreach ($array as $key => $value) {
+			echo "{$prompt}{$value}\n";
+			///ログを吐く
+			if ($logMode == "on") {
+				if (isset($writeData)){
+					if ($stanby) {
+					}else{
+						fwrite($writeData,"{$prompt} {$pr_disp}" . PHP_EOL);
+					}
+				}
+			}
+		}
 	}
 }
 
 /**
- *
- */
+*
+*/
 class myPhar extends systemProcessing{
 
 	function __construct(){
@@ -138,8 +155,8 @@ class myPhar extends systemProcessing{
 
 
 /**
- *
- */
+*
+*/
 class fileProcessing extends systemProcessing{
 
 	function __construct()
@@ -159,6 +176,6 @@ class fileProcessing extends systemProcessing{
 				$list = array_merge($list, list_files($dir . $file . DIRECTORY_SEPARATOR));
 			}
 		}
-	return $list;
+		return $list;
 	}
 }

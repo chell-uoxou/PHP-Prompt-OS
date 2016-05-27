@@ -3,15 +3,22 @@
 //・$aryTipeTxt[1]改行バグ解消方法....$aryTipeTxt[1] = trim($aryTipeTxt[1]);
 //・既にある関数と被る名前のユーザー定義関数を作る際は「p_」を頭につける（例:p_mkdir）
 ////////////////////////////////
+// echo curl_version();
+
+
 $systemconf_ini_array = parse_ini_file("config.ini", true);
 $a = fopen("config.ini", "w");
 $data = file_get_contents("config.ini");
-$data = explode( "\n", $data );
+print_r($data);
+$data = explode(PHP_EOL, $data );
+print_r($data);
 $data[1] = "; PHP Prompt OS system config file" . PHP_EOL;
 $data[2] = "; The final reading Date:" . date('l jS \of F Y h:i:s A') . PHP_EOL;
 $data = implode($data);
+print_r($data);
 fwrite($a, $data);
 fclose($a);
+var_dump($systemconf_ini_array);
 var_dump($data);
 
 include_once "system/System.php";
@@ -33,10 +40,8 @@ function exception_handler($exception) {
 	global $display;
 	global $system;
 	global $systemconf_ini_array;
-	$display->setInfo("ERROR");
-	$system->sendMessage($exception->getMessage());
-	$display->setInfo("INFO");
-	$system->sendMessage("エラーが発生したためPHP Prompt OSを終了しています..." . PHP_EOL);
+	$system->sendMessage($exception->getMessage(),"error");
+	$system->sendMessage("システム内部にエラーが発生したためPHP Prompt OSを終了します..." . PHP_EOL);
 	echo "続行するにはエンターキーを押してください。";
 	$a = fgets(STDIN);
 }
@@ -64,9 +69,20 @@ date_default_timezone_set('Asia/Tokyo');
 $startBootTime = microtime(true);
 
 function bootSystem($tipe){
+	global $currentdirectory;
 	global $poPath;
 	global $systemconf_ini_array;
+	global $system;
+	// $url = "https://github.com/chell-uoxou/PHP-Prompt-OS/releases.atom";
+	// $ch = curl_init();
+	// curl_setopt ($ch, CURLOPT_URL, $url);
+	// curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+	// curl_setopt($ch, CURLOPT_HEADER, false);
+	// $xml = curl_exec($ch);
+	// print_r($xml);
 	$poPath = rtrim(trim(dirname(__FILE__)),"\PHPPO\src");
+	$currentdirectory = $poPath;
+	$system->sendMessage("Set current directory:{$currentdirectory}\n");
 	$fp = $poPath . "\src\buildlog.log";
 	// $buildnumber = substr_count($file, PHP_EOL);
 	$data = file_get_contents($fp);
@@ -198,6 +214,7 @@ function readySetup($tipe){
 		global $pr_info, $pr_thread;
 		global $setup_password;
 		global $version;
+		global $poPath;
 		$userfilepath = rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . "user.json";
 		if (!file_exists($userfilepath)) {
 			touch($userfilepath);
@@ -210,6 +227,21 @@ function readySetup($tipe){
 			touch( $file_name );
 		}
 		chmod( $file_name, 0666 );
+
+		$dir_name = "{$poPath}/root";
+		if( !file_exists($dir_name) ){
+			mkdir( $dir_name );
+		}
+
+		$dir_name = "{$poPath}/root/home";
+		if( !file_exists($dir_name) ){
+			mkdir( $dir_name );
+		}
+
+		$dir_name = "{$poPath}/root/bin";
+		if( !file_exists($dir_name) ){
+			mkdir( $dir_name );
+		}
 
 		$file_name = rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . "README.txt";
 		if( !file_exists($file_name) ){
@@ -413,8 +445,7 @@ function setUserPassword($setup_user){
 			$system->sysCls(50);
 			$flag = true;
 			if (8 > strlen($setup_password)) {
-				$display->setInfo("ERROR");
-				$system->sendMessage("設定したパスワードは八文字に満たしていません！");
+				$system->sendMessage("設定したパスワードは八文字に満たしていません！","error");
 			}else {
 				$flag = false;
 			}
@@ -424,8 +455,7 @@ function setUserPassword($setup_user){
 		$setup_password_req = trim(fgets(STDIN));
 		$system->sysCls(50);
 		if ($setup_password_req != $setup_password) {
-			$display->setInfo("ERROR");
-			$system->sendMessage("二回目に入力したパスワードがはじめと一致していません！");
+			$system->sendMessage("二回目に入力したパスワードがはじめと一致していません！","error");
 		}
 	} while ($setup_password_req != $setup_password);
 }
@@ -486,8 +516,7 @@ function loginSystem($user){
 	$hash_Password = sha1($askPassword);
 	if ($hash_Password != $password_data[$user]) {
 		do {
-			$display->setInfo("ERROR");
-			$system->sendMessage("パスワードが合致しません！");
+			$system->sendMessage("パスワードが合致しません！","error");
 			$system->sendMessage($user . "のパスワードを入力してください。:");
 			$askPassword = trim(fgets(STDIN));
 			$hash_Password = sha1($askPassword);
@@ -513,7 +542,7 @@ function standbyTipe(){
 		$pr_time = date('A-H:i:s');
 		$pr_time = date('A-H:i:s');
 		if ($echoFunc != "off") {
-			echo "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m" . " [{$pr_thread} Thread/{$pr_info}]" . "\x1b[38;5;227m>";
+			echo "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m" . " [{$pr_thread}/{$pr_info}]" . "\x1b[38;5;227m>";
 		}else {
 			echo "\x1b[38;5;227m";
 		}
