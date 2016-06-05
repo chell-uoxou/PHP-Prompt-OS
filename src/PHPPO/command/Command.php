@@ -9,6 +9,7 @@ $dircommands = scandir(dirname(__FILE__) . '/../commands');
 $i = 0;
 foreach ($dircommands as $key => $value) {
 	$dircommands[$i] = dirname(dirname(__FILE__)) . '\commands\\' . $dircommands[$i];
+	// $system->sendMessage($dircommands[$i]);
 	$i++;
 }
 // var_dump($dircommands);
@@ -147,6 +148,10 @@ function runCommand() {
 		case 'reboot':
 			$reboot = new reboot;
 			$reboot->onCommand();
+			break;
+		case 'wget':
+			$wget = new wget;
+			$wget->onCommand();
 			break;
 	    default:
 			$filename = rtrim(dirname(__FILE__),"/src/PHPPO") . "/" . "scripts" . "/";

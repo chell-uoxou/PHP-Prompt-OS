@@ -18,7 +18,7 @@ class extract extends systemProcessing{
 				try {
 					$this->sendMessage("\x1b[38;5;231m解凍しています...");
 				    $phar = new Phar('PHPPO.phar');
-				    $phar->extractTo('src', null, true); // すべてのファイルを展開し、上書きします
+				    $phar->extractTo('src_new', null, true); // すべてのファイルを展開し、上書きします
 					$this->sendMessage("\x1b[38;5;83m完了しました。\x1b[38;5;145m:" . dirname(__FILE__) . "src");
 				} catch (Exception $e) {
 

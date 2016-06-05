@@ -3,7 +3,7 @@
 include_once(dirname(__FILE__) . "/../system/System.php");
 include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
-$addcom->addcommand("time","default","コンピューターに設定されている時刻を表示。","");
+$addcom->addcommand("time","secret","コンピューターに設定されている時刻を表示。","");
 //////////////////////
 /**
  *

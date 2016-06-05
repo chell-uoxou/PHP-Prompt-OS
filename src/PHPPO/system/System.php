@@ -57,7 +57,26 @@ class systemProcessing {
 		}
 	}
 
-
+	public function file_download($url, $dir='.', $save_base_name='' ){
+		if ( ! is_dir($dir) ){
+			$this->sendMessage("ディレクトリ({$dir})が存在しません。");}
+		$dir = preg_replace("{/$}","",$dir);
+		$p = pathinfo($url);
+		$local_filename = '';
+		if ( $save_base_name ){ $local_filename = "{$dir}/{$save_base_name}.{$p['extension']}"; }
+		else{ @$local_filename = "{$dir}/{$p['filename']}.{$p['extension']}"; }
+		if ( is_file( $local_filename ) ){$this->sendMessage("すでにファイル({$local_filename})が存在します。","error");}else {
+			$this->sendMessage("URL({$url})からファイルを取得しています...");
+			@$tmp = file_get_contents($url);
+			if (! $tmp){ $this->sendMessage("URL({$url})からファイルの取得ができませんでした。","error");}else {
+				$this->sendMessage("ファイルに情報を書き込んでいます...");
+				$fp = fopen($local_filename, 'w');
+				fwrite($fp, $tmp);
+				fclose($fp);
+				$this->sendMessage("\x1b[38;5;83m完了\x1b[38;5;59m:{$local_filename}");
+			}
+		}
+	}
 
 
 
@@ -171,6 +190,7 @@ class myPhar extends systemProcessing{
 		}
 		$this->sendMessage("pharを作成しました。 : $pharfilepath");
 	}
+
 }
 
 

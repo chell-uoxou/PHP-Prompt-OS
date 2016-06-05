@@ -48,20 +48,23 @@ class script extends systemProcessing{
 				}
 				$array = explode("\n", $file);
 				$array = array_map('trim', $array);
-				$array = array_filter($array, 'strlen');
+				// $array = array_filter($array, 'strlen');
 				$array = array_values($array);
 				$line = 0;
 				$conf =true;
 				// var_dump($array);
+				var_dump($array);
 				foreach ($array as $key => $value) {
 					// var_dump($commands);
 					// var_dump($value);
 					$line++;
-					$aryTipeTxt = explode(" ", trim($value));
-					$conf = array_key_exists($aryTipeTxt[0], $commands);
-					if ($conf === false) {
-						$this->sendMessage("Script error:確認されない命令\"{$value}\"が見つかりました。 in {$name} -> line{$line}","error");
-						break;
+					if ($value != "") {
+						$aryTipeTxt = explode(" ", trim($value));
+						$conf = array_key_exists($aryTipeTxt[0], $commands);
+						if ($conf === false) {
+							$this->sendMessage("Script error:確認されない命令\"{$value}\"が見つかりました。 in {$name} -> line{$line}","error");
+							break;
+						}
 					}
 				}
 				if ($conf === true) {

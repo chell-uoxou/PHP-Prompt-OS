@@ -27,35 +27,37 @@ $system = new systemProcessing;
 $display = new display;
 //異常終了check
 if ($systemconf_ini_array["dev"]["devmode"] != 1) {
-	$files = scandir(rtrim(trim(dirname(__FILE__)),"\PHPPO\src") . "/root/home/logs/",1);
-	print_r($files);
-	$lines = file(rtrim(trim(dirname(__FILE__)),"\PHPPO\src") . "/root/home/logs/" . $files[0], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-	$line = end($lines);
-	if ($line != "PHPPO was completed successfully."){
-		$system->sendMessage("システムが異常終了していた可能性があります！！","critical");
-		$system->sendMessage("前回のセッションの復元を試みますか？(Y/n):");
-		$revses = trim(fgets(STDIN));
-		if($revses == "Y"||$revses == "y"){
-			$system->sendMessage("前回起動時のセッションダンプを検索しています...");
-			$path = dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat";
-			$system->sendMessage("ダンプファイルを読み込んでいます...");
-			$defined_vars = unserialize(file_get_contents($path));
-			$system->sendMessage("システム変数の復元を行っています...(この作業には時間がかかる可能性があります。)");
-			$a = 0;
-			$b = count($defined_vars);
-			echo "進行度:";
-			foreach ($defined_vars as $key => $value) {
-				$a++;
-				$$key = $value;
-				if (($a / $b * 100) % 1 == 0) {
-					echo "\x1b[38;5;83m■";
+	@$files = scandir(rtrim(trim(dirname(__FILE__)),"\PHPPO\src") . "/root/home/logs/",1);
+	// var_dump($files);
+	if ($files != false) {
+		$lines = file(rtrim(trim(dirname(__FILE__)),"\PHPPO\src") . "/root/home/logs/" . $files[0], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		$line = end($lines);
+		if ($line != "PHPPO was completed successfully."){
+			$system->sendMessage("システムが異常終了していた可能性があります！！","critical");
+			$system->sendMessage("前回のセッションの復元を試みますか？(Y/n):");
+			$revses = trim(fgets(STDIN));
+			if($revses == "Y"||$revses == "y"){
+				$system->sendMessage("前回起動時のセッションダンプを検索しています...");
+				$path = dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat";
+				$system->sendMessage("ダンプファイルを読み込んでいます...");
+				$defined_vars = unserialize(file_get_contents($path));
+				$system->sendMessage("システム変数の復元を行っています...(この作業には時間がかかる可能性があります。)");
+				$a = 0;
+				$b = count($defined_vars);
+				echo "進行度:";
+				foreach ($defined_vars as $key => $value) {
+					$a++;
+					$$key = $value;
+					if (($a / $b * 100) % 1 == 0) {
+						echo "\x1b[38;5;83m■";
+					}
 				}
+				echo PHP_EOL;
+				$system->sendMessage("システムの復旧を行いました。起動します。\n次回終了時はexitコマンドで終了してください。");
+				sleep(2);
+			}else{
+				$system->sendMessage("起動します。\n次回終了時はexitコマンドで終了してください。");
 			}
-			echo PHP_EOL;
-			$system->sendMessage("システムの復旧を行いました。起動します。\n次回終了時はexitコマンドで終了してください。");
-			sleep(2);
-		}else{
-			$system->sendMessage("起動します。\n次回終了時はexitコマンドで終了してください。");
 		}
 	}
 }
@@ -90,9 +92,8 @@ if ($systemconf_ini_array["system"]["saveenvironmentvalues"] == 1) {
 }
 
 $inPrompt = $systemconf_ini_array["display"]["in_prompt"];
-echo $inPrompt;
-$version = "1.5.0_DevBuild";
-$versiontype = "Dev";//{Release}->{Alpha}->{Beta}->{Dev}
+$version = "1.5.0_Beta";
+$versiontype = "Beta";//{Release}->{Alpha}->{Beta}->{Dev}
 $system->sendMessage("Starting environment variables system...");
 $valuepros = new environmentVariables;
 $valuepros->setvalue("version",$version);
@@ -215,9 +216,6 @@ function bootSystem($tipe){
 		$system->sendMessage("PHP Prompt OS Copyright (C) 2016 chell rui");
 		// $system->sendMessage("This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'. ");
 		// $system->sendMessage("This is free software, and you are welcome to redistribute it under certain conditions; type `show c' for details.");
-		// $mainConfig = parse_ini_file('config.ini');
-		// $divmode = $mainConfig["divmode"];s
-
 
 
 
@@ -424,6 +422,16 @@ You should have received a copy of the GNU General Public License along with thi
 			touch($file_name);
 			$system->sendMessage("システム設定用ファイルを出力しました。:" . $file_name . PHP_EOL);
 			chmod( $file_name, 0666 );
+			file_put_contents($file_name,"[dev]
+devmode=off
+currentdirectory=on
+[system]
+logmode=on
+saveenvironmentvalues=on
+[display]
+in_prompt=[%time] [%thread/%info]%cd>
+out_prompt=\x1b[38;5;83m[%time]\x1b[38;5;87m[%therad/%info]
+");
 			askLicense();
 		 	}else{
 				if ($divmode == 0) {
@@ -567,17 +575,17 @@ function setUserPassword($setup_user){
 //  }
 
 
-$display->setThread("Boot");
-$display->setInfo("INFO");
-$system->sendMessage("ようこそ" . $user . "さん！PHP Prompt OS version $version");
-$system->sendMessage("画面の更新を行います...");
-sleep(2);
-$system->sysCls(500);
-$endBootTime = microtime(true);
-$resBootTime = $endBootTime - $startBootTime;
-$display->setThread("PHPPO");
-$system->sendMessage("起動完了！(" . round($resBootTime, 2) . " s.) helpコマンドでコマンド一覧を表示。");
-$display->setThread("PHPPO");
+// $display->setThread("Boot");
+// $display->setInfo("INFO");
+// $system->sendMessage("ようこそ" . $user . "さん！PHP Prompt OS version $version");
+// $system->sendMessage("画面の更新を行います...");
+// sleep(2);
+// $system->sysCls(500);
+// $endBootTime = microtime(true);
+// $resBootTime = $endBootTime - $startBootTime;
+// $display->setThread("PHPPO");
+// $system->sendMessage("起動完了！(" . round($resBootTime, 2) . " s.) helpコマンドでコマンド一覧を表示。");
+// $display->setThread("PHPPO");
 standbyTipe();
 
 
@@ -636,6 +644,7 @@ function standbyTipe(){
 	global $defined_vars;
 	global $inPrompt;
 	global $outPrompt;
+	$system->sendMessage("\x1b[38;5;63m起動完了！helpコマンドでコマンド一覧を表示。");
 	// file_put_contents(dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
 	while (True) {
 		$defined_vars = get_defined_vars();
@@ -647,11 +656,12 @@ function standbyTipe(){
 		$pr_time = date('A-H:i:s');
 		$pr_time = date('A-H:i:s');
 		// echo "cd:{$currentdirectory}\npoPath:{$poPath}\npo_cd:{$po_cd}";
-		$repl = array("%time","%thread","%info","%cd");
-		$repl2 = array($pr_time,$pr_thread,$pr_info,$po_cd);
-		$Prompt = str_ireplace($repl,$repl2,$inPrompt);
+		// $repl = array("%time","%thread","%info","%cd");
+		// $repl2 = array("\x1b[38;5;83m" . $pr_time,"\x1b[38;5;87m" . $pr_thread,$pr_info,"\x1b[38;5;207m" . $po_cd);
+		// $prompt = str_ireplace($repl,$repl2,$inPrompt);
+		$prompt = "\x1b[38;5;83m[{$pr_time}] \x1b[38;5;87m[{$pr_thread}/{$pr_info}]\x1b[38;5;207m{$po_cd}\x1b[38;5;227m>";
 		if ($echoFunc != "off") {
-			echo "\x1b[38;5;231m" . $Prompt;
+			echo "\x1b[38;5;83m" . $prompt . "\x1b[38;5;227m";
 		}else {
 			echo "\x1b[38;5;227m";
 		}
