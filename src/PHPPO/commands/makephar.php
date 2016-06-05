@@ -6,7 +6,7 @@
  include_once(dirname(__FILE__) . "/../system/System.php");
 include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
-$addcom->addcommand("makephar","dev","指定したアプリケーション、ディレクトリパス、または実行しているPHPPOのpharアーカイブ作成を行います。","<アプリケーション名|ディレクトリパス|system>");
+$addcom->addcommand("makephar","dev","アプリケーション、または実行しているPHPPOのpharアーカイブ作成を行います。","<アプリケーション名|system>");
  //////////////////////
 class makephar extends systemProcessing{
 	function __construct(){
@@ -47,7 +47,9 @@ class makephar extends systemProcessing{
 						$pharpath = rtrim(dirname(__FILE__),"commands\src\PHPPO") . "\PHPPO-{$version}_#{$buildnumber}.phar";
 						$phar = new Phar($pharpath, 0, 'PHPPO.phar');
 						$phar->buildFromDirectory(rtrim(dirname(__FILE__),"commands\src\PHPPO") . "\src");
+						$pharstat = stat($pharpath);
 						$this->sendMessage("\x1b[38;5;83mSuccess. \x1b[38;5;145m:" . $pharpath);
+						$this->sendMessage("File size:" . $pharstat["size"] . "byte");
 					}
 					} else {
 					// $dir = '';

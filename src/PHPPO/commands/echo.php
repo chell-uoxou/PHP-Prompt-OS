@@ -15,6 +15,7 @@ class myEcho extends systemProcessing{
 		global $aryTipeTxt;
 		global $environmentVariables;
 		global $echoFunc;
+		global $savevaluesmode;
 		$valuepros = new environmentVariables;
 		$messageCount = count($aryTipeTxt);
 		$varname = "";
@@ -34,7 +35,9 @@ class myEcho extends systemProcessing{
 						for ($i=1; $i < $messageCount; $i++) {
 							$message .= $aryTipeTxt[$i] . " ";
 						}
-						$environmentVariables = unserialize(file_get_contents("environmentVariables.dat"));
+						if ($savevaluesmode == "on") {
+							$environmentVariables = unserialize(file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\\' . "environmentVariables.dat"));
+						}
 						if (strstr($message, '%')) {
 								foreach ($environmentVariables as $key => $value){
 									// echo "key:" . $key . PHP_EOL;

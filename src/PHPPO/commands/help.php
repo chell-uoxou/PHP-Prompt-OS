@@ -21,7 +21,9 @@ class help extends systemProcessing{
 			$this->sendMessage("\x1b[38;5;59m===================\x1b[38;5;231mコマンド一覧\x1b[38;5;59m===================\x1b[38;5;145m");
 			foreach ($commands as $basecommand => $info) {
 				if ($info["type"] == "default") {
-					$this->sendMessage("\x1b[38;5;34m{$basecommand} \x1b[38;5;83m{$info["usage"]}\x1b[38;5;145m:{$info["des"]}\x1b[38;5;145m");
+					if ($info["enadis"] != "desable") {
+						$this->sendMessage("\x1b[38;5;34m{$basecommand} \x1b[38;5;83m{$info["usage"]}\x1b[38;5;145m:{$info["des"]}\x1b[38;5;145m");
+					}
 					// usleep(10000);
 				}
 			}

@@ -4,50 +4,18 @@ include_once(dirname(__FILE__) . "/../system/System.php");
 $system = new systemProcessing;
 //////////////////////
 $commands = array();
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"clear.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . "/../commands/clear.php";
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"download.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . "/../commands/download.php";
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"echo.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . "/../commands/echo.php";
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"exec.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . "/../commands/exec.php";
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"exit.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . "/../commands/exit.php";
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"help.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . "/../commands/help.php";
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"info.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . "/../commands/info.php";
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"log.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . "/../commands/log.php";
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"log.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . "/../commands/logout.php";
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"mkdir.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . "/../commands/mkdir.php";
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"time.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . "/../commands/time.php";
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"title.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . "/../commands/title.php";
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"vardump.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . "/../commands/vardump.php";
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"makephar.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . "/../commands/makephar.php";
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"script.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . '/../commands/script.php';
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"wait.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . '/../commands/wait.php';
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"set.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . '/../commands/set.php';
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"revc.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . '/../commands/revc.php';
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"extract.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . '/../commands/extract.php';
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"vars.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . '/../commands/vars.php';
-//$system->sendMessage("\x1b[38;5;83mdefault command process\"install.php\" \x1b[38;5;227mloading...");
-include_once dirname(__FILE__) . '/../commands/install.php';
-include_once dirname(__FILE__) . '/../commands/cat.php';
-
+$system->sendMessage("Command loaded:");
+$dircommands = scandir(dirname(__FILE__) . '/../commands');
+$i = 0;
+foreach ($dircommands as $key => $value) {
+	$dircommands[$i] = dirname(dirname(__FILE__)) . '\commands\\' . $dircommands[$i];
+	$i++;
+}
+// var_dump($dircommands);
+foreach ($dircommands as $key => $value) {
+	@include_once $value;
+}
+echo PHP_EOL;
 // var_dump($commands);
 //////////////////////
 function runCommand() {
@@ -104,7 +72,7 @@ function runCommand() {
 			$logout = new logout;
 			$logout->onCommand();
 			break;
-		case 'Mkdir':
+		case 'mkdir':
 			$mkdir = new myMkdir;
 			$mkdir->onCommand();
 			break;
@@ -159,6 +127,26 @@ function runCommand() {
 		case 'cat':
 			$cat = new cat;
 			$cat->onCommand();
+			break;
+		case 'cd':
+			$cd = new cd;
+			$cd->onCommand();
+			break;
+		case 'ls':
+			$ls = new myLs;
+			$ls->onCommand();
+			break;
+		case 'pwd':
+			$pwd = new pwd;
+			$pwd->onCommand();
+			break;
+		case 'delvar':
+			$delvar = new delvar;
+			$delvar->onCommand();
+			break;
+		case 'reboot':
+			$reboot = new reboot;
+			$reboot->onCommand();
 			break;
 	    default:
 			$filename = rtrim(dirname(__FILE__),"/src/PHPPO") . "/" . "scripts" . "/";

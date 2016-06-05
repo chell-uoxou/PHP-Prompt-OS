@@ -14,6 +14,7 @@ class script extends systemProcessing{
 		global $aryTipeTxt;
 		global $tipe_text;
 		global $commands;
+		global $currentdirectory;
 		$display = new display;
 		$pathCount = count($aryTipeTxt);
 		if ($pathCount <= 1) {
@@ -24,18 +25,25 @@ class script extends systemProcessing{
 				for ($i=1; $i < $pathCount; $i++) {
 					$name .= $aryTipeTxt[$i] . " ";
 				}
-				$path = "scripts\\" . $name;
+				// $path = "scripts\\" . $name;
 				////////////////////////////////script処理////////////////////////////////
 				////////////仕分け作業///////////////
 				$file = "";
-				if (file_exists($path)) {
-					$file = file_get_contents($path, true);
-				}else{
-					$path = trim($name,"\"");
-					if (file_exists($path)) {
-						$file = file_get_contents($path, true);
+				$current_path = trim($currentdirectory) . "\\" . $name;
+				if (file_exists($current_path)) {
+					$file = file_get_contents($current_path, true);
+				}else {
+					if (file_exists($name)) {
+						$r_path = $name;
+						$file = file_get_contents($r_path, true);
 					}else{
-						$this->sendMessage("スクリプトの読み込みに失敗しました。指定したスクリプトは存在しない可能性があります。{$path}","error");
+						$path = trim($name,"\"");
+						if (file_exists($path)) {
+							$r_path = $path;
+							$file = file_get_contents($r_path, true);
+						}else{
+							$this->sendMessage("スクリプトの読み込みに失敗しました。指定したスクリプトは存在しない可能性があります。:{$current_path}","error");
+						}
 					}
 				}
 				$array = explode("\n", $file);
@@ -52,8 +60,7 @@ class script extends systemProcessing{
 					$aryTipeTxt = explode(" ", trim($value));
 					$conf = array_key_exists($aryTipeTxt[0], $commands);
 					if ($conf === false) {
-						$path = trim(rtrim(dirname(__FILE__),"commands\src\PHPPO") . "\\" . $path);
-						$this->sendMessage("Script error:確認されない命令\"{$value}\"が見つかりました。 in {$path} -> line{$line}","error");
+						$this->sendMessage("Script error:確認されない命令\"{$value}\"が見つかりました。 in {$name} -> line{$line}","error");
 						break;
 					}
 				}

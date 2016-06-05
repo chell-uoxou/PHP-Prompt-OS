@@ -1,10 +1,11 @@
 <?php
 include_once dirname(__FILE__) . '/../display/display.php';
-include_once dirname(__FILE__) . '/../system/environmentValues.php';
+include_once dirname(__FILE__) . '/../plugin/Manager.php';
+include_once 'environmentValues.php';
+include_once 'currentdirectory.php';
 
 class systemProcessing {
-	private static function add_zip( $zip, $dir_path, $new_dir )
-	{
+	private static function add_zip( $zip, $dir_path, $new_dir ){
 		if( ! is_dir( $new_dir ) ){
 			$zip->addEmptyDir( $new_dir );
 		}
@@ -34,14 +35,12 @@ class systemProcessing {
 	//   fclose($f);
 	// }
 
-	public function systemFileOpen($path)
-	{
+	public function systemFileOpen($path){
 		global $writeData;
 		$writeData = fopen($path,'a');
 	}
 
-	public function systemFileClose()
-	{
+	public function systemFileClose(){
 		global $writeData;
 		fclose($writeData);
 	}
@@ -71,30 +70,52 @@ class systemProcessing {
 		global $prompt;
 		global $writeData;
 		global $stanby;
-		global $logMode;
+		global $logmode;
 		global $tipe_text;
 		global $echoFunc;
 		global $environmentVariables;
 		global $display;
+		global $currentdirectory;
+		global $poPath;
+		global $po_cd;
+		global $textformat;
+		global $to_textformat;
 		$valuepros = new environmentVariables;
 		date_default_timezone_set('Asia/Tokyo');
+
 		$pr_time = date('A-H:i:s');
 		if ($echoFunc != "off") {
 			switch ($type) {
 				case 'error':
-				$display->setInfo("ERROR");
-				$prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread}/{$pr_info}]" . "\x1b[38;5;203m";
-				$display->setInfo("INFO");
+					$display->setInfo("ERROR");
+					$prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread}/{$pr_info}]" . "\x1b[38;5;203m";
+					$display->setInfo("INFO");
 				break;
+				case 'warn':
+					$display->setInfo("WARN");
+					$prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread}/{$pr_info}]" . "\x1b[38;5;214m";
+					$display->setInfo("INFO");
+					break;
+				case 'critical':
+					$display->setInfo("CRITICAL");
+					$prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread}/{$pr_info}]" . "\x1b[38;5;124m";
+					$display->setInfo("INFO");
+					break;
 				default:
-				$prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread}/{$pr_info}]" . "\x1b[38;5;231m";
+					$prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread}/{$pr_info}]" . "\x1b[38;5;231m";
 				break;
 			}
 		}else{
 			switch ($type) {
 				case 'error':
-				$prompt = "\x1b[38;5;203m";
-				break;
+					$prompt = "\x1b[38;5;203m";
+					break;
+				case 'warn':
+					$prompt = "\x1b[38;5;214m";
+					break;
+				case 'critical':
+					$prompt = "\x1b[38;5;124m";
+					break;
 				default:
 				$prompt = "\x1b[38;5;231m";
 				break;
@@ -108,11 +129,11 @@ class systemProcessing {
 		foreach ($array as $key => $value) {
 			echo "{$prompt}{$value}\n";
 			///ログを吐く
-			if ($logMode == "on") {
+			if ($logmode == "on") {
 				if (isset($writeData)){
 					if ($stanby) {
 					}else{
-						fwrite($writeData,"{$prompt} {$pr_disp}" . PHP_EOL);
+						@fwrite($writeData,"{$prompt} {$pr_disp}" . PHP_EOL);
 					}
 				}
 			}

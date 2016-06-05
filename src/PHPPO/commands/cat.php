@@ -12,13 +12,25 @@ class cat extends systemProcessing{
 		global $aryTipeTxt;
 		global $environmentVariables;
 		global $currentdirectory;
+		global $all_path;
 		// echo $currentdirectory;
 		$pathCount = count($aryTipeTxt);
-		$path = $currentdirectory . "/";
+		$path = trim($currentdirectory) . "\\";
 		for ($i=1; $i < $pathCount; $i++) {
 			$path .= $aryTipeTxt[$i] . " ";
 		}
-		$this->sendMessage(file_get_contents($path));
+		if (is_file($path)) {
+			$this->sendMessage($path . "のデータを表示します。");
+			$data = file_get_contents($path);
+			$data = explode( "\n", $data );
+			foreach ($data as $key => $value) {
+				$space = str_repeat(" ",4 - strlen($key + 1));
+				$a = $key + 1 . $space;
+				$this->sendMessage("\x1b[38;5;145m" . $a ."\x1b[38;5;59m|\x1b[38;5;231m". $value);
+			}
+		}else{
+			$this->sendMessage("ファイルの読み込みに失敗しました！:" . $path,"error");
+		}
 	}
 }
 

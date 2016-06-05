@@ -1,4 +1,5 @@
 <?php
+echo "Library loaded!\nPHP Prompt OS booting...\n";
 //////////////ルール/////////////
 //・$aryTipeTxt[1]改行バグ解消方法....$aryTipeTxt[1] = trim($aryTipeTxt[1]);
 //・既にある関数と被る名前のユーザー定義関数を作る際は「p_」を頭につける（例:p_mkdir）
@@ -7,30 +8,90 @@
 
 
 $systemconf_ini_array = parse_ini_file("config.ini", true);
-$a = fopen("config.ini", "w");
-$data = file_get_contents("config.ini");
-print_r($data);
-$data = explode(PHP_EOL, $data );
-print_r($data);
-$data[1] = "; PHP Prompt OS system config file" . PHP_EOL;
-$data[2] = "; The final reading Date:" . date('l jS \of F Y h:i:s A') . PHP_EOL;
-$data = implode($data);
-print_r($data);
-fwrite($a, $data);
-fclose($a);
-var_dump($systemconf_ini_array);
-var_dump($data);
+// $a = fopen("config.ini", "w");
+// $data = file_get_contents("config.ini");
+// print_r($data);
+// $data = explode(PHP_EOL, $data );
+// print_r($data);
+// $data[1] = "; PHP Prompt OS system config file" . PHP_EOL;
+// $data[2] = "; The final reading Date:" . date('l jS \of F Y h:i:s A') . PHP_EOL;
+// $data = implode($data);
+// print_r($data);
+// fwrite($a, $data);
+// fclose($a);
+// var_dump($systemconf_ini_array);
+// var_dump($data);
 
 include_once "system/System.php";
 $system = new systemProcessing;
 $display = new display;
+//異常終了check
+if ($systemconf_ini_array["dev"]["devmode"] != 1) {
+	$files = scandir(rtrim(trim(dirname(__FILE__)),"\PHPPO\src") . "/root/home/logs/",1);
+	print_r($files);
+	$lines = file(rtrim(trim(dirname(__FILE__)),"\PHPPO\src") . "/root/home/logs/" . $files[0], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+	$line = end($lines);
+	if ($line != "PHPPO was completed successfully."){
+		$system->sendMessage("システムが異常終了していた可能性があります！！","critical");
+		$system->sendMessage("前回のセッションの復元を試みますか？(Y/n):");
+		$revses = trim(fgets(STDIN));
+		if($revses == "Y"||$revses == "y"){
+			$system->sendMessage("前回起動時のセッションダンプを検索しています...");
+			$path = dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat";
+			$system->sendMessage("ダンプファイルを読み込んでいます...");
+			$defined_vars = unserialize(file_get_contents($path));
+			$system->sendMessage("システム変数の復元を行っています...(この作業には時間がかかる可能性があります。)");
+			$a = 0;
+			$b = count($defined_vars);
+			echo "進行度:";
+			foreach ($defined_vars as $key => $value) {
+				$a++;
+				$$key = $value;
+				if (($a / $b * 100) % 1 == 0) {
+					echo "\x1b[38;5;83m■";
+				}
+			}
+			echo PHP_EOL;
+			$system->sendMessage("システムの復旧を行いました。起動します。\n次回終了時はexitコマンドで終了してください。");
+			sleep(2);
+		}else{
+			$system->sendMessage("起動します。\n次回終了時はexitコマンドで終了してください。");
+		}
+	}
+}
+
+
+
+
+
+
 $system->sendMessage("Loading command Prosessing files...");
 include_once 'command/Command.php';
-$system->sendMessage("log mode enabled.");
-$logMode = "on";
-$exit = new myExit;
-// register_shutdown_function("onCommand");
-$version = "1.4.5_Dev";
+if ($systemconf_ini_array["system"]["logmode"] == 1) {
+	$logmode = "on";
+	$system->sendMessage("log mode \x1b[38;5;87menabled.");
+}else {
+	$logmode = "off";
+}
+
+if ($systemconf_ini_array["dev"]["currentdirectory"] == 1) {
+	$currentdirectorymode = "on";
+	$system->sendMessage("Current directory mode:\x1b[38;5;87menabled.");
+	$system->sendMessage("There are a lot of bugs in the current directory mode!","warn");
+}else {
+	$currentdirectorymode = "off";
+}
+
+if ($systemconf_ini_array["system"]["saveenvironmentvalues"] == 1) {
+	$savevaluesmode = "on";
+	$system->sendMessage("Save Environment Values Mode:\x1b[38;5;87menabled.");
+}else {
+	$savevaluesmode = "off";
+}
+
+$inPrompt = $systemconf_ini_array["display"]["in_prompt"];
+echo $inPrompt;
+$version = "1.5.0_DevBuild";
 $versiontype = "Dev";//{Release}->{Alpha}->{Beta}->{Dev}
 $system->sendMessage("Starting environment variables system...");
 $valuepros = new environmentVariables;
@@ -41,12 +102,17 @@ function exception_handler($exception) {
 	global $system;
 	global $systemconf_ini_array;
 	$system->sendMessage($exception->getMessage(),"error");
-	$system->sendMessage("システム内部にエラーが発生したためPHP Prompt OSを終了します..." . PHP_EOL);
+	$system->sendMessage("システム内部にエラーが発生したためPHP Prompt OSを終了します..." . PHP_EOL,"critical");
 	echo "続行するにはエンターキーを押してください。";
 	$a = fgets(STDIN);
 }
 
-// set_exception_handler('exception_handler');
+if ($systemconf_ini_array["dev"]["devmode"] == 1) {
+	$system->sendMessage("exception handler:\x1b[38;5;203mdisable");
+}else {
+	set_exception_handler('exception_handler');
+	$system->sendMessage("exception handler:\x1b[38;5;87menable");
+}
 
 if ($boottipe <= 2) {
 	$system->sendMessage("Starting PHP Prompt OS...");
@@ -70,6 +136,7 @@ $startBootTime = microtime(true);
 
 function bootSystem($tipe){
 	global $currentdirectory;
+	global $currentdirectorymode;
 	global $poPath;
 	global $systemconf_ini_array;
 	global $system;
@@ -81,8 +148,10 @@ function bootSystem($tipe){
 	// $xml = curl_exec($ch);
 	// print_r($xml);
 	$poPath = rtrim(trim(dirname(__FILE__)),"\PHPPO\src");
-	$currentdirectory = $poPath;
-	$system->sendMessage("Set current directory:{$currentdirectory}\n");
+	if ($currentdirectorymode == "on") {
+		$currentdirectory = $poPath . "\\root";
+		$system->sendMessage("Set current directory:{$currentdirectory}\n");
+	}
 	$fp = $poPath . "\src\buildlog.log";
 	// $buildnumber = substr_count($file, PHP_EOL);
 	$data = file_get_contents($fp);
@@ -109,6 +178,7 @@ function bootSystem($tipe){
 			break;
 		case 'Dev':
 			$versioncolor = "\x1b[38;5;203m";
+			$system->sendMessage("\x1b[38;5;214mOops You are running the \"\x1b[38;5;203mdevelopment build \x1b[38;5;214m\"! There may be a bug !");
 			break;
 		default:
 			# code...
@@ -171,7 +241,6 @@ function bootSystem($tipe){
 	  	global $LICENSE_agree;
 		global $divmode;
 		global $tipe_text;
-		$script = new script;
 	  	date_default_timezone_set('Asia/Tokyo');
 	  	$GLOBALS['pr_thread'] = "Boot";//スレッド-プロンプトに表示
 	  	$GLOBALS['pr_info'] = "INFO";//情報-プロンプトに表示
@@ -183,7 +252,9 @@ function bootSystem($tipe){
 		}
 	}else{
 		if ($tipe = "script") {
-			$tipe_text = "script " . trim($argv[2]);
+			echo $argv[2];
+			$tipe_text = "script home/scripts" . trim($argv[2]);
+			$script = new script;
 			$script->onCommand();
 		}
 }
@@ -215,7 +286,44 @@ function readySetup($tipe){
 		global $setup_password;
 		global $version;
 		global $poPath;
-		$userfilepath = rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . "user.json";
+		$dir_name = "{$poPath}/root";
+		if( !file_exists($dir_name) ){
+			$system->sendMessage("rootディレクトリが見つかりませんでした！\n新規作成します...");
+			mkdir( $dir_name );
+		}
+
+		$dir_name = "{$poPath}/root/home";
+		if( !file_exists($dir_name) ){
+			$system->sendMessage("root/homeディレクトリが見つかりませんでした！\n新規作成します...");
+			mkdir( $dir_name );
+		}
+
+		$dir_name = "{$poPath}/root/bin";
+		if( !file_exists($dir_name) ){
+			$system->sendMessage("root/binディレクトリが見つかりませんでした！\n新規作成します...");
+			mkdir( $dir_name );
+		}
+
+		$dir_name = "{$poPath}/root/plugins";
+		if( !file_exists($dir_name) ){
+			$system->sendMessage("root/pluginsディレクトリが見つかりませんでした！\n新規作成します...");
+			mkdir( $dir_name );
+		}
+
+		$dir_name = $poPath . '/root/$Trash';
+		if( !file_exists($dir_name) ){
+			$system->sendMessage("ゴミ箱用ディレクトリが見つかりませんでした！\n新規作成します...");
+			mkdir( $dir_name );
+		}
+
+		$userfilepath = rtrim(dirname(__FILE__),"\PHPPO\src") ."\\root\bin\user.json";
+		if (!file_exists($userfilepath)) {
+			touch($userfilepath);
+			$system->sendMessage("ユーザー設定用ファイルを出力しました。:" . $userfilepath);
+		}
+		chmod( $userfilepath, 0666 );
+
+		$userfilepath = rtrim(dirname(__FILE__),"\PHPPO\src") ."\\root\bin\\environmentVariables.dat";
 		if (!file_exists($userfilepath)) {
 			touch($userfilepath);
 			$system->sendMessage("ユーザー設定用ファイルを出力しました。:" . $userfilepath);
@@ -228,49 +336,34 @@ function readySetup($tipe){
 		}
 		chmod( $file_name, 0666 );
 
-		$dir_name = "{$poPath}/root";
-		if( !file_exists($dir_name) ){
-			mkdir( $dir_name );
-		}
-
-		$dir_name = "{$poPath}/root/home";
-		if( !file_exists($dir_name) ){
-			mkdir( $dir_name );
-		}
-
-		$dir_name = "{$poPath}/root/bin";
-		if( !file_exists($dir_name) ){
-			mkdir( $dir_name );
-		}
-
 		$file_name = rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . "README.txt";
 		if( !file_exists($file_name) ){
 			touch( $file_name );
 		}
 		chmod( $file_name, 0666 );
 
-		$logfilepath = rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . "logs";
+		$logfilepath = rtrim(dirname(__FILE__),"\PHPPO\src") . "\\root\home\logs";
 		if (!file_exists($logfilepath)) {
 			mkdir($logfilepath);
-			$system->sendMessage("ログ出力用フォルダを生成しました。:[" . $logfilepath .  "]");
+			$system->sendMessage("ログ出力用フォルダを生成しました。:" . $logfilepath);
 		 }
 
-		 $scriptsfilepath = rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . "scripts";
+		 $scriptsfilepath = rtrim(dirname(__FILE__),"\PHPPO\src") . "\\root\scripts";
 		 if (!file_exists($scriptsfilepath)) {
 			 mkdir($scriptsfilepath);
-			 $system->sendMessage("スクリプト、ユーザー定義コマンド保存用フォルダを生成しました。:[" . $scriptsfilepath .  "]");
+			 $system->sendMessage("スクリプト、ユーザー定義コマンド保存用フォルダを生成しました。:" . $scriptsfilepath);
 		 }
 
-		$logfilepath = rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . "logs" . "/" . date('Y_m_d') . ".log";
+		$logfilepath = rtrim(dirname(__FILE__),"\PHPPO\src") . "\\root\home\logs\\" . date('Y_m_d') . ".log";
 	 	if (!file_exists($logfilepath)) {
 	 	touch($logfilepath);
 	    $system->sendMessage("ログ出力用ファイルを生成しました。:" . $logfilepath . PHP_EOL);
 		}
 		chmod( $logfilepath, 0666 );
 
-	 	$system->systemFileOpen(rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . "logs" . "/" . date('Y_m_d') . ".log");
+	 	$system->systemFileOpen($logfilepath);
 		global $writeData;
-		$writeData = fopen(rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . "logs" . "/" . date('Y_m_d') . ".log",'a');
+		$writeData = fopen($logfilepath,'a');
 		$pr_info = "INFO";
 	 	$pr_thread = "File";
 	 	$LICENSE = fopen(rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . 'LICENSE.txt', "w");
@@ -327,7 +420,6 @@ You should have received a copy of the GNU General Public License along with thi
 
 	 	//echo PHP_EOL . "Language(en):\n  English -> \"en\"\n  Japanese -> \"ja\"\n";
 		$file_name = rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . 'config.ini';
-		readScripts();
 		if(!file_exists($file_name)){
 			touch($file_name);
 			$system->sendMessage("システム設定用ファイルを出力しました。:" . $file_name . PHP_EOL);
@@ -526,7 +618,8 @@ function loginSystem($user){
 
 
 function standbyTipe(){
-	global $system;global $display;
+	global $system;
+	global $display;
 	global $systemconf_ini_array;
   	global $pr_disp;
   	global $tipe_text;
@@ -536,19 +629,37 @@ function standbyTipe(){
 	global $pr_info;
 	global $pr_time;
 	global $echoFunc;
+	global $currentdirectory;
+	global $po_cd;
+	global $poPath;
+	global $logmode;
+	global $defined_vars;
+	global $inPrompt;
+	global $outPrompt;
+	// file_put_contents(dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
 	while (True) {
+		$defined_vars = get_defined_vars();
+		// var_dump($defined_vars);
+		file_put_contents(dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
+		$po_cd = str_replace(trim($poPath),"",trim($currentdirectory));
 		$stanby = True;
 		$display->setThread("PHPPO");
 		$pr_time = date('A-H:i:s');
 		$pr_time = date('A-H:i:s');
+		// echo "cd:{$currentdirectory}\npoPath:{$poPath}\npo_cd:{$po_cd}";
+		$repl = array("%time","%thread","%info","%cd");
+		$repl2 = array($pr_time,$pr_thread,$pr_info,$po_cd);
+		$Prompt = str_ireplace($repl,$repl2,$inPrompt);
 		if ($echoFunc != "off") {
-			echo "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m" . " [{$pr_thread}/{$pr_info}]" . "\x1b[38;5;227m>";
+			echo "\x1b[38;5;231m" . $Prompt;
 		}else {
 			echo "\x1b[38;5;227m";
 		}
 		$stanby = false;
 		$tipe_text = trim(fgets(fopen("php://stdin", "r")));
-		fwrite($writeData,PHP_EOL . $tipe_text);
+		if ($logmode == 1) {
+			fwrite($writeData,PHP_EOL . $tipe_text);
+		}
 		runCommand();
 	}
 }

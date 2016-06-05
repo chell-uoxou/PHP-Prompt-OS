@@ -13,18 +13,20 @@ class myExit extends systemProcessing{
 
 	}
 	public function onCommand(){
-
+		global $systemconf_ini_array;
 		global $pr_disp;
 		global $aryTipeTxt;
+		global $writeData;
 		if (!isset($aryTipeTxt[1])){
 		$this->sendMessage("PHP Prompt OS by chell ruiを終了します...");
 			}else{
 				$aryTipeTxt[1] = trim($aryTipeTxt[1]);
-				$this->sendMessage($aryTipeTxt[1] . "/1000 秒後にPHP Prompt OS by chell ruiを終了します...");
+				$this->sendMessage($aryTipeTxt[1] . "ミリ秒後にPHP Prompt OS by chell ruiを終了します...");
 				$waitSec = (int)$aryTipeTxt[1];
 				usleep($waitSec * 1000);
 		}
 		$this->sendMessage("(@^^)/~~~!");
+		fwrite($writeData,"PHPPO was completed successfully.");
 		exit(0);
 	}
 }

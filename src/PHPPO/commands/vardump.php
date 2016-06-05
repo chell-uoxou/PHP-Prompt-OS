@@ -3,7 +3,7 @@
 include_once(dirname(__FILE__) . "/../system/System.php");
 include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
-$addcom->addcommand("vardump","dev","システム処理が継承した'vardump'クラス内から呼び出せるパブリック変数、及びメイン処理におけるグローバル変数の内容を表示します。","<変数名>");
+$addcom->addcommand("vardump","dev","メイン処理におけるグローバル変数の内容を表示します。","<変数名>");
 //////////////////////
 /**
  *
