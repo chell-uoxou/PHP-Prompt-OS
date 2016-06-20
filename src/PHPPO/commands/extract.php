@@ -14,7 +14,7 @@ class extract extends systemProcessing{
 		switch ($aryTipeTxt[1]) {
 			case 'system':
 				$this->sendMessage("現在実行しているpharアーカイブを展開しますか？");
-				$Confirm = trim(fgets(STDIN));
+				$Confirm = trim(fgets(fopen("php://stdin", "r")));
 				try {
 					$this->sendMessage("\x1b[38;5;231m解凍しています...");
 				    $phar = new Phar('PHPPO.phar');

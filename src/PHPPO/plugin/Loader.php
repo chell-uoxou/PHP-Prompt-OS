@@ -1,11 +1,18 @@
 <?php
-include_once dirname(__FILE__) . '/../display/display.php';
 include_once(dirname(__FILE__) . "/../system/System.php");
+$system = new systemProcessing;
 $commands = array();
-@$dirplugins = scandir(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\plugins');
+@$fileplugins = scandir(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\plugins');
 $i = 0;
-foreach ($dirplugins as $key => $value) {
-	@$dirplugins[$i] = dirname(dirname(dirname(dirname(__FILE__)))) . '\root\plugins\\' . $dirplugins[$i];
-	$i++;
+$j = 0;
+if (isset($fileplugins)) {
+	foreach ($fileplugins as $key => $value) {
+		// var_dump($fileplugins[$i]);
+		if ($fileplugins[$i] == "." || $fileplugins[$i] == ".." ) {
+		}else {
+			$dirplugins[$j] = dirname(dirname(dirname(dirname(__FILE__)))) . '\root\plugins\\' . $fileplugins[$i];
+			$j++;
+		}
+		$i++;
+	}
 }
-// var_dump($dirplugins);

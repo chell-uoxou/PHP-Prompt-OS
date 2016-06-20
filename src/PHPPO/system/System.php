@@ -3,7 +3,9 @@ include_once dirname(__FILE__) . '/../display/display.php';
 include_once dirname(__FILE__) . '/../plugin/Manager.php';
 include_once 'environmentValues.php';
 include_once 'currentdirectory.php';
-
+// include_once 'Boot.php';
+$valuepros = new environmentVariables;
+$pluginpros = new pluginManager;
 class systemProcessing {
 	private static function add_zip( $zip, $dir_path, $new_dir ){
 		if( ! is_dir( $new_dir ) ){
@@ -58,6 +60,7 @@ class systemProcessing {
 	}
 
 	public function file_download($url, $dir='.', $save_base_name='' ){
+		$url = trim($url);
 		if ( ! is_dir($dir) ){
 			$this->sendMessage("ディレクトリ({$dir})が存在しません。");}
 		$dir = preg_replace("{/$}","",$dir);
@@ -99,10 +102,13 @@ class systemProcessing {
 		global $po_cd;
 		global $textformat;
 		global $to_textformat;
-		$valuepros = new environmentVariables;
+		global $valuepros;
+		$display = new display;
 		date_default_timezone_set('Asia/Tokyo');
-
+		// echo "string";
+		// var_dump($display);
 		$pr_time = date('A-H:i:s');
+
 		if ($echoFunc != "off") {
 			switch ($type) {
 				case 'error':
@@ -144,21 +150,26 @@ class systemProcessing {
 		// $array = array_map('trim', $array);
 		$array = array_filter($array, 'strlen');
 		$array = array_values($array);
-
-		foreach ($array as $key => $value) {
-			echo "{$prompt}{$value}\n";
-			///ログを吐く
-			if ($logmode == "on") {
-				if (isset($writeData)){
-					if ($stanby) {
-					}else{
-						@fwrite($writeData,"{$prompt} {$pr_disp}" . PHP_EOL);
-					}
-				}
-			}
-		}
-	}
-}
+		if ($type == "input") {
+			echo "{$prompt}{$pr_disp}";
+			$input = trim(fgets(fopen("php://stdin", "r")));
+			return $input;
+		}else {
+			foreach ($array as $key => $value) {
+				echo "{$prompt}{$value}\n";
+				///ログを吐く
+				if ($logmode == "on") {
+					if (isset($writeData)){
+						if ($stanby) {
+						}else{
+							@fwrite($writeData,"{$prompt} {$pr_disp}" . PHP_EOL);
+						}//てってってれってー
+					}//んーでってれってー
+				}//てってってれってー
+			}//んーでってれってー
+		}//てってってれってー
+	}//んーでってれってー
+}//てってってれってー by @KOKKOKOKOKOOKO
 
 /**
 *

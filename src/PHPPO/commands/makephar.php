@@ -24,7 +24,7 @@ class makephar extends systemProcessing{
 				$aryTipeTxt[1] = trim($aryTipeTxt[1]);
 				if ($aryTipeTxt[1] == "system") {
 					$this->sendMessage("\x1b[38;5;203mAre you sure you want to compose the source of PHPPO that are currently running to the phar archive ?(y):");
-					$Confirm = trim(fgets(STDIN));
+					$Confirm = trim(fgets(fopen("php://stdin", "r")));
 					if ($Confirm == "y") {
 						// $myPhar->compose(rtrim(dirname(__FILE__),"commands\\"),"PHPPO");
 						$fp = rtrim(trim(dirname(__FILE__)),"\commands\PHPPO") . "c\buildlog.log";

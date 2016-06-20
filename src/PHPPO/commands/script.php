@@ -8,13 +8,13 @@ include_once(dirname(__FILE__) . "/../command/command.php");
 //////////////////////
 class script extends systemProcessing{
 	function __construct(){
-
 	}
 	public function onCommand(){
 		global $aryTipeTxt;
 		global $tipe_text;
 		global $commands;
 		global $currentdirectory;
+		global $commandpros;
 		$display = new display;
 		$pathCount = count($aryTipeTxt);
 		if ($pathCount <= 1) {
@@ -53,7 +53,6 @@ class script extends systemProcessing{
 				$line = 0;
 				$conf =true;
 				// var_dump($array);
-				var_dump($array);
 				foreach ($array as $key => $value) {
 					// var_dump($commands);
 					// var_dump($value);
@@ -69,7 +68,7 @@ class script extends systemProcessing{
 				}
 				if ($conf === true) {
 					foreach ($array as $tipe_text) {
-						runCommand();
+						$commandpros->runCommand();
 					}
 				}
 		}
