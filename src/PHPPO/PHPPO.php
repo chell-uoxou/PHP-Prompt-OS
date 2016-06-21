@@ -340,10 +340,8 @@ in_prompt=[%time] [%thread/%info]%cd>
 out_prompt=\x1b[38;5;83m[%time]\x1b[38;5;87m[%therad/%info]
 ");
 		}
-
 		if($first_time_boot){
 			$savevaluesmode = "off";
-			file_put_contents(dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
 			askLicense();
 		 	}else{
 				if ($divmode == 0) {
@@ -379,6 +377,7 @@ out_prompt=\x1b[38;5;83m[%time]\x1b[38;5;87m[%therad/%info]
 			echo file_get_contents("LICENSE.txt") . "\n";
 			$LICENSE_agree = $system->sendMessage("ライセンスに同意しますか？(y/n):","input");
 			if($LICENSE_agree == "y"){
+				file_put_contents(dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
 				startSetup();
 			}else{
 				echo "\nライセンスに同意してください\n";
