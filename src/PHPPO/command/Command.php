@@ -1,8 +1,11 @@
 <?php
 include_once dirname(__FILE__) . '/../display/display.php';
 include_once(dirname(__FILE__) . "/../system/System.php");
+include_once 'ScriptCommand.php';
 $system = new systemProcessing;
 $commandpros = new command;
+$scriptcommandpros = new scriptCommand;
+// $addcom = new addcommand;
 //////////////////////
 $commands = array();
 $system->sendMessage("Command loaded:");
@@ -29,51 +32,53 @@ class command extends systemProcessing{
 		# code...
 	}
 	public function runCommand() {
-		global $system;global $display;
+		global $system;
+		global $display;
 		global $tipe_text;
 		global $baseCommand;
 		global $aryTipeTxt;
 		global $pr_disp;
 		global $pr_info;
 		global $exec_command;
-		$valuepros = new environmentVariables;
+		global $valuepros;
+		global $extensionCommands;
 		$valuepros->setvalue("time", date('A-H:i:s'));
 		$aryTipeTxt = explode(" ", $tipe_text);
 		$baseCommand = trim($aryTipeTxt[0]);
 		if (!$baseCommand == "") {
 		  switch ($baseCommand) {
-		    case "help":
-		      	$help = new help;
+			case "help":
+				$help = new help;
 				$help->onCommand();
-		      	break;
-		    case "echo":
+				break;
+			case "echo":
 				$echo = new myEcho;
 				$echo->onCommand();
-		      	break;
-		    case "exit":
+				break;
+			case "exit":
 				$exit = new myExit;
 				$exit->onCommand();
-		    	break;
-		    case "exec":
+				break;
+			case "exec":
 				$exec = new myExec;
 				$exec->onCommand();
-		    	break;
-		    case 'time':
+				break;
+			case 'time':
 				$time = new time;
 				$time->onCommand();
-		      	break;
-		    case 'log':
+				break;
+			case 'log':
 				$log = new log;
 				$log->onCommand();
-		      	break;
-		 	case "download":
+				break;
+			case "download":
 				$download = new download;
 				$download->onCommand();
-		    	break;
-		    case "info":
+				break;
+			case "info":
 				$info = new info;
 				$info->onCommand();
-		    	break;
+				break;
 			case 'title':
 				$title = new title;
 				$title->onCommand();
@@ -126,10 +131,6 @@ class command extends systemProcessing{
 				$vars = new vars;
 				$vars->onCommand();
 				break;
-			case 'cls':
-				$clear = new clear;
-				$clear->onCommand();
-				break;
 			case 'install':
 				$install = new install;
 				$install->onCommand();
@@ -166,10 +167,20 @@ class command extends systemProcessing{
 				$masuo = new masuo;
 				$masuo->onCommand();
 				break;
-		    default:
-				$filename = rtrim(dirname(__FILE__),"/src/PHPPO") . "/" . "scripts" . "/";
-		      	$system->sendMessage("\x1b[38;5;203m\"" . $baseCommand . "\"コマンドが見つかりませんでした。helpコマンドで確認してください。");
-		      	break;
+			case 'rmdir':
+				$rmdir = new rmdir;
+				$rmdir->onCommand();
+				break;
+			default:
+				if (array_key_exists($baseCommand,$extensionCommands)) {
+					$aryTipeTxt = array("script",$extensionCommands[$baseCommand]);
+					$script = new script;
+					$script->onCommand();
+				}else {
+					$system->sendMessage("\x1b[38;5;203m\"" . $baseCommand . "\"コマンドが見つかりませんでした。helpコマンドで確認してください。");
+				}
+				// $filename = rtrim(dirname(__FILE__),"/src/PHPPO") . "/" . "scripts" . "/";
+				break;
 			}
 		}
 	}

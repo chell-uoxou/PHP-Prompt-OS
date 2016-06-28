@@ -1,4 +1,19 @@
 <?php
+
+
+/*
+*   :::::::::  :::    ::: :::::::::  :::::::::   ::::::::
+*   :+:    :+: :+:    :+: :+:    :+: :+:    :+: :+:    :+:  PHP Prompt OS
+*   +:+    +:+ +:+    +:+ +:+    +:+ +:+    +:+ +:+    +:+     made by chell rui.
+*   +#++:++#+  +#++:++#++ +#++:++#+  +#++:++#+  +#+    +:+
+*   +#+        +#+    +#+ +#+        +#+        +#+    +#+
+*   #+#        #+#    #+# #+#        #+#        #+#    #+#
+*   ###        ###    ### ###        ###         ########
+* @author chell rui
+*/
+
+
+
 echo "Library loaded!\nPHP Prompt OS booting...\n";
 
 
@@ -32,11 +47,11 @@ function myErrorHandler($errno, $errstr, $errfile, $errline){
 			break;
 
 		case E_USER_WARNING:
-			$system->sendMessage("WARNING [$errno] $errstr");
+			$system->sendMessage("[$errno] $errstr","warn","PHP");
 			break;
 
 		case E_USER_NOTICE:
-			$system->sendMessage("NOTICE [$errno] $errstr");
+			$system->sendMessage("[$errno] $errstr","notice","PHP");
 			break;
 
 		default:
@@ -98,25 +113,24 @@ function bootSystem($tipe){
 			break;
 	}
 
-
 	if ($tipe != "script") {
-		usleep(rand(0,500000));
+		usleep(rand(0,500000));//演出
 		$system->sysCls(100);
 		$display->setThread("welcome");
 		$display->setInfo("INFO");
-		$system->sendMessage("\x1b[38;5;214m╋┓　　　　　　　　　　　　　　　　　　　　　　   　　　┏╋");
-		$system->sendMessage("\x1b[38;5;214m┗╋‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━━╋┛");
+		$system->sendMessage("		\x1b[38;5;214m╋┓　　　　　　　　　　　　　　　　　　　　　　   　　　┏╋");
+		$system->sendMessage("		\x1b[38;5;214m┗╋‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━━╋┛");
 		$system->sendMessage("");
-		$system->sendMessage("\x1b[38;5;227m  :::::::::  :::    ::: :::::::::  :::::::::   ::::::::  ");
-		$system->sendMessage("\x1b[38;5;227m  :+:    :+: :+:    :+: :+:    :+: :+:    :+: :+:    :+:  \x1b[38;5;231mPHP Prompt OS");
-		$system->sendMessage("\x1b[38;5;227m  +:+    +:+ +:+    +:+ +:+    +:+ +:+    +:+ +:+    +:+     \x1b[38;5;231mmade by chell rui.");
-		$system->sendMessage("\x1b[38;5;227m  +#++:++#+  +#++:++#++ +#++:++#+  +#++:++#+  +#+    +:+        \x1b[38;5;231mversion {$versioncolor}{$version}");
-		$system->sendMessage("\x1b[38;5;227m  +#+        +#+    +#+ +#+        +#+        +#+    +#+             \x1b[38;5;231mbuild no.\x1b[38;5;83m#{$buildnumber}");
-		$system->sendMessage("\x1b[38;5;227m  #+#        #+#    #+# #+#        #+#        #+#    #+#                \x1b[38;5;231mCurrent PHP version: \x1b[38;5;83mPHP" . phpversion());
-		$system->sendMessage("\x1b[38;5;227m  ###        ###    ### ###        ###         ########  ");
+		$system->sendMessage("		\x1b[38;5;227m  :::::::::  :::    ::: :::::::::  :::::::::   ::::::::  ");
+		$system->sendMessage("		\x1b[38;5;227m  :+:    :+: :+:    :+: :+:    :+: :+:    :+: :+:    :+:  \x1b[38;5;231mPHP Prompt OS");
+		$system->sendMessage("		\x1b[38;5;227m  +:+    +:+ +:+    +:+ +:+    +:+ +:+    +:+ +:+    +:+     \x1b[38;5;231mmade by chell rui.");
+		$system->sendMessage("		\x1b[38;5;227m  +#++:++#+  +#++:++#++ +#++:++#+  +#++:++#+  +#+    +:+        \x1b[38;5;231mversion {$versioncolor}{$version}");
+		$system->sendMessage("		\x1b[38;5;227m  +#+        +#+    +#+ +#+        +#+        +#+    +#+             \x1b[38;5;231mbuild no.\x1b[38;5;83m#{$buildnumber}");
+		$system->sendMessage("		\x1b[38;5;227m  #+#        #+#    #+# #+#        #+#        #+#    #+#                \x1b[38;5;231mCurrent PHP version: \x1b[38;5;83mPHP" . phpversion());
+		$system->sendMessage("		\x1b[38;5;227m  ###        ###    ### ###        ###         ########  ");
 		$system->sendMessage("");
-		$system->sendMessage("\x1b[38;5;214m┏╋‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━━╋┓");
-		$system->sendMessage("\x1b[38;5;214m╋┛　　　　　　　　　　　　　　　　　　　　　 　　  　　┗╋\x1b[38;5;231m");
+		$system->sendMessage("		\x1b[38;5;214m┏╋‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━━╋┓");
+		$system->sendMessage("		\x1b[38;5;214m╋┛　　　　　　　　　　　　　　　　　　　　　 　　  　　┗╋\x1b[38;5;231m");
 		if ($tipe == "logout") {
 			$system->sendMessage("初期化処理を行っています..." . PHP_EOL);
 		}
@@ -129,7 +143,7 @@ function bootSystem($tipe){
 
 
 
-
+		// readline_completion_function("onigiri");
 		date_default_timezone_set('Asia/Tokyo');
 		$startBootTime = microtime(true);
 	  	//変数の初期化・宣言
@@ -361,7 +375,6 @@ out_prompt=\x1b[38;5;83m[%time]\x1b[38;5;87m[%therad/%info]
 					loginSystem($username);
 			}
 		}
-		$pluginpros->install();
 	}
 
 	function askLicense(){
@@ -510,7 +523,9 @@ function loginSystem($user){
 
 function standbyTipe(){
 	global $system;
+	global $poPath;
 	global $display;
+	global $aryTipeTxt;
 	global $systemconf_ini_array;
   	global $pr_disp;
   	global $tipe_text;
@@ -528,30 +543,40 @@ function standbyTipe(){
 	global $inPrompt;
 	global $outPrompt;
 	global $commandpros;
+	global $valuepros;
+	global $pluginpros;
+	global $scriptcommandpros;
+	$scriptcommandpros->readExtension();
 	$commandpros = new command;
-	$system->sendMessage("\x1b[38;5;63m起動完了！helpコマンドでコマンド一覧を表示。");
+	$pluginpros->install();
+	// $system->sendMessage("\x1b[38;5;63m起動完了！helpコマンドでコマンド一覧を表示。");
 	// file_put_contents(dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
+	if ($systemconf_ini_array["system"]["bootexec"] != "") {
+		$bootexec = $systemconf_ini_array["system"]["bootexec"];
+		// echo "$poPath\\root\\$bootexec";
+		$aryTipeTxt = array("script","$poPath\\root\\$bootexec");
+		// var_dump($aryTipeTxt);
+		$script = new script;
+		$script->onCommand();
+	}
+
 	while (True) {
-		$defined_vars = get_defined_vars();
+		$system->readyInputEvent();
 		// var_dump($defined_vars);
 		file_put_contents(dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
 		$po_cd = str_replace(trim($poPath),"",trim($currentdirectory));
 		$stanby = True;
 		$display->setThread("PHPPO");
-		$pr_time = date('A-H:i:s');
-		$pr_time = date('A-H:i:s');
-		// echo "cd:{$currentdirectory}\npoPath:{$poPath}\npo_cd:{$po_cd}";
-		// $repl = array("%time","%thread","%info","%cd");
-		// $repl2 = array("\x1b[38;5;83m" . $pr_time,"\x1b[38;5;87m" . $pr_thread,$pr_info,"\x1b[38;5;207m" . $po_cd);
-		// $prompt = str_ireplace($repl,$repl2,$inPrompt);
-		$prompt = "\x1b[38;5;83m[{$pr_time}] \x1b[38;5;87m[{$pr_thread}/{$pr_info}]\x1b[38;5;207m{$po_cd}\x1b[38;5;227m>";
-		if ($echoFunc != "off") {
-			echo "\x1b[38;5;83m" . $prompt . "\x1b[38;5;227m";
-		}else {
-			echo "\x1b[38;5;227m";
-		}
+
+		// $prompt = "\x1b[38;5;83m[{$pr_time}] \x1b[38;5;87m[{$pr_thread}/{$pr_info}]\x1b[38;5;207m{$po_cd}\x1b[38;5;227m>";
+		// if ($echoFunc != "off") {
+		// 	echo "\x1b[38;5;83m" . $prompt . "\x1b[38;5;227m";
+		// }else {
+		// 	echo "\x1b[38;5;227m";
+		// }
+
+		$tipe_text = $system->sendMessage("\x1b[38;5;227m>","input");
 		$stanby = false;
-		$tipe_text = trim(fgets(fopen("php://stdin", "r")));
 		if ($logmode == 1) {
 			fwrite($writeData,PHP_EOL . $tipe_text);
 		}
@@ -564,7 +589,8 @@ function standbyTipe(){
 /////////////////スクリプト処理系/////////////////////
 
 function buildScripts($data){
-	global $system;global $display;
+	global $system;
+	global $display;
 	global $systemconf_ini_array;
 
 }

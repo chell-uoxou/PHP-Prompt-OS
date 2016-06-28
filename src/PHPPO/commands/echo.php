@@ -16,6 +16,7 @@ class myEcho extends systemProcessing{
 		global $environmentVariables;
 		global $echoFunc;
 		global $savevaluesmode;
+		global $valuepros;
 		$valuepros = new environmentVariables;
 		$messageCount = count($aryTipeTxt);
 		$varname = "";
@@ -38,13 +39,20 @@ class myEcho extends systemProcessing{
 						if ($savevaluesmode == "on") {
 							$environmentVariables = unserialize(file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\\' . "environmentVariables.dat"));
 						}
-						if (strstr($message, '%')) {
-								foreach ($environmentVariables as $key => $value){
-									// echo "key:" . $key . PHP_EOL;
-									// echo "value:" . $value . PHP_EOL;
-								$message = str_replace("%{$key}%",$value,$message);
+						$input = $message;
+						foreach ($environmentVariables as $key => $value){
+							// echo "key:" . $key . PHP_EOL;
+							// echo "value:" . $value . PHP_EOL;
+							$s_input = str_replace("\"%{$key}%\"","%{$key}%",$input);
+							// echo $key . ":" . str_replace("\"%{$key}%\"","%{$key}%",$input) . PHP_EOL;
+							// echo $key . ":" . str_replace("%{$key}%",$value,$input) . PHP_EOL;
+							if ($s_input == $input) {
+								$input = str_replace("%{$key}%",$value,$input);
+							}else {
+								$input = $s_input;
 							}
 						}
+						$message = $input;
 						$this->sendMessage($message);
 						break;
 				}

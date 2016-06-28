@@ -1,6 +1,8 @@
 <?php
 $systemconf_ini_array = parse_ini_file(dirname(dirname(dirname(dirname(__FILE__)))) . "\\config.ini", true);
 //異常終了check
+$echoFunc = "on";
+$valuepros = new environmentVariables;
 if ($systemconf_ini_array["dev"]["devmode"] != 1) {
 	@$files = scandir(rtrim(trim(dirname(__FILE__)),"\PHPPO\src") . "/root/home/logs/",1);
 	// var_dump($files);
@@ -37,7 +39,7 @@ if ($systemconf_ini_array["dev"]["devmode"] != 1) {
 	}
 }
 
-
+$valuepros = new environmentVariables;
 
 
 
@@ -60,6 +62,7 @@ if ($systemconf_ini_array["dev"]["currentdirectory"] == 1) {
 
 if ($systemconf_ini_array["system"]["saveenvironmentvalues"] == 1) {
 	$savevaluesmode = "on";
+	$valuepros->setvalue("prompt","\x1b[38;5;83m[%time] \x1b[38;5;87m[%thread/%info]\x1b[38;5;207m%cd\x1b[38;5;227m");
 	$system->sendMessage("Save Environment Values Mode:\x1b[38;5;87menabled.");
 }else {
 	$savevaluesmode = "off";
@@ -93,6 +96,7 @@ if ($systemconf_ini_array["dev"]["devmode"] == 1) {
 	$system->sendMessage("Error handler:\x1b[38;5;87menable");
 }
 
+
 if ($boottipe <= 2) {
 	$system->sendMessage("Starting PHP Prompt OS...");
 	$system->sendMessage("booting in Default mode.");
@@ -108,6 +112,7 @@ if ($boottipe <= 2) {
 			break;
 	}
 }
+
 
 //ここから本体
 date_default_timezone_set('Asia/Tokyo');

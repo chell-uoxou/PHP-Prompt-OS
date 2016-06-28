@@ -11,7 +11,7 @@ class pwd extends systemProcessing{
 	}
 	public function onCommand(){
 		global $currentdirectory;
-		$this->sendMessage($currentdirectory);
+		$this->sendMessage("\x1b[38;5;145m" . $currentdirectory);
 	}
 }
 

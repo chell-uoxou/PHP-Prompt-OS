@@ -13,7 +13,7 @@ class set extends systemProcessing{
 	public function onCommand(){
 		global $aryTipeTxt;
 		global $environmentVariables;
-		$valuepros = new environmentVariables;
+		global $valuepros;
 		$strCount = count($aryTipeTxt);
 		if ($strCount <= 2) {
 			$this->sendMessage("パラメーターが不足しています。");
@@ -24,13 +24,15 @@ class set extends systemProcessing{
 				for ($i=2; $i < $strCount; $i++) {
 					$str .= $aryTipeTxt[$i] . " ";
 				}
-				// if (strstr($str, '%')) {
-				// 	foreach ($environmentVariables as $key => $value){
-				// 		// echo "key:" . $key . PHP_EOL;
-				// 		// echo "value:" . $value . PHP_EOL;
-				// 	$str = str_replace("%{$key}%",$value,$str);
-				// 	}
-				// }
+				if (strstr($str, '%')) {
+					foreach ($environmentVariables as $key => $value){
+						// echo "key:" . $key . PHP_EOL;
+						// echo "value:" . $value . PHP_EOL;
+					$str = str_replace("%{$key}%",$value,$str);
+					}
+				}
+
+
 				$valuepros->setvalue($name,trim($str));
 				}
 		}

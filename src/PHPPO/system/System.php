@@ -86,7 +86,13 @@ class systemProcessing {
 
 
 
-	public function sendMessage($pr_disp,$type = "info"){
+
+	public function readyInputEvent(){
+		global $defined_vars;
+		$defined_vars = get_defined_vars();
+	}
+
+	public function sendMessage($pr_disp,$type = "info",$thre = "PHPPO"){
 		global $pr_TipeTxt;
 		global $pr_thread;
 		global $pr_info;
@@ -105,31 +111,48 @@ class systemProcessing {
 		global $textformat;
 		global $to_textformat;
 		global $valuepros;
+		global $outprompt;
 		$display = new display;
+		$display->setThread($thre);
+		$prompt = $valuepros->getvalue("prompt");
 		date_default_timezone_set('Asia/Tokyo');
 		// echo "string";
 		// var_dump($display);
+
+
 		$pr_time = date('A-H:i:s');
+		$repl = array("%time","%thread","%info","%cd");
+		$repl2 = array($pr_time,$pr_thread,$pr_info,$po_cd);
+		$repl3 = array($pr_time,$pr_thread,$pr_info,"");
+		// echo "$repl,$repl2,$prompt";
+		// var_dump($repl);
+		// var_dump($repl2);
 
 		if ($echoFunc != "off") {
 			switch ($type) {
 				case 'error':
 					$display->setInfo("ERROR");
-					$prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread}/{$pr_info}]" . "\x1b[38;5;203m";
+					$prompt = $valuepros->getvalue("prompt") . "\x1b[38;5;203m";
 					$display->setInfo("INFO");
 				break;
 				case 'warn':
 					$display->setInfo("WARN");
-					$prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread}/{$pr_info}]" . "\x1b[38;5;214m";
+					$prompt = $valuepros->getvalue("prompt") . "\x1b[38;5;214m";
+					$display->setInfo("INFO");
+					break;
+				case 'notice':
+					$display->setInfo("WARN");
+					$prompt = $valuepros->getvalue("prompt") . "\x1b[38;5;214m";
 					$display->setInfo("INFO");
 					break;
 				case 'critical':
 					$display->setInfo("CRITICAL");
-					$prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread}/{$pr_info}]" . "\x1b[38;5;124m";
+					$prompt = $valuepros->getvalue("prompt") . "\x1b[38;5;124m";
 					$display->setInfo("INFO");
 					break;
 				default:
-					$prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread}/{$pr_info}]" . "\x1b[38;5;231m";
+					// $prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread}/{$pr_info}]" . "\x1b[38;5;231m";
+					$prompt = $valuepros->getvalue("prompt") . "\x1b[38;5;231m";
 				break;
 			}
 		}else{
@@ -148,18 +171,34 @@ class systemProcessing {
 				break;
 			}
 		}
+				$inprompt = str_ireplace($repl,$repl2,$prompt);
+				$outprompt = str_ireplace($repl,$repl3,$prompt);
 		$array = explode("\n", $pr_disp);
 		// $array = array_map('trim', $array);
 		$array = array_filter($array, 'strlen');
 		$array = array_values($array);
 		if ($type == "input") {
-			echo "{$prompt}{$pr_disp}";
+			echo "\x1b[38;5;231m{$inprompt}{$pr_disp}";
 			$input = trim(fgets(fopen("php://stdin", "r")));
+			if (strstr($input, '%')) {
+				foreach ($environmentVariables as $key => $value){
+					// echo "key:" . $key . PHP_EOL;
+					// echo "value:" . $value . PHP_EOL;
+					$s_input = str_replace("\"%{$key}%\"","%{$key}%",$input);
+					// echo $key . ":" . str_replace("\"%{$key}%\"","%{$key}%",$input) . PHP_EOL;
+					// echo $key . ":" . str_replace("%{$key}%",$value,$input) . PHP_EOL;
+					if ($s_input == $input) {
+						$input = str_replace("%{$key}%",$value,$input);
+					}else {
+						$input = $s_input;
+					}
+				}
+			}
 			return $input;
 		}else {
 			foreach ($array as $key => $value) {
-				echo "{$prompt}{$value}\n";
-				///ログを吐く
+				echo "\x1b[38;5;231m{$outprompt}{$value}\x1b[38;5;231m\n";
+				// /ログを吐く
 				if ($logmode == "on") {
 					if (isset($writeData)){
 						if ($stanby) {

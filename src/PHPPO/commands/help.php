@@ -19,10 +19,27 @@ class help extends systemProcessing{
 		ksort($commands);
 		if ($messageCount <= 1) {
 			$this->sendMessage("\x1b[38;5;59m===================\x1b[38;5;231mコマンド一覧\x1b[38;5;59m===================\x1b[38;5;145m");
+			$a = 0;
+			// $longest_command_default = 0;
+			// foreach ($commands as $basecommand => $info) {
+			// 	if ($info["type"] == "default") {
+			// 		// echo strlen($basecommand);
+			// 		$complonger = strlen("{$basecommand} {$info["usage"]}");
+			// 		if (strlen($longest_command_default) < $complonger) {
+			// 			$longest_command_default = $basecommand;
+			// 		}
+			// 	}
+			// }
+			// echo $longest_command_default;
 			foreach ($commands as $basecommand => $info) {
 				if ($info["type"] == "default") {
+					$a++;
+					// $longest = strlen(trim($longest_command_default)) - strlen($basecommand);
+					// echo $longest . PHP_EOL;
+					// $space = str_repeat(" ",$longest);
+					$space = str_repeat(" ",0);
 					if ($info["enadis"] != "desable") {
-						$this->sendMessage("\x1b[38;5;34m{$basecommand} \x1b[38;5;83m{$info["usage"]}\x1b[38;5;145m:{$info["des"]}\x1b[38;5;145m");
+						$this->sendMessage("\x1b[38;5;34m{$basecommand} \x1b[38;5;83m{$info["usage"]}\x1b[38;5;145m{$space}:{$info["des"]}\x1b[38;5;145m");
 					}
 					// usleep(10000);
 				}
@@ -33,8 +50,13 @@ class help extends systemProcessing{
 					case 'all':
 						$this->sendMessage("\x1b[38;5;59m===================\x1b[38;5;87m実装コマンド一覧\x1b[38;5;59m===================\x1b[38;5;145m");
 						foreach ($commands as $basecommand => $info) {
+							if ($info["enadis"] != "desable") {
+								$this->sendMessage("\x1b[38;5;59m[{$info["type"]}]-\x1b[38;5;34m{$basecommand} \x1b[38;5;83m{$info["usage"]}\x1b[38;5;145m:{$info["des"]}\x1b[38;5;145m");
+							}else {
+								$this->sendMessage("\x1b[38;5;59m[{$info["type"]}]-\x1b[38;5;203m{$basecommand} \x1b[38;5;83m{$info["usage"]}\x1b[38;5;145m:{$info["des"]}\x1b[38;5;145m");
+							}
 							// ksort($info["type"]);
-							$this->sendMessage("\x1b[38;5;59m[{$info["type"]}]-\x1b[38;5;34m{$basecommand} \x1b[38;5;83m{$info["usage"]}\x1b[38;5;145m:{$info["des"]}\x1b[38;5;145m");
+
 						}
 						$this->sendMessage("\x1b[38;5;59m=======================================================\x1b[38;5;145m");
 						break;

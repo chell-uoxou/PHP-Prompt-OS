@@ -3,7 +3,7 @@
 include_once(dirname(__FILE__) . "/../system/System.php");
 include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
-$addcom->addcommand("install","secret","PHPPO専用パッケージをインストールします","<src>");
+$addcom->addcommand("install","secret","PHPPO専用パッケージをインストールします","<src>","desable");
 //////////////////////
 class install extends systemProcessing{
 	function __construct(){

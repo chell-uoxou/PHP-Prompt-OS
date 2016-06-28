@@ -21,12 +21,13 @@ class pluginManager extends systemProcessing{
 				foreach ($dirplugins as $key => $value) {
 					try {
 						$topath =  rtrim(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\plugins\\' . $fileplugins[$i],".phar");
-						@$phar = new Phar($value) or $this->sendMessage("Pharアーカイブの読み込みに失敗しました。");
-						var_dump($topath);
-						@$phar->extractTo($topath, null, true);
+						$phar = new Phar($value);
+						$phar->extractTo($topath, null, true);
 						$i++;
+						$this->sendMessage("解凍が完了しました。");
+						// $phar = new Phar();
 					} catch (Exception $e) {
-						$this->sendMessage("アーカイブの解凍に失敗しました","error");
+						$this->sendMessage("アーカイブの解凍に失敗しました:\n{$e}","error");
 					}
 				}
 			}

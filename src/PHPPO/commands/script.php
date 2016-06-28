@@ -50,6 +50,29 @@ class script extends systemProcessing{
 				$array = array_map('trim', $array);
 				// $array = array_filter($array, 'strlen');
 				$array = array_values($array);
+				$array = array_merge($array);
+				$delfor = array();
+				foreach($array as $key => $value){
+					// echo $key;
+					// var_dump($array);
+					if ($value != "") {
+						if($value[0] == "#"){
+							// echo "うっひょわ";
+							$delfor[] = $key;
+							$array = array_values($array);
+							$array = array_merge($array);
+							// echo $value . PHP_EOL;
+						}
+					}
+				}
+				foreach ($delfor as $key => $value) {
+					unset($array[$value]);
+				}
+				$array = array_values($array);
+				for ($i=0; $i < $pathCount + 2; $i++) {
+					
+				}
+				// var_dump($array);
 				$line = 0;
 				$conf =true;
 				// var_dump($array);

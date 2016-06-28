@@ -38,7 +38,9 @@ class environmentVariables extends systemProcessing{
 			$environmentVariables = unserialize(file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\\' . "environmentVariables.dat"));
 		}
 		// print_r($environmentVariables);
-		return $environmentVariables[$name];
+		if(isset($environmentVariables[$name])){
+			return $environmentVariables[$name];
+		}
 	}
 }
 
