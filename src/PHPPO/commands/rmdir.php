@@ -22,8 +22,13 @@ class rmdir extends systemProcessing{
 				$path = trim($currentdirectory . '\\' . $path);
 				if (file_exists($path)) {
 					if (is_dir($path)) {
-						rmdir($path);
-						$this->sendMessage("ディレクトリを削除しました。:\x1b[38;5;145m" . $path);
+						try {
+							rmdir($path);
+							$this->sendMessage("ディレクトリを削除しました。:\x1b[38;5;145m" . $path);
+						} catch (Exception $e) {
+							$this->sendMessage("ディレクトリの削除に失敗しました。","error");
+							$this->sendMessage("指定したディレクトリは空ではない可能性があります。");
+						}
 					}else {
 						$this->sendMessage("指定したファイルはディレクトリではありません。");
 					}

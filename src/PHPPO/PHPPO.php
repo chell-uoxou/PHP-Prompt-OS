@@ -343,15 +343,18 @@ You should have received a copy of the GNU General Public License along with thi
 			touch($file_name);
 			$system->sendMessage("システム設定用ファイルを出力しました。:" . $file_name . PHP_EOL);
 			chmod( $file_name, 0666 );
-			file_put_contents($file_name,"[dev]
-devmode=off
-currentdirectory=on
-[system]
-logmode=on
-saveenvironmentvalues=on
-[display]
-in_prompt=[%time] [%thread/%info]%cd>
-out_prompt=\x1b[38;5;83m[%time]\x1b[38;5;87m[%therad/%info]
+			file_put_contents($file_name,"
+			[dev]
+			devmode=on
+			currentdirectory=on
+			[system]
+			logmode=on
+			saveenvironmentvalues=on
+			bootexec=\bin\welcome.sh
+			[display]
+			in_prompt=[%time] [%thread/%info]%cd>
+			out_prompt=[38;5;83m[%time][38;5;87m[%therad/%info]
+
 ");
 		}
 		if($first_time_boot){
@@ -382,6 +385,7 @@ out_prompt=\x1b[38;5;83m[%time]\x1b[38;5;87m[%therad/%info]
 		global $display;
 		global $systemconf_ini_array;
 		global $savevaluesmode;
+		global $defined_vars;
 		$savevaluesmode = "off";
 		$Language_setup = "ja";
 		switch($Language_setup){
@@ -551,13 +555,15 @@ function standbyTipe(){
 	$pluginpros->install();
 	// $system->sendMessage("\x1b[38;5;63m起動完了！helpコマンドでコマンド一覧を表示。");
 	// file_put_contents(dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
-	if ($systemconf_ini_array["system"]["bootexec"] != "") {
-		$bootexec = $systemconf_ini_array["system"]["bootexec"];
-		// echo "$poPath\\root\\$bootexec";
-		$aryTipeTxt = array("script","$poPath\\root\\$bootexec");
-		// var_dump($aryTipeTxt);
-		$script = new script;
-		$script->onCommand();
+	if (isset($systemconf_ini_array["system"]["bootexec"])) {
+		if ($systemconf_ini_array["system"]["bootexec"] != "") {
+			$bootexec = $systemconf_ini_array["system"]["bootexec"];
+			// echo "$poPath\\root\\$bootexec";
+			$aryTipeTxt = array("script","$poPath\\root\\$bootexec");
+			// var_dump($aryTipeTxt);
+			$script = new script;
+			$script->onCommand();
+		}
 	}
 
 	while (True) {
