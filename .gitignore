@@ -2,8 +2,12 @@ config.ini
 LICENSE.txt
 user.json
 root\
+<<<<<<< HEAD
 ���܂�\
 root/home/logs/2016_06_29.log
 おまけ/
 root/bin/environmentVariables.dat
 root/bin/systemdefinedvars.dat
+=======
+���܂�\
+>>>>>>> parent of 312f102... ・gitignore追記
