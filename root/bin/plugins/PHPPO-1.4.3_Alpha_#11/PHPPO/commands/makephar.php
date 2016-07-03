@@ -6,7 +6,7 @@
  include_once(dirname(__FILE__) . "/../system/System.php");
 include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
-$addcom->addcommand("makephar","dev","アプリケーション、または実行しているPHPPOのpharアーカイブ作成を行います。","<アプリケーション名|system>");
+$addcom->addcommand("makephar","dev","指定したアプリケーション、ディレクトリパス、または実行しているPHPPOのpharアーカイブ作成を行います。","<アプリケーション名|ディレクトリパス|system>");
  //////////////////////
 class makephar extends systemProcessing{
 	function __construct(){
@@ -23,7 +23,8 @@ class makephar extends systemProcessing{
 			}else{
 				$aryTipeTxt[1] = trim($aryTipeTxt[1]);
 				if ($aryTipeTxt[1] == "system") {
-					$Confirm = $this->sendMessage("\x1b[38;5;203mAre you sure you want to compose the source of PHPPO that are currently running to the phar archive ?(y):","input");
+					$this->sendMessage("\x1b[38;5;203mAre you sure you want to compose the source of PHPPO that are currently running to the phar archive ?(y):");
+					$Confirm = trim(fgets(STDIN));
 					if ($Confirm == "y") {
 						// $myPhar->compose(rtrim(dirname(__FILE__),"commands\\"),"PHPPO");
 						$fp = rtrim(trim(dirname(__FILE__)),"\commands\PHPPO") . "c\buildlog.log";
@@ -36,19 +37,16 @@ class makephar extends systemProcessing{
 							$data = file_get_contents($fp);
 							$data = explode( "\n", $data );
 							$buildnumber = count( $data );
-							// echo $buildnumber;
+							echo $buildnumber;
 						}
 						$fp = fopen($fp, "a");
 						fwrite($fp, "[" . date("\'y.m.d h:i:s") . "] PHP Prompt OS " . $version . " built. No. #" . $buildnumber . PHP_EOL);
 						fclose($fp);
 						$this->sendMessage("\x1b[38;5;231m" .  "[" . date("\'y.m.d h:i:s") . "] PHP Prompt OS " . $version . " built. No. #" . $buildnumber);
-						$this->sendMessage("\x1b[38;5;227mCreateing...");
 						$pharpath = rtrim(dirname(__FILE__),"commands\src\PHPPO") . "\PHPPO-{$version}_#{$buildnumber}.phar";
 						$phar = new Phar($pharpath, 0, 'PHPPO.phar');
 						$phar->buildFromDirectory(rtrim(dirname(__FILE__),"commands\src\PHPPO") . "\src");
-						$pharstat = stat($pharpath);
 						$this->sendMessage("\x1b[38;5;83mSuccess. \x1b[38;5;145m:" . $pharpath);
-						$this->sendMessage("File size:" . $pharstat["size"] . "byte");
 					}
 					} else {
 					// $dir = '';

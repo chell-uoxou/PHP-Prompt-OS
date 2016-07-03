@@ -112,6 +112,7 @@ class systemProcessing {
 		global $to_textformat;
 		global $valuepros;
 		global $outprompt;
+		global $raw_input;
 		$display = new display;
 		$display->setThread($thre);
 		$prompt = $valuepros->getvalue("prompt");
@@ -179,7 +180,14 @@ class systemProcessing {
 		$array = array_values($array);
 		if ($type == "input") {
 			echo "\x1b[38;5;231m{$inprompt}{$pr_disp}";
-			$input = trim(fgets(fopen("php://stdin", "r")));
+			$raw_input = trim(fgets(fopen("php://stdin", "r")));
+			$ary_input = $this->commandProcessor($raw_input);
+			$input = "";
+			foreach ($ary_input as $key => $value) {
+				$input = $input . "{$value} ";
+			}
+			$input = trim($input);
+			// echo "input :" . $input . PHP_EOL;///////////////////////////////////////////////////
 			if (strstr($input, '%')) {
 				foreach ($environmentVariables as $key => $value){
 					// echo "key:" . $key . PHP_EOL;
@@ -210,6 +218,49 @@ class systemProcessing {
 			}//んーでってれってー
 		}//てってってれってー
 	}//んーでってれってー
+
+	public function commandProcessor($com){
+        $commandarr=array();
+        $spaced=false;
+        $tokenbegin=0;
+        $spacedbegin=0;
+        $cuated=false;
+        $cuatedbegin=0;
+        $ignoreSpace=false;
+        $com=trim($com) . " []";
+        for ($i = 0; $i < strlen($com); $i++) {
+            if (substr($com,$i,1) == "\"") {//走査文字列に"がきたぞ
+                if ($cuated == false){
+                    $cuatedbegin=$i;
+                    $cuated=true;
+                    $ignoreSpace=true;
+                }else{
+                    $cuated = false;//もう"には囲まれてないぞ！
+					$ignoreSpace= false;//スペース無視すんなよ！
+                }
+            }
+            if (substr($com,$i,1)==" ") {
+                if ($spaced==false){ //すなはちスペースの一回目である
+					$spacedbegin=$i;//スペースはじめのインデックス
+				}
+				$spaced=true;
+				if ($ignoreSpace==true){  // スペース無視していいかな？
+					$spaced=false;  // このスペースは無視だ！
+				}
+			}else{
+				if ($spaced==true){  //さっきまですぺーすだったよ！
+				// 	com1.add(command.substring(tokenbegin,spacedbegin));//トークン始まりからスペース始まりまでをListにぶっこむ
+					$addstr = substr($com,$tokenbegin,$spacedbegin-$tokenbegin);
+					$addstr = ltrim($addstr,'"');
+					$addstr = rtrim($addstr,'"');
+				    array_push($commandarr,$addstr);
+					$tokenbegin=$i;//ここからトークンがはじまるぞ！
+				}
+				$spaced=false;//すぺーすではないぞ！
+            }
+        }
+		return $commandarr;
+    }
 }//てってってれってー by @KOKKOKOKOKOOKO
 
 /**
