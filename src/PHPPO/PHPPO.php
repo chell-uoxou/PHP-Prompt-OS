@@ -96,7 +96,7 @@ function bootSystem($tipe){
 	switch ($versiontype) {
 		case 'Release':
 			$versioncolor = "\x1b[38;5;83m";
-			echo $versioncolor;
+			// echo $versioncolor;
 			break;
 		case 'Alpha':
 			$versioncolor = "\x1b[38;5;87m";

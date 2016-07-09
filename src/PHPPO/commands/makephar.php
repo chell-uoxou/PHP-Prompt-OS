@@ -16,6 +16,8 @@ class makephar extends systemProcessing{
 		global $aryTipeTxt;
 		global $version;
 		global $buildnumber;
+		global $raw_input;
+		global $currentdirectory;
 		$myPhar = new myPhar;
 		$messageCount = count($aryTipeTxt);
 		if ($messageCount <= 1) {
@@ -51,6 +53,25 @@ class makephar extends systemProcessing{
 						$this->sendMessage("File size:" . $pharstat["size"] . "byte");
 					}
 					} else {
+						$allpath = ltrim($raw_input,"makephar ");
+						$allpath = rtrim($allpath,"\"");
+						$allpath = ltrim($allpath,"\"");
+						if (file_exists($allpath)) {
+							$Confirm = $this->sendMessage("\x1b[38;5;203m指定されたパス\x1b[38;5;145m({$allpath})\x1b[38;5;203mからのPharアーカイブの作成を行いますか？(y):","input");
+							if ($Confirm == "y"|| $Confirm == "Y") {
+								// $this->sendMessage("");
+								$filename = basename($allpath);
+								$this->sendMessage("\x1b[38;5;227mCreateing...");
+								$pharpath = $currentdirectory . "\\{$filename}.phar";
+								$phar = new Phar($pharpath, 0, "{$filename}.phar");
+								$phar->buildFromDirectory($allpath);
+								$pharstat = stat($pharpath);
+								$this->sendMessage("\x1b[38;5;83mSuccess. \x1b[38;5;145m:" . $pharpath);
+								$this->sendMessage("File size:" . $pharstat["size"] . "byte");
+							}
+						}else{
+							$this->sendMessage("指定されたパスにディレクトリやファイルは存在しません。","error");
+						}
 					// $dir = '';
 					// $dirCount = "";
 					// for ($i=1; $i < $dirCount; $i++) {

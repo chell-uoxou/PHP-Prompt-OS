@@ -71,10 +71,12 @@ if ($systemconf_ini_array["system"]["saveenvironmentvalues"] == 1) {
 $inPrompt = $systemconf_ini_array["display"]["in_prompt"];
 
 
+////////////////////////////////////Version////////////////////////////////////////
 
-
-$version = "1.5.3_Alpha";
+$version = "1.5.4_Alpha";
 $versiontype = "Alpha";//{Release}->{Alpha}->{Beta}->{Dev}
+
+////////////////////////////////////////////////////////////////////////////////////
 
 
 $system->sendMessage("Starting environment variables system...");
