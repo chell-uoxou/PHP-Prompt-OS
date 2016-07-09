@@ -1,6 +1,7 @@
 config.ini
 LICENSE.txt
 user.json
+<<<<<<< HEAD
 root\
 <<<<<<< HEAD
 ���܂�\
@@ -13,3 +14,10 @@ root/bin/systemdefinedvars.dat
 >>>>>>> parent of 312f102... ・gitignore追記
 root/home/logs/
 root/
+=======
+root/
+���܂�/
+bin/
+README.txt
+おまけ/
+>>>>>>> master
