@@ -5,7 +5,7 @@ include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
 $addcom->addcommand("ls","default","カレントディレクトリ上のファイルとディレクトリのリストを表示します。","");
 //////////////////////
-class myLs extends systemProcessing{
+class ls_command extends systemProcessing{
 	function __construct(){
 
 	}

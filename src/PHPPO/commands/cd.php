@@ -10,7 +10,7 @@ if ($currentdirectorymode == "on") {
 	$addcom->addcommand("cd","default","カレントディレクトリを指定します。","<絶対/相対パス>","disable");
 }
 //////////////////////
-class cd extends systemProcessing{
+class cd_command extends systemProcessing{
 	function __construct(){
 
 	}

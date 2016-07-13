@@ -8,7 +8,7 @@ $addcom->addcommand("info","default","当プログラムに関しての情報を
 /**
  *
  */
-class info extends systemProcessing{
+class info_command extends systemProcessing{
 
 	function __construct()
 	{

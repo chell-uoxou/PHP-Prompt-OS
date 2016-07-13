@@ -5,7 +5,7 @@ include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
 $addcom->addcommand("reboot","default","PHPPOを再起動します。","<mode>");
 //////////////////////
-class reboot extends systemProcessing{
+class reboot_command extends systemProcessing{
 	function __construct(){
 
 	}

@@ -8,7 +8,7 @@ $addcom->addcommand("log","default","ログファイルにログを出力する�
 /**
  *
  */
-class log extends systemProcessing{
+class log_command extends systemProcessing{
 
 	function __construct()
 	{

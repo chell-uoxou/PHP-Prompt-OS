@@ -269,7 +269,7 @@ function bootSystem($tipe){
 		if ($tipe = "script") {
 			// echo $argv[2];
 			$tipe_text = "script home/scripts" . trim($argv[2]);
-			$script = new script;
+			$script = new script_command;
 			$script->onCommand();
 		}
 	}

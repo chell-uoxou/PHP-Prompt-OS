@@ -8,7 +8,7 @@ $addcom->addcommand("time","secret","コンピューターに設定されてい�
 /**
  *
  */
-class time extends systemProcessing{
+class time_command extends systemProcessing{
 
 	function __construct()
 	{

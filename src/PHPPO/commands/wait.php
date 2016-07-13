@@ -5,7 +5,7 @@ include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
 $addcom->addcommand("wait","script","表示されているコンソール上での処理を指定時間中断します。","<ミリ秒>");
 //////////////////////
-class wait extends systemProcessing{
+class wait_command extends systemProcessing{
 	function __construct(){
 
 	}

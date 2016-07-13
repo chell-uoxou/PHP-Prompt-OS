@@ -8,7 +8,7 @@ $addcom->addcommand("help","default","使用できるコマンド、コマンド
 /**
 *
 */
-class help extends systemProcessing{
+class help_command extends systemProcessing{
 	function __construct(){
 
 	}

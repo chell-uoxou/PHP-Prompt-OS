@@ -5,7 +5,7 @@ include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
 $addcom->addcommand("rmdir","default","パスで指定したディレクトリを削除します。","<パス>");
 //////////////////////
-class rmdir extends systemProcessing{
+class rmdir_command extends systemProcessing{
 	function __construct(){
 	}
 	public function onCommand(){

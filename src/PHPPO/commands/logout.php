@@ -8,7 +8,7 @@ $addcom->addcommand("logout","secret","ログアウトします。","","desable"
 /**
  *
  */
-class logout extends systemProcessing{
+class logout_command extends systemProcessing{
 
 	function __construct()
 	{

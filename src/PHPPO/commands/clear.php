@@ -8,7 +8,7 @@ $addcom->addcommand("clear","default","画面上から履歴が消えるよう�
 /**
  *
  */
-class clear extends systemProcessing{
+class clear_command extends systemProcessing{
 	function __construct(){
 
 	}

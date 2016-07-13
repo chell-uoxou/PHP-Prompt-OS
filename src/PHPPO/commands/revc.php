@@ -5,7 +5,7 @@ include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
 $addcom->addcommand("revc","accessibility","画面上の文字の色の反転を切り替えます。","");
 //////////////////////
-class revc extends systemProcessing{
+class revc_command extends systemProcessing{
 	function __construct(){
 
 	}

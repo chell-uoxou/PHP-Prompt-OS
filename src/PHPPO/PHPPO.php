@@ -417,7 +417,7 @@ function standbyTipe(){
 			// echo "$poPath\\root\\$bootexec";
 			$aryTipeTxt = array("script","$poPath\\root\\$bootexec");
 			// var_dump($aryTipeTxt);
-			$script = new script;
+			$script = new script_command;
 			$script->onCommand();
 		}
 	}

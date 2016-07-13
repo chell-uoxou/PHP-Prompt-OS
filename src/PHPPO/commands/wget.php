@@ -5,7 +5,7 @@ include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
 $addcom->addcommand("wget","default","ファイルをダウンロードします。","<URL>");
 //////////////////////
-class wget extends systemProcessing{
+class wget_command extends systemProcessing{
 	function __construct(){
 
 	}

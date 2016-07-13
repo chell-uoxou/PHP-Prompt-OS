@@ -8,7 +8,7 @@ $addcom->addcommand("mkdir","default","ディレクトリを作成します","")
 /**
  *
  */
-class myMkdir extends systemProcessing{
+class mkdir_command extends systemProcessing{
 
 	function __construct()
 	{
@@ -18,12 +18,13 @@ class myMkdir extends systemProcessing{
 		global $aryTipeTxt;
 		global $environmentVariables;
 		global $currentdirectory;
-		global $cdpros;
+		global $raw_input;
 		$nameCount = count($aryTipeTxt);
 		$name = "";
-		for ($i=1; $i < $nameCount; $i++) {
-			$name .= $aryTipeTxt[$i] . " ";
-		}
+		// for ($i=1; $i < $nameCount; $i++) {
+		// 	$name .= $aryTipeTxt[$i] . " ";
+		// }
+		$name = substr($raw_input,6);
 		if (!file_exists($currentdirectory . "\\" . $name)) {
 			mkdir($currentdirectory . "\\" . $name);
 		}else {

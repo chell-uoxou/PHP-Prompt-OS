@@ -8,7 +8,7 @@ $addcom->addcommand("vardump","dev","メイン処理におけるグローバル�
 /**
  *
  */
-class vardump extends systemProcessing{
+class vardump_command extends systemProcessing{
 	function __construct(){
 
 	}

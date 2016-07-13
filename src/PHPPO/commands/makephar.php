@@ -8,7 +8,7 @@ include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
 $addcom->addcommand("makephar","dev","指定したパス、または実行しているPHPPOのpharアーカイブ作成を行います。","<絶対パス|system>");
  //////////////////////
-class makephar extends systemProcessing{
+class makephar_command extends systemProcessing{
 	function __construct(){
 		# code...
 	}

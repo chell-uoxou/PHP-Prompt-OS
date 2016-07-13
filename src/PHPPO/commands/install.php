@@ -5,7 +5,7 @@ include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
 $addcom->addcommand("install","secret","PHPPO専用パッケージをインストールします","<src>","desable");
 //////////////////////
-class install extends systemProcessing{
+class install_command extends systemProcessing{
 	function __construct(){
 	}
 	public function onCommand(){

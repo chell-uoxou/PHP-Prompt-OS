@@ -6,7 +6,7 @@ $addcom = new addcommand;
 $addcom->addcommand("script","default","テキスト上のコマンドを改行ごとに実行します。","<ファイルネーム（拡張子を含む）>");
 include_once(dirname(__FILE__) . "/../command/command.php");
 //////////////////////
-class script extends systemProcessing{
+class script_command extends systemProcessing{
 	function __construct(){
 	}
 	public function onCommand(){

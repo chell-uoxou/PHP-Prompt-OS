@@ -5,7 +5,7 @@ include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
 $addcom->addcommand("vars","default","定義済みの環境変数を表示します。","");
 //////////////////////
-class vars extends systemProcessing{
+class vars_command extends systemProcessing{
 	function __construct(){
 	}
 	public function onCommand(){

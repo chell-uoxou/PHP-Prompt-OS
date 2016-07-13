@@ -8,7 +8,7 @@ $addcom->addcommand("exit","default","PHP Prompt OSを終了。","<ミリ秒数>
 /**
  *
  */
-class myExit extends systemProcessing{
+class exit_command extends systemProcessing{
 	function __construct(){
 
 	}

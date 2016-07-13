@@ -5,7 +5,7 @@ include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
 //$addcom->addcommand("command name","command type","command description","command usage(Argument only)");
 //////////////////////
-class commandName extends systemProcessing{
+class commandName_command extends systemProcessing{
 	function __construct(){
 
 	}

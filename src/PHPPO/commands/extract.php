@@ -5,7 +5,7 @@ include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
 $addcom->addcommand("extract","secret","指定したpharファイルをソースディレクトリに展開します。","<system>");
 //////////////////////
-class extract extends systemProcessing{
+class extract_command extends systemProcessing{
 	function __construct(){
 
 	}

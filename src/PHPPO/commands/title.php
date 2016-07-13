@@ -8,7 +8,7 @@ $addcom->addcommand("title","default","システムのタイトルを設定し�
 /**
  *
  */
-class title extends systemProcessing{
+class title_command extends systemProcessing{
 
 	function __construct()
 	{

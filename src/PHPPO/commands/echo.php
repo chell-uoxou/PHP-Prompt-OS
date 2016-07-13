@@ -8,7 +8,7 @@ $addcom->addcommand("echo","default","文字列を出力。","<メッセージ>/
 /**
  *
  */
-class myEcho extends systemProcessing{
+class echo_command extends systemProcessing{
 	function __construct(){
 	}
 	public function onCommand(){

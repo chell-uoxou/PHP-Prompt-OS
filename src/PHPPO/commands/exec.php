@@ -8,7 +8,7 @@ $addcom->addcommand("exec","default","コマンド及び外部プロセスの実
 /**
  *
  */
-class myExec extends systemProcessing{
+class exec_command extends systemProcessing{
 	function __construct(){
 
 	}

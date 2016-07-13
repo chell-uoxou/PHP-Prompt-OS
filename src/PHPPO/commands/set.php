@@ -6,7 +6,7 @@ $addcom = new addcommand;
 $addcom->addcommand("set","default","変数へ代入します","<変数名> <値>");
 $addcom->addcommand("setvalue","secret","変数へ代入します","<変数名> <値>");
 //////////////////////
-class set extends systemProcessing{
+class set_command extends systemProcessing{
 	function __construct(){
 
 	}

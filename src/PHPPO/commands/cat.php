@@ -5,7 +5,7 @@ include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
 $addcom->addcommand("cat","default","指定されたファイルを表示","<パス>");
 //////////////////////
-class cat extends systemProcessing{
+class cat_command extends systemProcessing{
 	function __construct(){
 	}
 	public function onCommand(){
