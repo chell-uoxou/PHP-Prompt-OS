@@ -1,13 +1,14 @@
 <?php
+
 $systemconf_ini_array = parse_ini_file(dirname(dirname(dirname(dirname(__FILE__)))) . "\\config.ini", true);
 //異常終了check
 $echoFunc = "on";
 $valuepros = new environmentVariables;
 if ($systemconf_ini_array["dev"]["devmode"] != 1) {
-	@$files = scandir(rtrim(trim(dirname(__FILE__)),"\PHPPO\src") . "/root/home/logs/",1);
+	@$files = scandir(rtrim(trim(dirname(dirname(dirname(__FILE__)))),"\PHPPO\src") . "/root/home/logs/",1);
 	// var_dump($files);
 	if ($files != false) {
-		$lines = file(rtrim(trim(dirname(__FILE__)),"\PHPPO\src") . "/root/home/logs/" . $files[0], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		$lines = file(rtrim(trim(dirname(dirname(__FILE__))),"\PHPPO\src") . "/root/home/logs/" . $files[0], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 		$line = end($lines);
 		if ($line != "PHPPO was completed successfully."){
 			$system->sendMessage("システムが異常終了していた可能性があります！！","critical");
@@ -15,7 +16,7 @@ if ($systemconf_ini_array["dev"]["devmode"] != 1) {
 			$revses = trim(fgets(fopen("php://stdin", "r")));
 			if($revses == "Y"||$revses == "y"){
 				$system->sendMessage("前回起動時のセッションダンプを検索しています...");
-				$path = dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat";
+				$path = dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\\' . "systemdefinedvars.dat";
 				$system->sendMessage("ダンプファイルを読み込んでいます...");
 				$defined_vars = unserialize(file_get_contents($path));
 				$system->sendMessage("システム変数の復元を行っています...(この作業には時間がかかる可能性があります。)");
@@ -69,7 +70,7 @@ if ($systemconf_ini_array["system"]["saveenvironmentvalues"] == 1) {
 }
 
 $inPrompt = $systemconf_ini_array["display"]["in_prompt"];
-<<<<<<< HEAD
+// <<<<<<< HEAD
 
 
 ////////////////////////////////////Version////////////////////////////////////////
@@ -80,10 +81,7 @@ $versiontype = "Alpha";//{Release}->{Alpha}->{Beta}->{Dev}
 ////////////////////////////////////////////////////////////////////////////////////
 
 
-=======
-$version = "1.5.3_Alpha";
-$versiontype = "Alpha";//{Release}->{Alpha}->{Beta}->{Dev}
->>>>>>> master
+// >>>>>>> master
 $system->sendMessage("Starting environment variables system...");
 $valuepros = new environmentVariables;
 $valuepros->setvalue("version",$version);
@@ -130,3 +128,149 @@ if ($boottipe <= 2) {
 //ここから本体
 date_default_timezone_set('Asia/Tokyo');
 $startBootTime = microtime(true);
+function myErrorHandler($errno, $errstr, $errfile, $errline){
+	global $system;
+	if (!(error_reporting() & $errno)) {
+		// error_reporting 設定に含まれていないエラーコードです
+		return;
+	}
+
+	switch ($errno) {
+		case E_USER_ERROR:
+			$system->sendMessage("My ERROR [$errno] $errstr");
+			$system->sendMessage("  Fatal error on line $errline in file $errfile");
+			$system->sendMessage(", PHP " . PHP_VERSION . " (" . PHP_OS . ")");
+			$system->sendMessage("Aborting...");
+			exit(1);
+			break;
+
+		case E_USER_WARNING:
+			$system->sendMessage("[$errno] $errstr","warn","PHP");
+			break;
+
+		case E_USER_NOTICE:
+			$system->sendMessage("[$errno] $errstr","notice","PHP");
+			break;
+
+		default:
+			$system->sendMessage("Unknown error type: [$errno] $errstr");
+			break;
+	}
+
+	/* PHP の内部エラーハンドラを実行しません */
+	return true;
+}
+function bootSystem($tipe){
+	global $currentdirectory;
+	global $currentdirectorymode;
+	global $poPath;
+	global $systemconf_ini_array;
+	global $system;
+	// $url = "https://github.com/chell-uoxou/PHP-Prompt-OS/releases.atom";
+	// $ch = curl_init();
+	// curl_setopt ($ch, CURLOPT_URL, $url);
+	// curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+	// curl_setopt($ch, CURLOPT_HEADER, false);
+	// $xml = curl_exec($ch);
+	// print_r($xml);
+	$poPath = rtrim(trim(dirname(dirname(__FILE__))),"\PHPPO\src");
+	if ($currentdirectorymode == "on") {
+		$currentdirectory = $poPath . "\\root";
+		$system->sendMessage("Set current directory:{$currentdirectory}\n");
+	}
+	$fp = $poPath . "\src\buildlog.log";
+	// $buildnumber = substr_count($file, PHP_EOL);
+	$data = file_get_contents($fp);
+	$data = explode( "\n", $data );
+	$buildnumber = count( $data );
+	// echo $buildnumber;
+	global $version;
+	global $system;
+	global $display;
+	global $argv;
+	global $versiontype;
+	global $versioncolor;
+	$system->sendMessage("here is :\x1b[38;5;145m" . $poPath);
+	switch ($versiontype) {
+		case 'Release':
+			$versioncolor = "\x1b[38;5;83m";
+			// echo $versioncolor;
+			break;
+		case 'Alpha':
+			$versioncolor = "\x1b[38;5;87m";
+			break;
+		case 'Beta':
+			$versioncolor = "\x1b[38;5;214m";
+			break;
+		case 'Dev':
+			$versioncolor = "\x1b[38;5;203m";
+			$system->sendMessage("\x1b[38;5;214mOops You are running the \"\x1b[38;5;203mdevelopment build \x1b[38;5;214m\"! There may be a bug !");
+			break;
+		default:
+			# code...
+			break;
+	}
+
+	if ($tipe != "script") {
+		usleep(rand(0,500000));//演出
+		$system->sysCls(100);
+		$display->setThread("welcome");
+		$display->setInfo("INFO");
+		$system->sendMessage("		\x1b[38;5;214m╋┓　　　　　　　　　　　　　　　　　　　　　　   　　　┏╋");
+		$system->sendMessage("		\x1b[38;5;214m┗╋‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━━╋┛");
+		$system->sendMessage("");
+		$system->sendMessage("		\x1b[38;5;227m  :::::::::  :::    ::: :::::::::  :::::::::   ::::::::  ");
+		$system->sendMessage("		\x1b[38;5;227m  :+:    :+: :+:    :+: :+:    :+: :+:    :+: :+:    :+:  \x1b[38;5;231mPHP Prompt OS");
+		$system->sendMessage("		\x1b[38;5;227m  +:+    +:+ +:+    +:+ +:+    +:+ +:+    +:+ +:+    +:+     \x1b[38;5;231mmade by chell rui.");
+		$system->sendMessage("		\x1b[38;5;227m  +#++:++#+  +#++:++#++ +#++:++#+  +#++:++#+  +#+    +:+        \x1b[38;5;231mversion {$versioncolor}{$version}");
+		$system->sendMessage("		\x1b[38;5;227m  +#+        +#+    +#+ +#+        +#+        +#+    +#+             \x1b[38;5;231mbuild no.\x1b[38;5;83m#{$buildnumber}");
+		$system->sendMessage("		\x1b[38;5;227m  #+#        #+#    #+# #+#        #+#        #+#    #+#                \x1b[38;5;231mCurrent PHP version: \x1b[38;5;83mPHP" . phpversion());
+		$system->sendMessage("		\x1b[38;5;227m  ###        ###    ### ###        ###         ########  ");
+		$system->sendMessage("");
+		$system->sendMessage("		\x1b[38;5;214m┏╋‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━‥━━╋┓");
+		$system->sendMessage("		\x1b[38;5;214m╋┛　　　　　　　　　　　　　　　　　　　　　 　　  　　┗╋\x1b[38;5;231m");
+		if ($tipe == "logout") {
+			$system->sendMessage("初期化処理を行っています..." . PHP_EOL);
+		}
+		$system->sendMessage("PHP Prompt OS Copyright (C) 2016 chell rui");
+		// $system->sendMessage("This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'. ");
+		// $system->sendMessage("This is free software, and you are welcome to redistribute it under certain conditions; type `show c' for details.");
+
+
+
+
+
+
+		// readline_completion_function("onigiri");
+		date_default_timezone_set('Asia/Tokyo');
+		$startBootTime = microtime(true);
+	  	//変数の初期化・宣言
+		global $divmode;
+	  	global $pr_time;
+	  	global $pr_info;
+	  	global $pr_thread;
+	  	global $prompt;
+	  	global $user;
+	  	global $file_name;
+	  	global $Language_setup;
+	  	global $LICENSE_agree;
+		global $divmode;
+		global $tipe_text;
+	  	date_default_timezone_set('Asia/Tokyo');
+	  	$GLOBALS['pr_thread'] = "Boot";//スレッド-プロンプトに表示
+	  	$GLOBALS['pr_info'] = "INFO";//情報-プロンプトに表示
+	  	$system->sendMessage("\x1b[38;5;227mPHP Prompt OS\x1b[38;5;145m version {$versioncolor}{$version}");
+	  	$system->sendMessage("\x1b[38;5;87mCreated by chell rui.");
+		$pr_thread = "LOGIN";
+		if ($tipe == "logout") {
+			$system->sendMessage("初期化処理が完了しました。" . PHP_EOL);
+		}
+	}else{
+		if ($tipe = "script") {
+			// echo $argv[2];
+			$tipe_text = "script home/scripts" . trim($argv[2]);
+			$script = new script;
+			$script->onCommand();
+		}
+	}
+}

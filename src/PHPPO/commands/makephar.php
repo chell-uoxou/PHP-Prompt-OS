@@ -6,7 +6,7 @@
  include_once(dirname(__FILE__) . "/../system/System.php");
 include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
-$addcom->addcommand("makephar","dev","アプリケーション、または実行しているPHPPOのpharアーカイブ作成を行います。","<アプリケーション名|system>");
+$addcom->addcommand("makephar","dev","指定したパス、または実行しているPHPPOのpharアーカイブ作成を行います。","<絶対パス|system>");
  //////////////////////
 class makephar extends systemProcessing{
 	function __construct(){
@@ -53,7 +53,7 @@ class makephar extends systemProcessing{
 						$this->sendMessage("File size:" . $pharstat["size"] . "byte");
 					}
 					} else {
-						$allpath = ltrim($raw_input,"makephar ");
+						$allpath = substr($raw_input,9);
 						$allpath = rtrim($allpath,"\"");
 						$allpath = ltrim($allpath,"\"");
 						if (file_exists($allpath)) {
@@ -71,6 +71,7 @@ class makephar extends systemProcessing{
 							}
 						}else{
 							$this->sendMessage("指定されたパスにディレクトリやファイルは存在しません。","error");
+							$this->sendMessage("");
 						}
 					// $dir = '';
 					// $dirCount = "";

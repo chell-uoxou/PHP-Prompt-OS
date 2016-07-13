@@ -15,6 +15,8 @@ class script extends systemProcessing{
 		global $commands;
 		global $currentdirectory;
 		global $commandpros;
+		global $raw_input;
+		global $extensionCommands;
 		$display = new display;
 		$pathCount = count($aryTipeTxt);
 		if ($pathCount <= 1) {
@@ -70,7 +72,7 @@ class script extends systemProcessing{
 				}
 				$array = array_values($array);
 				for ($i=0; $i < $pathCount + 2; $i++) {
-					
+
 				}
 				// var_dump($array);
 				$line = 0;
@@ -84,13 +86,17 @@ class script extends systemProcessing{
 						$aryTipeTxt = explode(" ", trim($value));
 						$conf = array_key_exists($aryTipeTxt[0], $commands);
 						if ($conf === false) {
-							$this->sendMessage("Script error:確認されない命令\"{$value}\"が見つかりました。 in {$name} -> line{$line}","error");
-							break;
+							$conf = array_key_exists($aryTipeTxt[0], $extensionCommands);
+							if ($conf === false) {
+								$this->sendMessage("Script error:確認されない命令\"{$value}\"が見つかりました。 in {$name} -> line{$line}","error");
+								break;
+							}
 						}
 					}
 				}
 				if ($conf === true) {
 					foreach ($array as $tipe_text) {
+						$raw_input = $tipe_text;
 						$commandpros->runCommand();
 					}
 				}

@@ -34,7 +34,7 @@ class myEcho extends systemProcessing{
 						break;
 					default:
 
-						$message = ltrim($raw_input,"echo ");
+						$message = substr($raw_input,5);
 						// for ($i=1; $i < $messageCount; $i++) {
 						// 	$message .= $aryTipeTxt[$i] . " ";
 						// }
