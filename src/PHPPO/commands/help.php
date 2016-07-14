@@ -16,6 +16,7 @@ class help_command extends systemProcessing{
 		global $aryTipeTxt;
 		global $commands;
 		global $extensionCommands;
+		global $extensionCommandsDescription;
 		$messageCount = count($aryTipeTxt);
 		ksort($commands);
 		if ($messageCount <= 1) {
@@ -73,7 +74,12 @@ class help_command extends systemProcessing{
 				case 'ex':
 				$this->sendMessage("\x1b[38;5;59m================\x1b[38;5;214mスクリプト拡張コマンド一覧\x1b[38;5;59m================\x1b[38;5;145m");
 				foreach ($extensionCommands as $basecommand => $path){
-					$this->sendMessage("\x1b[38;5;207m{$basecommand} \x1b[38;5;59m({$path})");
+					if (isset($extensionCommandsDescription[$basecommand])) {
+						$des = $extensionCommandsDescription[$basecommand];
+						$this->sendMessage("\x1b[38;5;207m{$basecommand}\x1b[38;5;145m:{$des} \x1b[38;5;59m({$path})");
+					}else{
+						$this->sendMessage("\x1b[38;5;207m{$basecommand} \x1b[38;5;59m({$path})");
+					}
 				}
 				$this->sendMessage("\x1b[38;5;59m==========================================================\x1b[38;5;145m");
 					break;

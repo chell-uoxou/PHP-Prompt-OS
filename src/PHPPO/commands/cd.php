@@ -19,12 +19,23 @@ class cd_command extends systemProcessing{
 		global $environmentVariables;
 		global $currentdirectory;
 		global $cdpros;
+		global $running;
+		global $runScriptPath;
+		// echo dirname($runScriptPath);
 		// echo $currentdirectory;
 		$pathCount = count($aryTipeTxt);
-		$path = "";
+		$path = "";////////////////////
 		for ($i=1; $i < $pathCount; $i++) {
 			$path .= $aryTipeTxt[$i] . " ";
 		}
+		$path = trim($path);
+		if ($path == ".") {
+			// echo $running;///////////////////////////////
+			if ($running == "script") {
+				$path = dirname($runScriptPath);
+			}
+		}
+		// echo $currentdirectory . "\n:{$path}\n";
 		$cdpros->setCurrentDirectory($path);
 		$currentdirectory = trim($currentdirectory);
 	}

@@ -1,5 +1,4 @@
 <?php
-
 $systemconf_ini_array = parse_ini_file(dirname(dirname(dirname(dirname(__FILE__)))) . "\\config.ini", true);
 //異常終了check
 $echoFunc = "on";
@@ -163,9 +162,11 @@ function myErrorHandler($errno, $errstr, $errfile, $errline){
 function bootSystem($tipe){
 	global $currentdirectory;
 	global $currentdirectorymode;
+	global $defaultcurrentdirectory;
 	global $poPath;
 	global $systemconf_ini_array;
 	global $system;
+	global $valuepros;
 	// $url = "https://github.com/chell-uoxou/PHP-Prompt-OS/releases.atom";
 	// $ch = curl_init();
 	// curl_setopt ($ch, CURLOPT_URL, $url);
@@ -176,7 +177,9 @@ function bootSystem($tipe){
 	$poPath = rtrim(trim(dirname(dirname(__FILE__))),"\PHPPO\src");
 	if ($currentdirectorymode == "on") {
 		$currentdirectory = $poPath . "\\root";
+		$defaultcurrentdirectory = $currentdirectory;
 		$system->sendMessage("Set current directory:{$currentdirectory}\n");
+		$valuepros->setvalue("currentdirectory",$currentdirectory);
 	}
 	$fp = $poPath . "\src\buildlog.log";
 	// $buildnumber = substr_count($file, PHP_EOL);

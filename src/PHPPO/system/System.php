@@ -65,6 +65,7 @@ class systemProcessing {
 		$url = trim($url);
 		if ( ! is_dir($dir) ){
 			$this->sendMessage("ディレクトリ({$dir})が存在しません。","error");
+			return false;
 		}
 		$dir = preg_replace("{/$}","",$dir);
 		$p = pathinfo($url);
@@ -84,12 +85,14 @@ class systemProcessing {
 		@$tmp = file_get_contents($url);;
 		if (!$tmp){
 			$this->sendMessage("URL({$url})からファイルの取得ができませんでした。","error");
+			return false;
 		}else{
 			$this->sendMessage("ファイルに情報を書き込んでいます...");
 			$fp = fopen($local_filename, 'w');
 			fwrite($fp, $tmp);
 			fclose($fp);
 			$this->sendMessage("\x1b[38;5;83m完了\x1b[38;5;59m:{$local_filename}");
+			return true;
 		}
 	}
 
@@ -99,8 +102,26 @@ class systemProcessing {
 
 	public function readyInputEvent(){
 		global $defined_vars;
+		global $currentdirectory;
+		global $valuepros;
+		global $defaultcurrentdirectory;
+		// $setcd = $valuepros->getvalue("currentdirectory");
+		// if ($defaultcurrentdirectory != $currentdirectory) {
+		// 	$currentdirectory = $setcd;
+		// }else {
+		//
+		// }
+		// $defaultcurrentdirectory = $currentdirectory;
+		$valuepros->setvalue("currentdirectory",$currentdirectory);
 		$defined_vars = get_defined_vars();
 	}
+
+
+
+
+
+
+
 
 	public function sendMessage($pr_disp,$type = "info",$thre = "PHPPO"){
 		global $pr_TipeTxt;
@@ -123,6 +144,7 @@ class systemProcessing {
 		global $valuepros;
 		global $outprompt;
 		global $raw_input;
+
 		$display = new display;
 		$display->setThread($thre);
 		$prompt = $valuepros->getvalue("prompt");
@@ -191,27 +213,9 @@ class systemProcessing {
 		if ($type == "input") {
 			echo "\x1b[38;5;231m{$inprompt}{$pr_disp}";
 			$raw_input = trim(fgets(fopen("php://stdin", "r")));
-			$ary_input = $this->commandProcessor($raw_input);
-			$input = "";
-			foreach ($ary_input as $key => $value) {
-				$input = $input . "{$value} ";
-			}
-			$input = trim($input);
-			// echo "input :" . $input . PHP_EOL;///////////////////////////////////////////////////
-			if (strstr($input, '%')) {
-				foreach ($environmentVariables as $key => $value){
-					// echo "key:" . $key . PHP_EOL;
-					// echo "value:" . $value . PHP_EOL;
-					$s_input = str_replace("\"%{$key}%\"","%{$key}%",$input);
-					// echo $key . ":" . str_replace("\"%{$key}%\"","%{$key}%",$input) . PHP_EOL;
-					// echo $key . ":" . str_replace("%{$key}%",$value,$input) . PHP_EOL;
-					if ($s_input == $input) {
-						$input = str_replace("%{$key}%",$value,$input);
-					}else {
-						$input = $s_input;
-					}
-				}
-			}
+			$input = $this->inputProcessor($raw_input);
+			$GLOBALS['sender'] = "phppo.sys.input.default";
+			$GLOBALS['sendto'] = "phppo.sys.output.internal";
 			return $input;
 		}else {
 			foreach ($array as $key => $value) {
@@ -228,6 +232,36 @@ class systemProcessing {
 			}//んーでってれってー
 		}//てってってれってー
 	}//んーでってれってー
+
+	public function inputProcessor($raw_input){
+		global $environmentVariables;
+		global $savevaluesmode;
+		$ary_input = $this->commandProcessor($raw_input);
+		$input = "";
+		foreach ($ary_input as $key => $value) {
+			$input = $input . "{$value} ";
+		}
+		$input = trim($input);
+		if ($savevaluesmode == "on") {
+			$environmentVariables = unserialize(file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\\' . "environmentVariables.dat"));
+		}
+		// echo "input :" . $input . PHP_EOL;///////////////////////////////////////////////////
+		if (strstr($input, '%')) {
+			foreach ($environmentVariables as $key => $value){
+				// echo "key:" . $key . PHP_EOL;
+				// echo "value:" . $value . PHP_EOL;
+				$s_input = str_replace("\"%{$key}%\"","%{$key}%",$input);
+				// echo $key . ":" . str_replace("\"%{$key}%\"","%{$key}%",$input) . PHP_EOL;
+				// echo $key . ":" . str_replace("%{$key}%",$value,$input) . PHP_EOL;
+				if ($s_input == $input) {
+					$input = str_replace("%{$key}%",$value,$input);
+				}else {
+					$input = $s_input;
+				}
+			}
+		}
+		return $input;
+	}
 
 	public function commandProcessor($com){
         $commandarr=array();

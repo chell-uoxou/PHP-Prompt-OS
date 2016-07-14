@@ -22,6 +22,7 @@ class makephar_command extends systemProcessing{
 		$messageCount = count($aryTipeTxt);
 		if ($messageCount <= 1) {
 			$this->sendMessage("パラメーターが不足しています。");
+return false;
 			}else{
 				$aryTipeTxt[1] = trim($aryTipeTxt[1]);
 				if ($aryTipeTxt[1] == "system") {
@@ -71,7 +72,7 @@ class makephar_command extends systemProcessing{
 							}
 						}else{
 							$this->sendMessage("指定されたパスにディレクトリやファイルは存在しません。","error");
-							$this->sendMessage("");
+							return false;
 						}
 					// $dir = '';
 					// $dirCount = "";

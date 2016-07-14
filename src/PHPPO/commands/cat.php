@@ -17,6 +17,8 @@ class cat_command extends systemProcessing{
 		$pathCount = count($aryTipeTxt);
 		if ($pathCount == 0) {
 			$this->sendMessage("パラメーターが不足しています。");
+return false;
+			return false;
 		}else {
 			$path = trim($currentdirectory) . "\\";
 			for ($i=1; $i < $pathCount; $i++) {
@@ -34,6 +36,7 @@ class cat_command extends systemProcessing{
 				}
 			}else{
 				$this->sendMessage("ファイルの読み込みに失敗しました！:" . $path,"error");
+				return false;
 			}
 		}
 	}

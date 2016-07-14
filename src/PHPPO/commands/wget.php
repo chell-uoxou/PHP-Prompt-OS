@@ -16,12 +16,14 @@ class wget_command extends systemProcessing{
 		$path = "";
 		if ($pathCount == 0) {
 			$this->sendMessage("パラメーターが不足しています。");
+			return false;
 		}else {
 			for ($i=1; $i < $pathCount; $i++) {
 				$path .= $aryTipeTxt[$i] . " ";
 			}
 			$path;
-			$this->file_download($path,$currentdirectory);
+			$onerror = $this->file_download($path,$currentdirectory);
+			return $onerror;
 		}
 	}
 }

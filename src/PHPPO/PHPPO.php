@@ -442,7 +442,27 @@ function standbyTipe(){
 		if ($logmode == 1) {
 			fwrite($writeData,PHP_EOL . $tipe_text);
 		}
-		$commandpros->runCommand();
+		if(strpos($tipe_text,';') !== false){
+			$arytipetxts = explode(";",$tipe_text);
+			foreach ($arytipetxts as $key => $value) {
+				$tipe_text = trim($value);
+				$onerror = $commandpros->runCommand();
+			}
+		}else {
+			if(strpos($tipe_text,'&&') !== false){
+				$arytipetxts = explode("&&",$tipe_text);
+				foreach ($arytipetxts as $key => $value) {
+					$tipe_text = trim($value);
+					$onerror = $commandpros->runCommand();
+					if (!$onerror) {
+						break;
+					}
+				}
+			}else {
+				$onerror = $commandpros->runCommand();
+			}
+		}
+		// echo $onerror;
 	}
 }
 

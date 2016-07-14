@@ -17,10 +17,14 @@ class script_command extends systemProcessing{
 		global $commandpros;
 		global $raw_input;
 		global $extensionCommands;
+		global $running;
+		global $runScriptPath;
+		global $lastTipeTxt;
 		$display = new display;
 		$pathCount = count($aryTipeTxt);
 		if ($pathCount <= 1) {
 			$this->sendMessage("パラメーターが不足しています。");
+return false;
 			}else{
 				$aryTipeTxt[1] = trim($aryTipeTxt[1]);
 				$name = '';
@@ -33,7 +37,8 @@ class script_command extends systemProcessing{
 				$file = "";
 				$current_path = trim($currentdirectory) . "\\" . $name;
 				if (file_exists($current_path)) {
-					$file = file_get_contents($current_path, true);
+					$r_path = $current_path;
+					$file = file_get_contents($r_path, true);
 				}else {
 					if (file_exists($name)) {
 						$r_path = $name;
@@ -45,6 +50,7 @@ class script_command extends systemProcessing{
 							$file = file_get_contents($r_path, true);
 						}else{
 							$this->sendMessage("スクリプトの読み込みに失敗しました。指定したスクリプトは存在しない可能性があります。:{$current_path}","error");
+							return false;
 						}
 					}
 				}
@@ -89,18 +95,31 @@ class script_command extends systemProcessing{
 							$conf = array_key_exists($aryTipeTxt[0], $extensionCommands);
 							if ($conf === false) {
 								$this->sendMessage("Script error:確認されない命令\"{$value}\"が見つかりました。 in {$name} -> line{$line}","error");
+								return false;
 								break;
 							}
 						}
 					}
 				}
+				$running = "script";
+				$runScriptPath = $r_path;//スクリプト実行中にcdでパスが指定できるようにする作業
+
+				$repl1 = array("%__FILE__%","%sys.last.command%");//を
+				$repl2 = array(dirname($runScriptPath),$lastTipeTxt);//に
 				if ($conf === true) {
 					foreach ($array as $tipe_text) {
-						$raw_input = $tipe_text;
-						$commandpros->runCommand();
+						if ($running == "script") {
+							$tipe_text = $this->inputProcessor($tipe_text);
+							$tipe_text = str_replace($repl1,$repl2,$tipe_text);
+							$raw_input = $tipe_text;
+							$commandpros->runCommand();
+						}elseif ($running === false) {
+							break;
+						}
 					}
 				}
 		}
+		$running = false;
 	}
 }
 

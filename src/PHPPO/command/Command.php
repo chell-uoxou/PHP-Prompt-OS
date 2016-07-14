@@ -43,6 +43,8 @@ class command extends systemProcessing{
 		global $valuepros;
 		global $extensionCommands;
 		global $commands;
+		global $lastTipeTxt;
+		global $raw_input;
 		$valuepros->setvalue("time", date('A-H:i:s'));
 		$aryTipeTxt = explode(" ", $tipe_text);
 		$baseCommand = trim($aryTipeTxt[0]);
@@ -50,16 +52,24 @@ class command extends systemProcessing{
 			if (array_key_exists($baseCommand,$commands)) {
 				$instname = $baseCommand . "_command";
 				$com_inst = new $instname;
-				$com_inst->onCommand();
+				$onerror = $com_inst->onCommand();
 			}else {
 				if (array_key_exists($baseCommand,$extensionCommands)) {
 					$aryTipeTxt = array("script",$extensionCommands[$baseCommand]);
 					$script = new script_command;
-					$script->onCommand();
+					$onerror = $script->onCommand();
 				}else {
 					$system->sendMessage("\x1b[38;5;203m\"" . $baseCommand . "\"コマンドが見つかりませんでした。helpコマンドで確認してください。");
+					$onerror = false;
 				}
 			}
+			$lastTipeTxt = $tipe_text;
+			if (!isset($onerror)) {
+				$onerror = true;
+			}
+			return $onerror;
+		}else{
+			$onerror = false;
 		}
 	}
 }

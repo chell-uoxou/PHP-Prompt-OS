@@ -16,6 +16,7 @@ class environmentVariables extends systemProcessing{
 		if ($savevaluesmode == "on") {
 			file_put_contents(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\\' . "environmentVariables.dat", serialize($environmentVariables));
 		}
+		return true;
 	}
 
 	public function delvalue($name){
@@ -24,7 +25,12 @@ class environmentVariables extends systemProcessing{
 		if ($savevaluesmode == "on") {
 			$environmentVariables = unserialize(file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\\' . "environmentVariables.dat"));
 		}
-		unset($environmentVariables[$name]);
+		if (isset($environmentVariables["name"])) {
+			unset($environmentVariables[$name]);
+			return true;
+		}else{
+			return false;
+		}
 		// print_r($environmentVariables);
 		if ($savevaluesmode == "on") {
 			file_put_contents(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\\' . "environmentVariables.dat", serialize($environmentVariables));
@@ -40,6 +46,8 @@ class environmentVariables extends systemProcessing{
 		// print_r($environmentVariables);
 		if(isset($environmentVariables[$name])){
 			return $environmentVariables[$name];
+		}else{
+			return false;
 		}
 	}
 }

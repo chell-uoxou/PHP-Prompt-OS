@@ -17,6 +17,7 @@ class vardump_command extends systemProcessing{
 		$messageCount = count($aryTipeTxt);
 		if ($messageCount <= 1) {
 			$this->sendMessage("パラメーターが不足しています。");
+return false;
 			$this->sendMessage("vardumpコマンドの使用法:");
 			$this->sendMessage("vardump <変数名> / <指定したクラス内の変数名> <変数を表示するクラス>:システム処理が継承した'vardump'クラス内から呼び出せるパブリック変数、及びメイン処理におけるグローバル変数の内容を表示します。");
 			$this->sendMessage("第二引数を指定していない場合はメイン処理におけるグローバル変数の内容を表示します。");

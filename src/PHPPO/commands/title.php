@@ -21,6 +21,7 @@ class title_command extends systemProcessing{
 			$messageCount = count($aryTipeTxt);
 			if ($messageCount <= 1) {
 				$this->sendMessage("パラメーターが不足しています。");
+return false;
 				}else{
 					$aryTipeTxt[1] = trim($aryTipeTxt[1]);
 					$message = '';

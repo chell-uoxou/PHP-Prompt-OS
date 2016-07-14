@@ -20,6 +20,7 @@ class exec_command extends systemProcessing{
 		$messageCount = count($aryTipeTxt);
 		if ($messageCount <= 1) {
 			$this->sendMessage("パラメーターが不足しています。");
+return false;
 			}else{
 				$exec_command = '';
 				for ($i=1; $i < $messageCount; $i++) {

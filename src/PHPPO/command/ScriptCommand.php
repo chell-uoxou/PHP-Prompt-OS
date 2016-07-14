@@ -10,9 +10,10 @@ class scriptCommand extends systemProcessing{
 		global $poPath;
 		global $commands;
 		global $extensionCommands;
+		global $extensionCommandsDescription;
 		if (!file_exists($poPath . "/root/bin/extensions.ini")) {
-touch($poPath . "/root/bin/extensions.ini");
-file_put_contents($poPath . "/root/bin/extensions.ini",'
+			touch($poPath . "/root/bin/extensions.ini");
+			file_put_contents($poPath . "/root/bin/extensions.ini",'
 ;This file allows you to append the command you want to add in the script.
 ;Usage : <command name>=<The path of the appropriate script>
 ;example : "hoge=bin/scriptcommands/hoge.sh"
@@ -33,6 +34,7 @@ onigiri = onigiri.sh
 		$aryfile = explode(PHP_EOL,file_get_contents($poPath . "/root/bin/extensions.ini"));
 		$plsdel = array();
 		$extensionCommands = parse_ini_file($poPath . "/root/bin/extensions.ini");
+		$extensionCommandsDescription = parse_ini_file($poPath . "/root/bin/extension_description.ini");
 		// var_dump($commands);
 		foreach ($extensionCommands as $key => $value) {
 			// $this->sendMessage("{$key}:拡張コマンド");
@@ -56,6 +58,9 @@ onigiri = onigiri.sh
 					$this->sendMessage("記述された拡張コマンドにあたるパスは無効です。","error");
 					$this->sendMessage("Desabled [" . $key . "] Command :File not found --{$path}","error");
 				}else {
+					// if (isset($extensionCommandsDescription[$key])) {
+					// 	$extensionCommands[$key]["des"] = $extensionCommandsDescription[$key];
+					// }
 					$extensionCommands[$key] = $path;
 				}
 			}

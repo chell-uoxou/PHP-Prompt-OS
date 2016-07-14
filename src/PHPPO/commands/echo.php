@@ -18,11 +18,13 @@ class echo_command extends systemProcessing{
 		global $savevaluesmode;
 		global $valuepros;
 		global $raw_input;
+		global $tipe_text;
 		$valuepros = new environmentVariables;
 		$messageCount = count($aryTipeTxt);
 		$varname = "";
 		if ($messageCount <= 1) {
 			// $this->sendMessage("パラメーターが不足しています。");
+return false;
 			}else{
 				$aryTipeTxt[1] = trim($aryTipeTxt[1]);
 				switch ($aryTipeTxt[1]) {
@@ -33,8 +35,9 @@ class echo_command extends systemProcessing{
 						$echoFunc = "on";
 						break;
 					default:
+						// echo $raw_input;////////////////////////////
+						$message = substr($tipe_text,5);
 
-						$message = substr($raw_input,5);
 						// for ($i=1; $i < $messageCount; $i++) {
 						// 	$message .= $aryTipeTxt[$i] . " ";
 						// }
