@@ -3,9 +3,10 @@ include_once dirname(__FILE__) . '/../display/display.php';
 include_once dirname(__FILE__) . '/../plugin/Manager.php';
 include_once 'environmentValues.php';
 include_once 'currentdirectory.php';
+include_once 'sysconf.php';
 $valuepros = new environmentVariables;
 $pluginpros = new pluginManager;
-
+$sysconfpros = new systemConfig("read");
 
 
 class systemProcessing {

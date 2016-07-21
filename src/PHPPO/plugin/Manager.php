@@ -20,7 +20,6 @@ class pluginManager extends systemProcessing{
 				foreach ($dirplugins as $key => $value) {
 					$this->sendMessage("確認をしています...");
 					$mappername = "plugin-mapper-" . $key . ".phar";
-
 					try {
 						$phar = new Phar($value);
 						$phar->setAlias($mappername);

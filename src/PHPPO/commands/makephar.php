@@ -22,7 +22,7 @@ class makephar_command extends systemProcessing{
 		$messageCount = count($aryTipeTxt);
 		if ($messageCount <= 1) {
 			$this->sendMessage("パラメーターが不足しています。");
-return false;
+			return false;
 			}else{
 				$aryTipeTxt[1] = trim($aryTipeTxt[1]);
 				if ($aryTipeTxt[1] == "system") {
@@ -61,14 +61,19 @@ return false;
 							$Confirm = $this->sendMessage("\x1b[38;5;203m指定されたパス\x1b[38;5;145m({$allpath})\x1b[38;5;203mからのPharアーカイブの作成を行いますか？(y):","input");
 							if ($Confirm == "y"|| $Confirm == "Y") {
 								// $this->sendMessage("");
-								$filename = basename($allpath);
-								$this->sendMessage("\x1b[38;5;227mCreateing...");
-								$pharpath = $currentdirectory . "\\{$filename}.phar";
-								$phar = new Phar($pharpath, 0, "{$filename}.phar");
-								$phar->buildFromDirectory($allpath);
-								$pharstat = stat($pharpath);
-								$this->sendMessage("\x1b[38;5;83mSuccess. \x1b[38;5;145m:" . $pharpath);
-								$this->sendMessage("File size:" . $pharstat["size"] . "byte");
+								if (is_dir($allpath)) {
+									$filename = basename($allpath);
+									$this->sendMessage("\x1b[38;5;227mCreateing...");
+									$pharpath = $currentdirectory . "\\{$filename}.phar";
+									$phar = new Phar($pharpath, 0, "{$filename}.phar");
+									$phar->buildFromDirectory($allpath);
+									$pharstat = stat($pharpath);
+									$this->sendMessage("\x1b[38;5;83mSuccess. \x1b[38;5;145m:" . $pharpath);
+									$this->sendMessage("File size:" . $pharstat["size"] . "byte");
+								}else {
+									$this->sendMessage("指定したパスはディレクトリではありません。","error");
+									return false;
+								}
 							}
 						}else{
 							$this->sendMessage("指定されたパスにディレクトリやファイルは存在しません。","error");

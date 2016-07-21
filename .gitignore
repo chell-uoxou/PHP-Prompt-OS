@@ -1,24 +1,9 @@
-config.ini
-LICENSE.txt
-user.json
-<<<<<<< HEAD
-root\
-<<<<<<< HEAD
-���܂�\
-root/home/logs/2016_06_29.log
-おまけ/
-root/bin/environmentVariables.dat
+root/bin/systemconfig.dat
 root/bin/systemdefinedvars.dat
-=======
-���܂�\
->>>>>>> parent of 312f102... ・gitignore追記
-root/home/logs/
-root/
-=======
-root/
-���܂�/
-bin/
-README.txt
-おまけ/
->>>>>>> master
+root/bin/user.json
+root/home/logs/2016_07_12.log
+root/phar.setalias(1).html
+root/phar.setalias.html
+*.log
+test/
 #omake/

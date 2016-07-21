@@ -24,7 +24,7 @@ class echo_command extends systemProcessing{
 		$varname = "";
 		if ($messageCount <= 1) {
 			// $this->sendMessage("パラメーターが不足しています。");
-return false;
+			return false;
 			}else{
 				$aryTipeTxt[1] = trim($aryTipeTxt[1]);
 				switch ($aryTipeTxt[1]) {
