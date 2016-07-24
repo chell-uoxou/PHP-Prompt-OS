@@ -1,8 +1,7 @@
 <?php
-/**
- *
- */
- //////////////////////
+//////////////////////
+namespace phppo\command\defaults;
+use phppo\system\systemProcessing as systemProcessing;
  include_once(dirname(__FILE__) . "/../system/System.php");
 include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;

@@ -1,4 +1,8 @@
 <?php
+
+namespace phppo\command;
+
+use phppo\system\systemProcessing as systemProcessing;
 /**
  *
  */

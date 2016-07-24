@@ -1,7 +1,11 @@
 <?php
-include_once dirname(__FILE__) . '/../display/display.php';
-include_once(dirname(__FILE__) . "/../system/System.php");
+namespace phppo;
+
 include_once 'ScriptCommand.php';
+include_once 'DefaultCommands.php';
+use phppo\system\systemProcessing as systemProcessing;
+use phppo\command\scriptCommand as scriptCommand;
+$commandpros = new command;
 $system = new systemProcessing;
 $commandpros = new command;
 $scriptcommandpros = new scriptCommand;
@@ -9,16 +13,19 @@ $scriptcommandpros = new scriptCommand;
 //////////////////////
 $commands = array();
 $system->sendMessage("Command loaded:");
-$dircommands = scandir(dirname(__FILE__) . '/../commands');
+$re_dircommands = scandir(dirname(__FILE__) . '/../commands');
 $i = 0;
-foreach ($dircommands as $key => $value) {
-	$dircommands[$i] = dirname(dirname(__FILE__)) . '\commands\\' . $dircommands[$i];
-	// $system->sendMessage($dircommands[$i]);
-	$i++;
+foreach ($re_dircommands as $key => $value) {
+	if ($value != "." && $value != "..") {
+		$dircommands[] = dirname(dirname(__FILE__)) . '\commands\\' . $value;
+		$system->sendMessage($dircommands[$i]);
+		$i++;
+	}
 }
 // var_dump($dircommands);
 foreach ($dircommands as $key => $value) {
-	@include_once $value;
+	echo $key . "|" . $value . ":" . PHP_EOL;
+	include_once $value;
 }
 echo PHP_EOL;
 // var_dump($commands);
@@ -50,7 +57,7 @@ class command extends systemProcessing{
 		$baseCommand = trim($aryTipeTxt[0]);
 		if (!$baseCommand == "") {
 			if (array_key_exists($baseCommand,$commands)) {
-				$instname = $baseCommand . "_command";
+				$instname = "\phppo\command\defaults\\" . $baseCommand . "_command";
 				$com_inst = new $instname;
 				$onerror = $com_inst->onCommand();
 			}else {

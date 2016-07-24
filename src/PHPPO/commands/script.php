@@ -1,5 +1,7 @@
 <?php
 //////////////////////
+namespace phppo\command\defaults;
+use phppo\system\systemProcessing as systemProcessing;
 include_once(dirname(__FILE__) . "/../system/System.php");
 include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
@@ -20,7 +22,7 @@ class script_command extends systemProcessing{
 		global $running;
 		global $runScriptPath;
 		global $lastTipeTxt;
-		$display = new display;
+		global $display;;
 		$pathCount = count($aryTipeTxt);
 		if ($pathCount <= 1) {
 			$this->sendMessage("パラメーターが不足しています。");

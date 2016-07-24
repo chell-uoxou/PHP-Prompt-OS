@@ -1,9 +1,17 @@
 <?php
+
+
+namespace phppo\system;
+
+
 include_once dirname(__FILE__) . '/../display/display.php';
 include_once dirname(__FILE__) . '/../plugin/Manager.php';
 include_once 'environmentValues.php';
 include_once 'currentdirectory.php';
 include_once 'sysconf.php';
+
+use phppo\plugin\Manager as pluginManager;
+use phppo\display as display;
 $valuepros = new environmentVariables;
 $pluginpros = new pluginManager;
 $sysconfpros = new systemConfig("read");
@@ -152,12 +160,6 @@ class systemProcessing {
 		date_default_timezone_set('Asia/Tokyo');
 		// echo "string";
 		// var_dump($display);
-
-
-		$pr_time = date('A-H:i:s');
-		$repl = array("%time","%thread","%info","%cd");
-		$repl2 = array($pr_time,$pr_thread,$pr_info,$po_cd);
-		$repl3 = array($pr_time,$pr_thread,$pr_info,"");
 		// echo "$repl,$repl2,$prompt";
 		// var_dump($repl);
 		// var_dump($repl2);
@@ -167,22 +169,18 @@ class systemProcessing {
 				case 'error':
 					$display->setInfo("ERROR");
 					$prompt = $valuepros->getvalue("prompt") . "\x1b[38;5;203m";
-					$display->setInfo("INFO");
 				break;
 				case 'warn':
 					$display->setInfo("WARN");
 					$prompt = $valuepros->getvalue("prompt") . "\x1b[38;5;214m";
-					$display->setInfo("INFO");
 					break;
 				case 'notice':
 					$display->setInfo("WARN");
 					$prompt = $valuepros->getvalue("prompt") . "\x1b[38;5;214m";
-					$display->setInfo("INFO");
 					break;
 				case 'critical':
 					$display->setInfo("CRITICAL");
 					$prompt = $valuepros->getvalue("prompt") . "\x1b[38;5;124m";
-					$display->setInfo("INFO");
 					break;
 				default:
 					// $prompt = "\x1b[38;5;83m" . "[{$pr_time}]" . "\x1b[38;5;87m " . "[{$pr_thread}/{$pr_info}]" . "\x1b[38;5;231m";
@@ -205,8 +203,13 @@ class systemProcessing {
 				break;
 			}
 		}
-				$inprompt = str_ireplace($repl,$repl2,$prompt);
-				$outprompt = str_ireplace($repl,$repl3,$prompt);
+		$pr_time = date('A-H:i:s');
+		$repl = array("%time","%thread","%info","%cd");
+		$repl2 = array($pr_time,$pr_thread,$pr_info,$po_cd);
+		$repl3 = array($pr_time,$pr_thread,$pr_info,"");
+		$inprompt = str_ireplace($repl,$repl2,$prompt);
+		$outprompt = str_ireplace($repl,$repl3,$prompt);
+		$display->setInfo("INFO");
 		$array = explode("\n", $pr_disp);
 		// $array = array_map('trim', $array);
 		$array = array_filter($array, 'strlen');
@@ -306,6 +309,92 @@ class systemProcessing {
         }
 		return $commandarr;
     }
+
+	public function standbyTipe(){
+		global $system;
+		global $poPath;
+		global $display;
+		global $aryTipeTxt;
+		global $systemconf_ini_array;
+		global $pr_disp;
+		global $tipe_text;
+		global $stanby;
+		global $writeData;
+		global $pr_thread;
+		global $pr_info;
+		global $pr_time;
+		global $echoFunc;
+		global $currentdirectory;
+		global $po_cd;
+		global $poPath;
+		global $logmode;
+		global $defined_vars;
+		global $inPrompt;
+		global $outPrompt;
+		global $commandpros;
+		global $valuepros;
+		global $pluginpros;
+		global $scriptcommandpros;
+		$scriptcommandpros->readExtension();
+		$pluginpros->install();
+		// $system->sendMessage("\x1b[38;5;63m起動完了！helpコマンドでコマンド一覧を表示。");
+		// file_put_contents(dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
+		if (isset($systemconf_ini_array["system"]["bootexec"])) {
+			if ($systemconf_ini_array["system"]["bootexec"] != "") {
+				$bootexec = $systemconf_ini_array["system"]["bootexec"];
+				// echo "$poPath\\root\\$bootexec";
+				$aryTipeTxt = array("script","$poPath\\root\\$bootexec");
+				// var_dump($aryTipeTxt);
+				$script = new \phppo\command\defaults\script_command;
+				$script->onCommand();
+			}
+		}
+
+		while (True) {
+			$system->readyInputEvent();
+			// var_dump($defined_vars);
+			file_put_contents(dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
+			$po_cd = str_replace(trim($poPath),"",trim($currentdirectory));
+			$stanby = True;
+			$display->setThread("PHPPO");
+
+			// $prompt = "\x1b[38;5;83m[{$pr_time}] \x1b[38;5;87m[{$pr_thread}/{$pr_info}]\x1b[38;5;207m{$po_cd}\x1b[38;5;227m>";
+			// if ($echoFunc != "off") {
+			// 	echo "\x1b[38;5;83m" . $prompt . "\x1b[38;5;227m";
+			// }else {
+			// 	echo "\x1b[38;5;227m";
+			// }
+
+			$tipe_text = $system->sendMessage("\x1b[38;5;227m>","input");
+			$stanby = false;
+			if ($logmode == 1) {
+				fwrite($writeData,PHP_EOL . $tipe_text);
+			}
+			if(strpos($tipe_text,';') !== false){
+				$arytipetxts = explode(";",$tipe_text);
+				foreach ($arytipetxts as $key => $value) {
+					$tipe_text = trim($value);
+					$onerror = $commandpros->runCommand();
+				}
+			}else {
+				if(strpos($tipe_text,'&&') !== false){
+					$arytipetxts = explode("&&",$tipe_text);
+					foreach ($arytipetxts as $key => $value) {
+						$tipe_text = trim($value);
+						$onerror = $commandpros->runCommand();
+						if (!$onerror) {
+							break;
+						}
+					}
+				}else {
+					$onerror = $commandpros->runCommand();
+				}
+			}
+			// echo $onerror;
+		}
+	}
+
+
 }//てってってれってー by @KOKKOKOKOKOOKO
 
 /**

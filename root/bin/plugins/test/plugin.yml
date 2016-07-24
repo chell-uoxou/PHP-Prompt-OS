@@ -1,2 +1,16 @@
-これはてすとだよ！！！！！！！
-ﾇﾍﾞｼﾞｮﾝﾇｿﾞｼﾞｮﾝﾍﾞﾙﾐｽﾃｨｯｽﾓｹﾞﾛﾝﾎﾞﾖwwwwwwwwwwwwwwwwwwwwwwwwww
+name: TestPlugin
+path: src/chell_uoxou/test.php
+main: test\TestCommand
+version: 0.0.0
+api: 1.6.0_Dev
+load: STARTUP
+author: chell_uoxou
+description: This is a test plugin for PHPPO!
+commands:
+ test:
+  permission: test.command
+  usage: "test <args...>"
+permissions:
+ test.command:
+  default: root
+  description: "allow all command"

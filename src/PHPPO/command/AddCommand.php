@@ -2,19 +2,17 @@
 /**
  *
  */
+use phppo\system\systemProcessing as systemProcessing;
+
 class addcommand extends systemProcessing{
 
 	function __construct(){
 		# code...
 	}
-	public function FunctionName($value='')
-	{
-		# code...
-	}
+
 	public function addcommand($basecommand,$type,$des,$usage,$enadis='enable'){
 		global $commands;
 		global $br_count;
-		global $strlen;
 		$br_count = "a";
 		// array_push($commands,$basecommand);
 		$commands[$basecommand] = array('type' => $type, 'des' => $des, 'usage' => $usage, 'enadis'=> $enadis);

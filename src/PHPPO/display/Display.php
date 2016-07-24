@@ -1,9 +1,14 @@
 <?php
-include_once(dirname(__FILE__) . "/../system/System.php");
+// include_once(dirname(__FILE__) . "/../system/System.php");
+
+namespace phppo;
+
+use phppo\system\systemProcessing as systemProcessing;
+
 class display extends systemProcessing{
 
 	function __construct(){
-		
+
 	}
 	public function setInfo($str){
 		$str = trim($str);

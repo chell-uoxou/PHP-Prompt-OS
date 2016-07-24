@@ -1,18 +1,36 @@
 <?php
+
+namespace phppo\plugin;
+
+
+
 include_once dirname(__FILE__) . '/../display/display.php';
 include_once(dirname(__FILE__) . "/../system/System.php");
+use phppo\system\systemProcessing as systemProcessing;
 include_once 'Loader.php';
 /**
  * プラグイン処理
  */
-class pluginManager extends systemProcessing{
+class Manager extends systemProcessing{
 
 	function __construct(){
 	}
 
 	public function install($type = ''){
-		global $dirplugins;
-		global $fileplugins;
+		@$fileplugins = scandir(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\plugins');
+		$i = 0;
+		$j = 0;
+		if (isset($fileplugins)) {
+			foreach ($fileplugins as $key => $value) {
+				// var_dump($fileplugins[$i]);
+				if ($fileplugins[$i] == "." || $fileplugins[$i] == ".." ) {
+				}else {
+					$dirplugins[$j] = dirname(dirname(dirname(dirname(__FILE__)))) . '\root\plugins\\' . $fileplugins[$i];
+					$j++;
+				}
+				$i++;
+			}
+		}
 		if (isset($dirplugins)) {
 			$a = $this->sendMessage("未インストールのプラグインを確認しました。インストールしますか？(Y/n):","input");
 			if ($a == "y"||$a == "Y") {
