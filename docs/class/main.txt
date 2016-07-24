@@ -1,0 +1,11 @@
+PHPPO/PHPPPO.php:
+    main:"phppo"
+
+PHPPO/display/Display.php:
+    main:"phppo\display"
+
+PHPPO/plugin/Manager.php:
+    main:"phppo\plugin\Manager"
+
+PHPPO/system/System.php:
+    main:"phppo\system"

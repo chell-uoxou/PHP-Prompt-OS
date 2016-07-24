@@ -3,8 +3,6 @@
  *
  */
 namespace phppo\command\defaults;
-
-echo "マジ銀杏";
 use phppo\system\systemProcessing as systemProcessing;
 
 class addcommand extends systemProcessing{

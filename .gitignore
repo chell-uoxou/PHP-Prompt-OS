@@ -1,9 +1,7 @@
 root/bin/systemconfig.dat
 root/bin/systemdefinedvars.dat
 root/bin/user.json
-root/home/logs/2016_07_12.log
 root/phar.setalias(1).html
 root/phar.setalias.html
-*.log
 test/
 #omake/

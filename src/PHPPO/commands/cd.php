@@ -7,10 +7,12 @@ include_once(dirname(__FILE__) . "/../system/System.php");
 include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
 $cdpros = new currentdirectory;
-if ($currentdirectorymode == "on") {
+$systemconf_ini_array = parse_ini_file(dirname(dirname(dirname(dirname(__FILE__)))) . "\\config.ini", true);
+if ($systemconf_ini_array["dev"]["currentdirectory"] == 1) {
 	$addcom->addcommand("cd","default","カレントディレクトリを指定します。","<絶対/相対パス>");
 }else {
 	$addcom->addcommand("cd","default","カレントディレクトリを指定します。","<絶対/相対パス>","disable");
+	// echo ":desable  ";////////////////////////////////
 }
 //////////////////////
 class cd_command extends systemProcessing{

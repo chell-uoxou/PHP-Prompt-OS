@@ -1,1 +1,2 @@
-
+<?php
+namespace command\permission;

@@ -19,13 +19,13 @@ $i = 0;
 foreach ($re_dircommands as $key => $value) {
 	if ($value != "." && $value != "..") {
 		$dircommands[] = dirname(dirname(__FILE__)) . '\commands\\' . $value;
-		$system->sendMessage($dircommands[$i]);
+		// $system->sendMessage($dircommands[$i]);
 		$i++;
 	}
 }
 // var_dump($dircommands);
 foreach ($dircommands as $key => $value) {
-	echo $key . "|" . $value . ":" . PHP_EOL;
+	// echo $key . "|" . $value . ":" . PHP_EOL;
 	include_once $value;
 }
 echo PHP_EOL;
@@ -64,7 +64,7 @@ class command extends systemProcessing{
 			}else {
 				if (array_key_exists($baseCommand,$extensionCommands)) {
 					$aryTipeTxt = array("script",$extensionCommands[$baseCommand]);
-					$script = new script_command;
+					$script = new \phppo\command\defaults\script_command;
 					$onerror = $script->onCommand();
 				}else {
 					$system->sendMessage("\x1b[38;5;203m\"" . $baseCommand . "\"コマンドが見つかりませんでした。helpコマンドで確認してください。");

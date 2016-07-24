@@ -1,11 +1,6 @@
 <?php
 
 namespace phppo\plugin;
-
-
-
-include_once dirname(__FILE__) . '/../display/display.php';
-include_once(dirname(__FILE__) . "/../system/System.php");
 use phppo\system\systemProcessing as systemProcessing;
 include_once 'Loader.php';
 /**
