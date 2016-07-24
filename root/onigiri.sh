@@ -1,5 +1,4 @@
 echo off
-cls
 echo ┌──────────────────────―─┐
 echo │　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 　 ｜
 echo │　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 　 ｜

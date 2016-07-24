@@ -1,5 +1,6 @@
 <?php
 
+
 use phppo\system\systemProcessing as systemProcessing;
 use phppo\system\environmentVariables as environmentVariables;
 use phppo\plugin\Manager as pluginManager;
@@ -9,10 +10,10 @@ $echoFunc = "on";
 $valuepros = new environmentVariables;
 
 if ($systemconf_ini_array["dev"]["devmode"] != 1) {
-	@$files = scandir(rtrim(trim(dirname(dirname(dirname(__FILE__)))),"\PHPPO\src") . "/root/home/logs/",1);
+	@$files = scandir(rtrim(trim(dirname(dirname(dirname(__FILE__)))),"system\PHPPO\src") . "/root/home/logs/",1);
 	// var_dump($files);
 	if ($files != false) {
-		$lines = file(rtrim(trim(dirname(dirname(__FILE__))),"\PHPPO\src") . "/root/home/logs/" . $files[0], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		$lines = file(rtrim(trim(dirname(dirname(__FILE__))),"system\PHPPO\src") . "/root/home/logs/" . $files[0], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 		$line = end($lines);
 		if ($line != "PHPPO was completed successfully."){
 			$system->sendMessage("システムが異常終了していた可能性があります！！","critical");
@@ -45,10 +46,6 @@ if ($systemconf_ini_array["dev"]["devmode"] != 1) {
 }
 
 $valuepros = new environmentVariables;
-
-
-
-
 $system->sendMessage("Loading command Prosessing files...");
 if ($systemconf_ini_array["system"]["logmode"] == 1) {
 	$logmode = "on";
@@ -179,7 +176,7 @@ function bootSystem($tipe){
 	// curl_setopt($ch, CURLOPT_HEADER, false);
 	// $xml = curl_exec($ch);
 	// print_r($xml);
-	$poPath = rtrim(trim(dirname(dirname(__FILE__))),"\PHPPO\src");
+	$poPath = rtrim(trim(dirname(dirname(__FILE__))),"system\PHPPO\src");
 	if ($currentdirectorymode == "on") {
 		$currentdirectory = $poPath . "\\root";
 		$defaultcurrentdirectory = $currentdirectory;
@@ -343,19 +340,13 @@ function readySetup($tipe){
 		mkdir( $dir_name );
 	}
 
-	$userfilepath = rtrim(dirname(__FILE__),"\PHPPO\src") ."\\root\bin\user.json";
+	$userfilepath = rtrim(dirname(__FILE__),"\system\PHPPO\src") ."\\root\bin\user.json";
 	if (!file_exists($userfilepath)) {
 		touch($userfilepath);
 		$system->sendMessage("ユーザー設定用ファイルを出力しました。:" . $userfilepath);
 	}
 	chmod( $userfilepath, 0666 );
 
-	$userfilepath = rtrim(dirname(__FILE__),"\PHPPO\src") ."\\root\bin\\environmentVariables.dat";
-	if (!file_exists($userfilepath)) {
-		touch($userfilepath);
-		$system->sendMessage("ユーザー設定用ファイルを出力しました。:" . $userfilepath);
-	}
-	chmod( $userfilepath, 0666 );
 
 	$file_name = 'LICENSE.txt';
 	if( !file_exists($file_name) ){
@@ -363,25 +354,26 @@ function readySetup($tipe){
 	}
 	chmod( $file_name, 0666 );
 
-	$file_name = rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . "README.txt";
+	$file_name = rtrim(dirname(__FILE__),"system\PHPPO\src") . "/" . "README.txt";
 	if( !file_exists($file_name) ){
 		touch( $file_name );
 	}
 	chmod( $file_name, 0666 );
 
-	$logfilepath = rtrim(dirname(__FILE__),"\PHPPO\src") . "\\root\home\logs";
+	$logfilepath = rtrim(dirname(__FILE__),"system\PHPPO\src") . "\\root\home\logs";
 	if (!file_exists($logfilepath)) {
 		mkdir($logfilepath);
+		var_dump($logfilepath);
 		$system->sendMessage("ログ出力用フォルダを生成しました。:" . $logfilepath);
 	}
 
-	$scriptsfilepath = rtrim(dirname(__FILE__),"\PHPPO\src") . "\\root\scripts";
+	$scriptsfilepath = rtrim(dirname(__FILE__),"system\PHPPO\src") . "\\root\scripts";
 	if (!file_exists($scriptsfilepath)) {
 		mkdir($scriptsfilepath);
 		$system->sendMessage("スクリプト、ユーザー定義コマンド保存用フォルダを生成しました。:" . $scriptsfilepath);
 	}
 
-	$logfilepath = rtrim(dirname(__FILE__),"\PHPPO\src") . "\\root\home\logs\\" . date('Y_m_d') . ".log";
+	$logfilepath = rtrim(dirname(__FILE__),"system\PHPPO\src") . "\\root\home\logs\\" . date('Y_m_d') . ".log";
 	if (!file_exists($logfilepath)) {
 		touch($logfilepath);
 		$system->sendMessage("ログ出力用ファイルを生成しました。:" . $logfilepath . PHP_EOL);
@@ -393,7 +385,7 @@ function readySetup($tipe){
 	$writeData = fopen($logfilepath,'a');
 	$pr_info = "INFO";
 	$pr_thread = "File";
-	$LICENSE = fopen(rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . 'LICENSE.txt', "w");
+	$LICENSE = fopen(rtrim(dirname(__FILE__),"system\PHPPO\src") . "/" . 'LICENSE.txt', "w");
 	$system->sendMessage("\x1b[38;5;145mライセンスファイルの更新を行っています...");
 	fwrite($LICENSE, "		┿━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┿
 	│　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　│
@@ -410,7 +402,7 @@ function readySetup($tipe){
 	You should have received a copy of the GNU General Public License along with this program. If not, see httpwww.gnu.orglicenses.");
 	fclose($LICENSE);
 	$system->sendMessage("\x1b[38;5;145m更新が終了しました。");
-	$LICENSE = fopen(rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . 'README.txt', "w");
+	$LICENSE = fopen(rtrim(dirname(__FILE__),"system\PHPPO\src") . "/" . 'README.txt', "w");
 	$system->sendMessage("\x1b[38;5;145mREADMEファイルの更新を行っています...");
 	fwrite($LICENSE,   '	■□━━━━━━━━━━━━━━━━━━━━━━━━━━□■
 	□■　　　　　　     　PHP Prompt OS 1　 　　　　 　　　■□
@@ -444,7 +436,7 @@ function readySetup($tipe){
 	┗起動時にsrcに格納されているベースのプロセスを呼び出し、mintty.exeに結果を出力。');
 	fclose($LICENSE);
 	$system->sendMessage("\x1b[38;5;145m更新が終了しました。");
-	$file_name = rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . 'config.ini';
+	$file_name = rtrim(dirname(__FILE__),"system\PHPPO\src") . "/" . 'config.ini';
 	if (!file_exists($file_name)) {
 		touch($file_name);
 		$system->sendMessage("システム設定用ファイルを出力しました。:" . $file_name . PHP_EOL);
@@ -523,11 +515,11 @@ function readScripts(){
 	$aryScriptFiles = array();
 	$aryScripts = array();
 	// ディレクトリのパスを記述
-	$dir = rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . "scripts" ;
+	$dir = rtrim(dirname(__FILE__),"system\PHPPO\src") . "/" . "scripts" ;
 
 	// ディレクトリの存在を確認し、ハンドルを取得
 	$i = 0;
-	$handle = opendir(rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . "scripts" . "/");
+	$handle = opendir(rtrim(dirname(__FILE__),"system\PHPPO\src") . "/" . "scripts" . "/");
 	while (false !== ($file = readdir($handle))) {
 		if(strpos($file,'.') == false){
 			array_push($aryScriptFiles,$file);
@@ -598,7 +590,7 @@ standbyTipe();
 function endUserSetup($user, $password){
 	global $system;global $display;
 	global $systemconf_ini_array;
-	$filename = rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . "user.json";
+	$filename = rtrim(dirname(__FILE__),"system\PHPPO\src") . "/" . "user.json";
 	$json = file_get_contents($filename);
 	$config = json_decode($json,true);
 
@@ -616,7 +608,7 @@ function endUserSetup($user, $password){
 function loginSystem($user){
 	global $system;global $display;
 	global $systemconf_ini_array;
-	$filename = rtrim(dirname(__FILE__),"\PHPPO\src") . "/" . "user.json";
+	$filename = rtrim(dirname(__FILE__),"system\PHPPO\src") . "/" . "user.json";
 	$json = file_get_contents($filename);
 	$password_data = json_decode($json,true);
 	$askPassword = $system->sendMessage($user . "のパスワードを入力してください。:","input");

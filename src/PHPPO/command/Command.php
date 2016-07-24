@@ -5,6 +5,7 @@ include_once 'ScriptCommand.php';
 include_once 'DefaultCommands.php';
 use phppo\system\systemProcessing as systemProcessing;
 use phppo\command\scriptCommand as scriptCommand;
+use phppo\command\defaults\script_command as script_command;
 $commandpros = new command;
 $system = new systemProcessing;
 $commandpros = new command;

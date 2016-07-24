@@ -353,7 +353,7 @@ class systemProcessing {
 		while (True) {
 			$system->readyInputEvent();
 			// var_dump($defined_vars);
-			file_put_contents(dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
+			file_put_contents(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
 			$po_cd = str_replace(trim($poPath),"",trim($currentdirectory));
 			$stanby = True;
 			$display->setThread("PHPPO");

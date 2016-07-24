@@ -26,7 +26,7 @@ class script_command extends systemProcessing{
 		$pathCount = count($aryTipeTxt);
 		if ($pathCount <= 1) {
 			$this->sendMessage("パラメーターが不足しています。");
-return false;
+			return false;
 			}else{
 				$aryTipeTxt[1] = trim($aryTipeTxt[1]);
 				$name = '';
