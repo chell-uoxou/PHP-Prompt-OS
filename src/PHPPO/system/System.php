@@ -5,14 +5,13 @@ namespace phppo\system;
 
 
 include_once dirname(__FILE__) . '/../display/display.php';
-include_once dirname(__FILE__) . '/../plugin/Manager.php';
 include_once 'environmentValues.php';
+include_once dirname(__FILE__) . '/../plugin/Manager.php';
 include_once 'currentdirectory.php';
 include_once 'sysconf.php';
 
 use phppo\plugin\Manager as pluginManager;
 use phppo\display as display;
-$valuepros = new environmentVariables;
 $pluginpros = new pluginManager;
 $sysconfpros = new systemConfig("read");
 
@@ -105,8 +104,24 @@ class systemProcessing {
 		}
 	}
 
-
-
+	public function generateEvent($name,$to = NULL){
+		// $arg_list = func_get_args();
+		if (isset($to)) {
+			$class = $to;
+			if (method_exists($class,$name)) {
+				$obj = new $class;
+				$obj->$name();
+			}
+		}else{
+			$declared_classes = get_declared_classes();
+			foreach ($declared_classes as $class) {
+				if (method_exists($class,$name)) {
+					$obj = new $class;
+					$obj->$name();
+				}
+			}
+		}
+	}
 
 
 	public function readyInputEvent(){

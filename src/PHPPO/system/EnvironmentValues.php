@@ -2,6 +2,7 @@
 namespace phppo\system;
 
 use phppo\system\systemProcessing as systemProcessing;
+$valuepros = new environmentVariables;
 /**
  *
  */

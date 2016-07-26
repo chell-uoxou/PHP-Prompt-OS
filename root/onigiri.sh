@@ -23,7 +23,7 @@ echo
 echo
 echo
 wait 500
-cls
+#cls
 echo ┌──────────────────────―─┐
 echo │　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 　 ｜
 echo │　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 　 ｜
@@ -48,7 +48,7 @@ echo
 echo
 echo
 wait 500
-cls
+#cls
 echo ┌──────────────────────―─┐
 echo │　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 　 ｜
 echo │　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 　 ｜
@@ -73,7 +73,7 @@ echo
 echo
 echo
 wait 500
-cls
+#cls
 echo ┌──────────────────────―─┐
 echo │　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 　 ｜
 echo │　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 　 ｜
@@ -98,7 +98,7 @@ echo
 echo
 echo
 wait 500
-cls
+#cls
 echo ┌──────────────────────―─┐
 echo │　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 　 ｜
 echo │　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 　 ｜
@@ -123,7 +123,7 @@ echo
 echo
 echo
 wait 500
-cls
+#cls
 echo ┌──────────────────────―─┐
 echo │　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 　 ｜
 echo │　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 　 ｜
@@ -148,7 +148,7 @@ echo
 echo
 echo
 wait 500
-cls
+#cls
 echo ■■■■■■■■■■
 echo ■　 　 ■　 　 ■　 　 ■
 echo ■　 ■ 　 　 　 　■　 ■

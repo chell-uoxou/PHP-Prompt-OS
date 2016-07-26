@@ -22,7 +22,7 @@ class script_command extends systemProcessing{
 		global $running;
 		global $runScriptPath;
 		global $lastTipeTxt;
-		global $display;;
+		global $display;
 		$pathCount = count($aryTipeTxt);
 		if ($pathCount <= 1) {
 			$this->sendMessage("パラメーターが不足しています。");

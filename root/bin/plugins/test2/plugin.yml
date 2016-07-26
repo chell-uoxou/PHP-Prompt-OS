@@ -1,0 +1,8 @@
+name: TestPlugin2
+path: src/chell_uoxou/test2.php
+main: test2\Test2Command
+version: 0.0.0
+api: 1.6.0_Dev
+load: LOAD
+author: chell_uoxou
+description: This is a test plugin for PHPPO!
