@@ -7,3 +7,4 @@ test/
 #omake/
 root/bin/plugins/onigiri/plugin.yml
 root/bin/plugins/
+bin/php7/
