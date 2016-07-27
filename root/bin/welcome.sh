@@ -1,3 +1,4 @@
+reboot
 set welcome.defvalue.currentdirectory %currentdirectory%
 cd .
 set yeah %currentdirectory%

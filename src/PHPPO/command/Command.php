@@ -3,6 +3,7 @@ namespace phppo;
 
 include_once 'ScriptCommand.php';
 include_once 'DefaultCommands.php';
+include_once 'PluginCommands.php';
 use phppo\system\systemProcessing as systemProcessing;
 use phppo\command\scriptCommand as scriptCommand;
 use phppo\command\defaults\script_command as script_command;
@@ -53,6 +54,8 @@ class command extends systemProcessing{
 		global $commands;
 		global $lastTipeTxt;
 		global $raw_input;
+		global $plugincommands;
+		global $plugindata;
 		$valuepros->setvalue("time", date('A-H:i:s'));
 		$aryTipeTxt = explode(" ", $tipe_text);
 		$baseCommand = trim($aryTipeTxt[0]);
@@ -67,8 +70,16 @@ class command extends systemProcessing{
 					$script = new \phppo\command\defaults\script_command;
 					$onerror = $script->onCommand();
 				}else {
-					$system->sendMessage("\x1b[38;5;203m\"" . $baseCommand . "\"コマンドが見つかりませんでした。helpコマンドで確認してください。");
-					$onerror = false;
+					if (array_key_exists($baseCommand,$plugincommands)) {
+						$plugin_name = $plugincommands[$baseCommand]["pluginname"];
+						// var_dump($plugincommands[$baseCommand])///////////////////////////////////;
+						$instname = $plugindata[$plugin_name]["main"];
+						$com_inst = new $instname;
+						$onerror = $com_inst->onCommand();
+					}else{
+						$system->sendMessage("\x1b[38;5;203m\"" . $baseCommand . "\"コマンドが見つかりませんでした。helpコマンドで確認してください。");
+						$onerror = false;
+					}
 				}
 			}
 			$lastTipeTxt = $tipe_text;

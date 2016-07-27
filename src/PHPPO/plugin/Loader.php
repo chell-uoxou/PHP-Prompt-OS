@@ -1,22 +1,25 @@
 <?php
-namespace phppo\plugin\loader;
+namespace phppo\plugin;
 // include_once(dirname(__FILE__) . "/../system/System.php");
 use phppo\system\systemProcessing as systemProcessing;
 $system = new systemProcessing;
+$pluginLoadPros = new Loader;
 require_once dirname(dirname(dirname(dirname(__FILE__)))) . "\lib\spyc-0.5\spyc.php";
 
 /**
  *
  */
-class ClassName extends systemProcessing{
+class Loader extends systemProcessing{
 
-	function __construct(argument)
-	{
+	function __construct(){
 		# code...
 	}
 
 	public function pluginLoad(){
 		global $fileplugins;
+		global $system;
+		global $plugindata;
+		global $dirplugins;
 		@$fileplugins = scandir(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\plugins');
 		$i = 0;
 		$j = 0;
@@ -45,7 +48,7 @@ class ClassName extends systemProcessing{
 			}
 			// var_dump($replugindata);///////////////////////
 			// echo "skjdhsdfolakjsdhflaksjdhflaksdjfhlaskdfjhasldkfjhasdlkfjhsadlfkjhasdlkfjhasdlfkjahsdflkasjhdf\n";
-			var_dump($plugindata);
+			// var_dump($plugindata);//////////////////////////////////////////////
 			// var_dump($dirplugins);//////////////////////////////////////////////
 			// ここからプラグイン読み込み
 			foreach ($plugindata as $key => $value) {

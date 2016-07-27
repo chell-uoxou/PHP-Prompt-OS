@@ -10,9 +10,12 @@ use phppo\system\systemProcessing as systemProcessing;
  		# code...
  	}
 
- 	public function addcommand($plugin,$basecommand,$type,$des,$usage,$enadis='enable'){
+ 	public function addcommand($plugin,$basecommand,$type='plugin',$des='',$usage='',$enadis='enable'){
  		global $plugincommands;
- 		$commands[$basecommand] = array('type' => $type, 'des' => $des, 'usage' => $usage, 'enadis'=> $enadis);
-		$this->sendMessage("[{$type}] Command enabled:");
+		global $plugindata;
+		$plugin_name = $plugindata[$plugin]["name"];
+		global $commands;
+ 		$plugincommands[$basecommand] = array('pluginname'=>$plugin_name,'basecommand'=>$basecommand,'type' => $type, 'des' => $des, 'usage' => $usage, 'enadis'=> $enadis);
+		$this->sendMessage("\x1b[38;5;227m[{$plugin}] \x1b[38;5;83mCommand enabled\x1b[38;5;231m:\x1b[38;5;145m{$basecommand}");
  	}
  }

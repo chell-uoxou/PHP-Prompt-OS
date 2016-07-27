@@ -5,3 +5,5 @@ root/phar.setalias(1).html
 root/phar.setalias.html
 test/
 #omake/
+root/bin/plugins/onigiri/plugin.yml
+root/bin/plugins/

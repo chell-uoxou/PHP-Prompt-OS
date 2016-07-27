@@ -18,9 +18,9 @@ class reboot_command extends systemProcessing{
 		$this->sendMessage("PHP Prompt OS を再起動します。");
 		$this->sendMessage("This window will be closed when the top of the thread has been completed");
 		if (isset($aryTipeTxt[1])) {
-			exec("start.cmd -rebooted -script {$aryTipeTxt[1]}");
+			exec("start.cmd");
 		}else {
-			exec("start.cmd -rebooted");
+			exec("start.cmd");
 		}
 		exit(0);
 	}

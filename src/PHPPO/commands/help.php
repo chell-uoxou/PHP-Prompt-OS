@@ -19,8 +19,13 @@ class help_command extends systemProcessing{
 		global $commands;
 		global $extensionCommands;
 		global $extensionCommandsDescription;
+		global $showcommands;
+		global $plugincommands;
+		// var_dump($plugincommands);/////////////////////////////////////////////
+		$showcommands = array_merge($commands,$plugincommands);
 		$messageCount = count($aryTipeTxt);
-		ksort($commands);
+		ksort($showcommands);
+		// var_dump($showcommands);//////////////////////////
 		if ($messageCount <= 1) {
 			$this->sendMessage("\x1b[38;5;59m===================\x1b[38;5;231mコマンド一覧\x1b[38;5;59m===================\x1b[38;5;145m");
 			$a = 0;
@@ -35,8 +40,8 @@ class help_command extends systemProcessing{
 			// 	}
 			// }
 			// echo $longest_command_default;
-			foreach ($commands as $basecommand => $info) {
-				if ($info["type"] == "default") {
+			foreach ($showcommands as $basecommand => $info) {
+				if ($info["type"] == "default" || $info["type"] == "plugin") {
 					$a++;
 					// $longest = strlen(trim($longest_command_default)) - strlen($basecommand);
 					// echo $longest . PHP_EOL;

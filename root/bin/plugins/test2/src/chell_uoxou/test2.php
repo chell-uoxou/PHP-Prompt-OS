@@ -13,6 +13,6 @@ class Test2Command extends systemProcessing{
 		$this->sendMessage("二つ目のテストのプラグインが読み込まれたよ！？\n[onLoad]っていうイベントの取得だよ！？");
 	}
 	function onCommand(){
-		$this->sendMessage("二つ目のテストプラグインでコマンドが実行されたみたいだよ！？[onCommand]っていうイベントの取得だよ！？");
+		$this->sendMessage("[Test2plugin]二つ目のテストプラグインでコマンドが実行されたみたいだよ！？[onCommand]っていうイベントの取得だよ！？");
 	}
 }

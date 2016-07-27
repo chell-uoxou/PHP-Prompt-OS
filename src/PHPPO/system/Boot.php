@@ -195,7 +195,9 @@ function bootSystem($tipe){
 	global $argv;
 	global $versiontype;
 	global $versioncolor;
+	global $pluginLoadPros;
 	$system->sendMessage("here is :\x1b[38;5;145m" . $poPath);
+	$pluginLoadPros->pluginLoad();
 	switch ($versiontype) {
 		case 'Release':
 			$versioncolor = "\x1b[38;5;83m";
@@ -217,7 +219,7 @@ function bootSystem($tipe){
 	}
 
 	if ($tipe != "script") {
-		usleep(rand(0,500000));//演出
+		// usleep(rand(0,500000));//演出
 		$system->sysCls(100);
 		$display->setThread("welcome");
 		$display->setInfo("INFO");
@@ -272,10 +274,6 @@ function bootSystem($tipe){
 		}
 	}else{
 		if ($tipe = "script") {
-			// echo $argv[2];
-			$tipe_text = "script home/scripts" . trim($argv[2]);
-			$script = new script_command;
-			$script->onCommand();
 		}
 	}
 }
@@ -584,7 +582,7 @@ function setUserPassword($setup_user){
 	} while ($setup_password_req != $setup_password);
 }
 
-standbyTipe();
+// standbyTipe();
 
 
 function endUserSetup($user, $password){
