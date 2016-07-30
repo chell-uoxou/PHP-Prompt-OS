@@ -114,37 +114,16 @@ class systemProcessing {
 			}
 		}else{
 			$declared_classes = get_declared_classes();
-			foreach ($declared_classes as $class) {
+			foreach ($declared_classes as $key => $class) {
+				// echo $class . "\n";/////////////////////////////////////
 				if (method_exists($class,$name)) {
-					$obj = new $class;
-					$obj->$name();
+					$obj[$key] = new $class;
+					// var_dump($obj[$key]);////////////////////////////////
+					$obj[$key]->$name();
 				}
 			}
 		}
 	}
-
-
-	public function readyInputEvent(){
-		global $defined_vars;
-		global $currentdirectory;
-		global $valuepros;
-		global $defaultcurrentdirectory;
-		// $setcd = $valuepros->getvalue("currentdirectory");
-		// if ($defaultcurrentdirectory != $currentdirectory) {
-		// 	$currentdirectory = $setcd;
-		// }else {
-		//
-		// }
-		// $defaultcurrentdirectory = $currentdirectory;
-		$valuepros->setvalue("currentdirectory",$currentdirectory);
-		$defined_vars = get_defined_vars();
-	}
-
-
-
-
-
-
 
 
 	public function sendMessage($pr_disp,$type = "info",$thre = "PHPPO"){
@@ -252,6 +231,16 @@ class systemProcessing {
 		}//てってってれってー
 	}//んーでってれってー
 
+	public function terminal_set_title($value){
+		global $term_title;
+		$term_title = $value;
+		echo "\x1b]0;" . $value . "\x07";
+	}
+
+	public function terminal_get_title($type=''){
+		global $term_title;
+		return $term_title;
+	}
 	public function inputProcessor($raw_input){
 		global $environmentVariables;
 		global $savevaluesmode;
@@ -352,6 +341,7 @@ class systemProcessing {
 		global $scriptcommandpros;
 		$scriptcommandpros->readExtension();
 		$pluginpros->install();
+		$system->terminal_set_title("PHP Prompt OS");
 		// $system->sendMessage("\x1b[38;5;63m起動完了！helpコマンドでコマンド一覧を表示。");
 		// file_put_contents(dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
 		if (isset($systemconf_ini_array["system"]["bootexec"])) {
@@ -366,10 +356,11 @@ class systemProcessing {
 		}
 
 		while (True) {
-			$system->readyInputEvent();
+			$system->generateEvent("readyInputEvent");
 			// var_dump($defined_vars);
 			file_put_contents(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
 			$po_cd = str_replace(trim($poPath),"",trim($currentdirectory));
+			$system->terminal_set_title("PHP Prompt OS - " . $po_cd);
 			$stanby = True;
 			$display->setThread("PHPPO");
 
@@ -443,6 +434,33 @@ class myPhar extends systemProcessing{
 		$this->sendMessage("pharを作成しました。 : $pharfilepath");
 	}
 
+}
+
+/**
+ *
+ */
+class events extends systemProcessing{
+
+	function __construct()
+	{
+		# code...
+	}
+	function readyInputEvent(){
+		// echo "a";///////////////
+		global $defined_vars;
+		global $currentdirectory;
+		global $valuepros;
+		global $defaultcurrentdirectory;
+		// $setcd = $valuepros->getvalue("currentdirectory");
+		// if ($defaultcurrentdirectory != $currentdirectory) {
+		// 	$currentdirectory = $setcd;
+		// }else {
+		//
+		// }
+		// $defaultcurrentdirectory = $currentdirectory;
+		$valuepros->setvalue("currentdirectory",$currentdirectory);
+		$defined_vars = get_defined_vars();
+	}
 }
 
 

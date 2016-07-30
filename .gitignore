@@ -8,3 +8,6 @@ test/
 root/bin/plugins/onigiri/plugin.yml
 root/bin/plugins/
 bin/php7/
+root/home/logs/2016_07_28.log
+root/home/logs/2016_07_29.log
+root/home/logs/2016_07_30.log

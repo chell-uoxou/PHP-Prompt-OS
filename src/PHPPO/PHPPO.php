@@ -18,6 +18,7 @@ echo "Library loaded!\nPHP Prompt OS booting...\n";
 
 $first_time_boot = !file_exists(rtrim(dirname(__FILE__),"\PHPPO\src") . "\\root\bin\\" . 'systemdefinedvars.dat');
 include_once "system/System.php";
+$system->terminal_set_title("PHP Prompt OS : Booting...");
 $system = new systemProcessing;
 include_once 'display/display.php';
 include_once 'command/Command.php';

@@ -9,6 +9,10 @@ $systemconf_ini_array = parse_ini_file(dirname(dirname(dirname(dirname(__FILE__)
 $echoFunc = "on";
 $valuepros = new environmentVariables;
 
+
+
+
+
 if ($systemconf_ini_array["dev"]["devmode"] != 1) {
 	@$files = scandir(rtrim(trim(dirname(dirname(dirname(__FILE__)))),"system\PHPPO\src") . "/root/home/logs/",1);
 	// var_dump($files);
@@ -86,6 +90,20 @@ $versiontype = "Alpha";//{Release}->{Alpha}->{Beta}->{Dev}
 $system->sendMessage("Starting environment variables system...");
 $valuepros = new environmentVariables;
 $valuepros->setvalue("version",$version);
+
+$title = "PHP Prompt OS $version";
+$pid = getmypid(); // これを使えば、プロセスのタイトルを ps で確認できます
+
+if (!cli_set_process_title($title)) {
+    echo "Unable to set process title for PID $pid...\n";
+    exit(1);
+} else {
+    echo "The process title '$title' for PID $pid has been set for your process!\n";
+}
+
+
+
+
 $boottipe = count($argv);
 function exception_handler($exception) {
 	global $display;

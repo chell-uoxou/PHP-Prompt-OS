@@ -7,7 +7,7 @@ namespace phppo\system;
 use phppo\system\systemProcessing as systemProcessing;
 class systemConfig extends systemProcessing{
 
-	function __construct($type){
+	function __construct($type=""){
 		global $systemConfigAry;
 		if ($type == "read") {
 			if (!file_exists(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\\' . "systemconfig.dat")) {
