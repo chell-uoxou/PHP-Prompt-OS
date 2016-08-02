@@ -14,11 +14,11 @@ class script_command extends systemProcessing{
 	public function onCommand(){
 		global $aryTipeTxt;
 		global $tipe_text;
-		global $commands;
+		global $defaultcommands;
 		global $currentdirectory;
 		global $commandpros;
 		global $raw_input;
-		global $extensionCommands;
+		global $extensioncommands;
 		global $running;
 		global $runScriptPath;
 		global $lastTipeTxt;
@@ -87,14 +87,14 @@ class script_command extends systemProcessing{
 				$conf =true;
 				// var_dump($array);
 				foreach ($array as $key => $value) {
-					// var_dump($commands);
+					// var_dump($defaultcommands);
 					// var_dump($value);
 					$line++;
 					if ($value != "") {
 						$aryTipeTxt = explode(" ", trim($value));
-						$conf = array_key_exists($aryTipeTxt[0], $commands);
+						$conf = array_key_exists($aryTipeTxt[0], $defaultcommands);
 						if ($conf === false) {
-							$conf = array_key_exists($aryTipeTxt[0], $extensionCommands);
+							$conf = array_key_exists($aryTipeTxt[0], $extensioncommands);
 							if ($conf === false) {
 								$this->sendMessage("Script error:確認されない命令\"{$value}\"が見つかりました。 in {$name} -> line{$line}","error");
 								return false;

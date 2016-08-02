@@ -13,7 +13,7 @@ $commandpros = new command;
 $scriptcommandpros = new scriptCommand;
 // $addcom = new addcommand;
 //////////////////////
-$commands = array();
+$defaultcommands = array();
 $system->sendMessage("Command loaded:");
 $re_dircommands = scandir(dirname(__FILE__) . '/../commands');
 $i = 0;
@@ -30,7 +30,7 @@ foreach ($dircommands as $key => $value) {
 	include_once $value;
 }
 echo PHP_EOL;
-// var_dump($commands);
+// var_dump($defaultcommands);
 //////////////////////
 /**
  *
@@ -50,32 +50,35 @@ class command extends systemProcessing{
 		global $pr_info;
 		global $exec_command;
 		global $valuepros;
-		global $extensionCommands;
-		global $commands;
+		global $extensioncommands;
+		global $defaultcommands;
 		global $lastTipeTxt;
 		global $raw_input;
 		global $plugincommands;
 		global $plugindata;
+		global $commands;
+		$commands = array_merge($defaultcommands,$plugincommands,$extensioncommands);
+		ksort($commands);
 		$valuepros->setvalue("time", date('A-H:i:s'));
 		$aryTipeTxt = explode(" ", $tipe_text);
 		$baseCommand = trim($aryTipeTxt[0]);
 		if (!$baseCommand == "") {
-			if (array_key_exists($baseCommand,$commands)) {
+			if (array_key_exists($baseCommand,$defaultcommands)) {
 				$instname = "\phppo\command\defaults\\" . $baseCommand . "_command";
 				$com_inst = new $instname;
 				$onerror = $com_inst->onCommand();
 			}else {
-				if (array_key_exists($baseCommand,$extensionCommands)) {
-					$aryTipeTxt = array("script",$extensionCommands[$baseCommand]);
-					$script = new \phppo\command\defaults\script_command;
-					$onerror = $script->onCommand();
-				}else {
-					if (array_key_exists($baseCommand,$plugincommands)) {
-						$plugin_name = $plugincommands[$baseCommand]["pluginname"];
-						// var_dump($plugincommands[$baseCommand])///////////////////////////////////;
-						$instname = $plugindata[$plugin_name]["main"];
-						$com_inst = new $instname;
-						$onerror = $com_inst->onCommand();
+				if (array_key_exists($baseCommand,$plugincommands)) {
+					$plugin_name = $plugincommands[$baseCommand]["pluginname"];
+					// var_dump($plugincommands[$baseCommand])///////////////////////////////////;
+					$instname = $plugindata[$plugin_name]["main"];
+					$com_inst = new $instname;
+					$onerror = $com_inst->onCommand();
+				}else{
+					if (array_key_exists($baseCommand,$extensioncommands)) {
+						$aryTipeTxt = array("script",$extensioncommands[$baseCommand]["path"]);
+						$script = new \phppo\command\defaults\script_command;
+						$onerror = $script->onCommand();
 					}else{
 						$system->sendMessage("\x1b[38;5;203m\"" . $baseCommand . "\"コマンドが見つかりませんでした。helpコマンドで確認してください。");
 						$onerror = false;

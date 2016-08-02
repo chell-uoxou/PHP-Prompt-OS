@@ -95,10 +95,10 @@ $title = "PHP Prompt OS $version";
 $pid = getmypid(); // これを使えば、プロセスのタイトルを ps で確認できます
 
 if (!cli_set_process_title($title)) {
-    echo "Unable to set process title for PID $pid...\n";
+    $system->sendMessage("Unable to set process title for PID $pid...");
     exit(1);
 } else {
-    echo "The process title '$title' for PID $pid has been set for your process!\n";
+    $system->sendMessage("The process title '$title' for PID $pid has been set for your process!");
 }
 
 

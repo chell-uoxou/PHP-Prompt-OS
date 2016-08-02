@@ -12,9 +12,9 @@ class scriptCommand extends systemProcessing{
 	}
 	public function readExtension($value=''){
 		global $poPath;
-		global $commands;
-		global $extensionCommands;
-		global $extensionCommandsDescription;
+		global $defaultcommands;
+		global $extensioncommands;
+		global $extensioncommandsDescription;
 		if (!file_exists($poPath . "/root/bin/extensions.ini")) {
 			touch($poPath . "/root/bin/extensions.ini");
 			file_put_contents($poPath . "/root/bin/extensions.ini",'
@@ -29,22 +29,22 @@ class scriptCommand extends systemProcessing{
 ;	implemented,PHPPO throws an error at the time of start-up, preferentially
 ;	already mounted command is executed.
 ;==============================================================================
-hello=hello.sh
-welcome = bin\welcome.sh
-cls = bin\interchangeable\cls.sh
-onigiri = onigiri.sh
+#hello=hello.sh
+#welcome = bin\welcome.sh
+#cls = bin\interchangeable\cls.sh
+#onigiri = onigiri.sh
 ');
 		}
 		$aryfile = explode(PHP_EOL,file_get_contents($poPath . "/root/bin/extensions.ini"));
 		$plsdel = array();
-		$extensionCommands = parse_ini_file($poPath . "/root/bin/extensions.ini");
-		$extensionCommandsDescription = parse_ini_file($poPath . "/root/bin/extension_description.ini");
-		// var_dump($commands);
-		foreach ($extensionCommands as $key => $value) {
+		$extensioncommanddatas = parse_ini_file($poPath . "/root/bin/extensions.ini");
+		$extensioncommandsDescription = parse_ini_file($poPath . "/root/bin/extension_description.ini");
+		// var_dump($defaultcommands);
+		foreach ($extensioncommanddatas as $key => $value) {
 			// $this->sendMessage("{$key}:拡張コマンド");
 			$path = $poPath . "\\root\\" . $value;
 			// echo $path . PHP_EOL;
-			if (array_key_exists($key,$commands)) {
+			if (array_key_exists($key,$defaultcommands)) {
 				$plsdel[] = $key;
 				// var_dump($aryfile);///////////////////////////////////////////////////////////
 				// var_dump($key);///////////////////////////////////////////////////////////
@@ -62,16 +62,17 @@ onigiri = onigiri.sh
 					$this->sendMessage("記述された拡張コマンドにあたるパスは無効です。","error");
 					$this->sendMessage("Desabled [" . $key . "] Command :File not found --{$path}","error");
 				}else {
-					// if (isset($extensionCommandsDescription[$key])) {
-					// 	$extensionCommands[$key]["des"] = $extensionCommandsDescription[$key];
+					// if (isset($extensioncommandsDescription[$key])) {
+					// 	$extensioncommands[$key]["des"] = $extensioncommandsDescription[$key];
 					// }
-					$extensionCommands[$key] = $path;
+					$extensioncommands[$key]["path"] = $path;
+					$extensioncommands[$key]["type"] = "extension";
 				}
 			}
 		}
 		foreach ($plsdel as $key => $value) {
-			unset($extensionCommands[$value]);
+			unset($extensioncommands[$value]);
 		}
-		// var_dump($extensionCommands);
+		// var_dump($extensioncommands);
 	}
 }

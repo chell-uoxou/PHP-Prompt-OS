@@ -20,6 +20,7 @@ class Loader extends systemProcessing{
 		global $system;
 		global $plugindata;
 		global $dirplugins;
+		global $commands;
 		@$fileplugins = scandir(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\plugins');
 		$i = 0;
 		$j = 0;
@@ -58,10 +59,22 @@ class Loader extends systemProcessing{
 				$plugin_main = $value["main"];
 				if (is_file($plugin_src_path)) {
 					$system->sendMessage("{$key} V.{$plugin_version}を読み込み中...");
-					include_once($plugin_src_path);
-					$system->generateEvent("onLoad",$plugin_main);
+					if (!class_exists($plugin_main)) {
+						include_once($plugin_src_path);
+						$system->generateEvent("onLoad",$plugin_main);
+					}else{
+						$this->plugin_cantload("クラス定義の重複");
+						$plugindata[$key]["status"] = "disable";
+					}
+				}else {
+					$this->plugin_cantload("定義されたファイルが存在しない");
+					$plugindata[$key]["status"] = "disable";
 				}
 			}
 		}
+	}
+
+	public function plugin_cantload($reason="原因未定義"){
+		$this->sendMessage("プラグインの読み込みに失敗しました。:{$reason}","critical");
 	}
 }

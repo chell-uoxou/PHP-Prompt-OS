@@ -16,21 +16,19 @@ class help_command extends systemProcessing{
 	}
 	public function onCommand(){
 		global $aryTipeTxt;
+		global $defaultcommands;
+		global $extensioncommands;
+		global $extensioncommandsDescription;
 		global $commands;
-		global $extensionCommands;
-		global $extensionCommandsDescription;
-		global $showcommands;
 		global $plugincommands;
 		// var_dump($plugincommands);/////////////////////////////////////////////
-		$showcommands = array_merge($commands,$plugincommands);
 		$messageCount = count($aryTipeTxt);
-		ksort($showcommands);
-		// var_dump($showcommands);//////////////////////////
+		// var_dump($commands);//////////////////////////
 		if ($messageCount <= 1) {
 			$this->sendMessage("\x1b[38;5;59m===================\x1b[38;5;231mコマンド一覧\x1b[38;5;59m===================\x1b[38;5;145m");
 			$a = 0;
 			// $longest_command_default = 0;
-			// foreach ($commands as $basecommand => $info) {
+			// foreach ($defaultcommands as $basecommand => $info) {
 			// 	if ($info["type"] == "default") {
 			// 		// echo strlen($basecommand);
 			// 		$complonger = strlen("{$basecommand} {$info["usage"]}");
@@ -40,7 +38,7 @@ class help_command extends systemProcessing{
 			// 	}
 			// }
 			// echo $longest_command_default;
-			foreach ($showcommands as $basecommand => $info) {
+			foreach ($commands as $basecommand => $info) {
 				if ($info["type"] == "default" || $info["type"] == "plugin") {
 					$a++;
 					// $longest = strlen(trim($longest_command_default)) - strlen($basecommand);
@@ -58,7 +56,7 @@ class help_command extends systemProcessing{
 			switch ($aryTipeTxt[1]) {
 				case 'all':
 				$this->sendMessage("\x1b[38;5;59m===================\x1b[38;5;87m実装コマンド一覧\x1b[38;5;59m===================\x1b[38;5;145m");
-				foreach ($commands as $basecommand => $info) {
+				foreach ($defaultcommands as $basecommand => $info) {
 					if ($info["enadis"] != "desable") {
 						$this->sendMessage("\x1b[38;5;59m[{$info["type"]}]-\x1b[38;5;34m{$basecommand} \x1b[38;5;83m{$info["usage"]}\x1b[38;5;145m:{$info["des"]}\x1b[38;5;145m");
 					}else {
@@ -71,7 +69,7 @@ class help_command extends systemProcessing{
 				break;
 				case 'dev':
 				$this->sendMessage("\x1b[38;5;59m#######\x1b[38;5;127m開発者向けコマンド一覧\x1b[38;5;59m########");
-				foreach ($commands as $basecommand => $info) {
+				foreach ($defaultcommands as $basecommand => $info) {
 					if ($info["type"] == "dev") {
 						$this->sendMessage("\x1b[38;5;34m{$basecommand} \x1b[38;5;83m{$info["usage"]}\x1b[38;5;145m:{$info["des"]}\x1b[38;5;145m");
 					}
@@ -80,9 +78,10 @@ class help_command extends systemProcessing{
 
 				case 'ex':
 				$this->sendMessage("\x1b[38;5;59m================\x1b[38;5;214mスクリプト拡張コマンド一覧\x1b[38;5;59m================\x1b[38;5;145m");
-				foreach ($extensionCommands as $basecommand => $path){
-					if (isset($extensionCommandsDescription[$basecommand])) {
-						$des = $extensionCommandsDescription[$basecommand];
+				foreach ($extensioncommands as $basecommand => $data){
+					$path = $data["path"]
+;					if (isset($extensioncommandsDescription[$basecommand])) {
+						$des = $extensioncommandsDescription[$basecommand];
 						$this->sendMessage("\x1b[38;5;207m{$basecommand}\x1b[38;5;145m:{$des} \x1b[38;5;59m({$path})");
 					}else{
 						$this->sendMessage("\x1b[38;5;207m{$basecommand} \x1b[38;5;59m({$path})");
@@ -92,14 +91,14 @@ class help_command extends systemProcessing{
 					break;
 				default:
 				// foreach ($info["type"] as $key => $value) {
-				// 	foreach ($commands as $basecommand => $info) {
+				// 	foreach ($defaultcommands as $basecommand => $info) {
 				// 		if ($info["type"] == $value) {
 				// 			$this->sendMessage("\x1b[38;5;34m{$basecommand} \x1b[38;5;83m{$info["usage"]}\x1b[38;5;145m:{$info["des"]}\x1b[38;5;145m");
 				// 		}
 				// 	}
 				// }
 				$conf = false;
-				foreach ($commands as $key => $value) {
+				foreach ($defaultcommands as $key => $value) {
 					if ($key == $aryTipeTxt[1]) {
 						$this->sendMessage("\x1b[38;5;87m[{$key}]\x1b[38;5;231mコマンド");
 						$this->sendMessage("使用方法:\x1b[38;5;227m{$key} \x1b[38;5;83m{$value["usage"]}");

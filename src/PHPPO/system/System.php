@@ -148,6 +148,7 @@ class systemProcessing {
 		global $outprompt;
 		global $raw_input;
 
+		usleep(30000);/////////
 		$display = new display;
 		$display->setThread($thre);
 		$prompt = $valuepros->getvalue("prompt");
