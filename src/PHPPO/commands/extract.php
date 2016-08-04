@@ -15,21 +15,21 @@ class extract_command extends systemProcessing{
 		global $aryTipeTxt;
 		switch ($aryTipeTxt[1]) {
 			case 'system':
-				$this->sendMessage("現在実行しているpharアーカイブを展開しますか？");
+				$this->info("現在実行しているpharアーカイブを展開しますか？");
 				$Confirm = trim(fgets(fopen("php://stdin", "r")));
 				try {
-					$this->sendMessage("\x1b[38;5;231m解凍しています...");
+					$this->info("\x1b[38;5;231m解凍しています...");
 				    $phar = new Phar('PHPPO.phar');
 				    $phar->extractTo('src_new', null, true); // すべてのファイルを展開し、上書きします
-					$this->sendMessage("\x1b[38;5;83m完了しました。\x1b[38;5;145m:" . dirname(__FILE__) . "src");
+					$this->info("\x1b[38;5;83m完了しました。\x1b[38;5;145m:" . dirname(__FILE__) . "src");
 				} catch (Exception $e) {
 
 				}
-				$this->sendMessage();
+				$this->info();
 				break;
 
 			default:
-				$this->sendMessage("記法が誤っています。");
+				$this->info("記法が誤っています。");
 				break;
 		}
 	}

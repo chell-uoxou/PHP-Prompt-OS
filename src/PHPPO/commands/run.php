@@ -20,7 +20,7 @@ class run_command extends systemProcessing{
 		global $sender;
 		global $sendto;
 		$int = substr($raw_input,4);
-		$this->sendMessage("\x1b[38;5;37m{$sender}\x1b[m\x1b[38;5;59mから\x1b[38;5;37m{$sendto}\x1b[m\x1b[38;5;59mへの文字列送信:\x1b[38;5;34m{$int}");
+		$this->info("\x1b[38;5;37m{$sender}\x1b[m\x1b[38;5;59mから\x1b[38;5;37m{$sendto}\x1b[m\x1b[38;5;59mへの文字列送信:\x1b[38;5;34m{$int}");
 		$tipe_text = $int;
 		// echo $int;///////////////////////////
 		$raw_input = $int;

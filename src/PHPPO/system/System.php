@@ -42,7 +42,7 @@ class systemProcessing {
 		}
 	}
 	// public function showCsv($fname){
-	//   $f = @fopen($fname,'rb') or $this->sendMessage("※ファイルを開く際にエラーが発生しました。");
+	//   $f = @fopen($fname,'rb') or $this->info("※ファイルを開く際にエラーが発生しました。");
 	//   while(!feof($f)) $GLOBALS['/*ここ*/'] = something;fgetcsv($f,1024);
 	//   fclose($f);
 	// }
@@ -72,7 +72,7 @@ class systemProcessing {
 	public function file_download($url, $dir='.', $save_base_name='' ){
 		$url = trim($url);
 		if ( ! is_dir($dir) ){
-			$this->sendMessage("ディレクトリ({$dir})が存在しません。","error");
+			$this->throwError("ディレクトリ({$dir})が存在しません。");
 			return false;
 		}
 		$dir = preg_replace("{/$}","",$dir);
@@ -89,17 +89,17 @@ class systemProcessing {
 			@$local_filename = "{$dir}/{$p['filename']}" . "({$a}).{$p['extension']}";
 			$a++;
 		}
-		$this->sendMessage("URL({$url})からファイルを取得しています...");
+		$this->info("URL({$url})からファイルを取得しています...");
 		@$tmp = file_get_contents($url);;
 		if (!$tmp){
-			$this->sendMessage("URL({$url})からファイルの取得ができませんでした。","error");
+			$this->throwError("URL({$url})からファイルの取得ができませんでした。");
 			return false;
 		}else{
-			$this->sendMessage("ファイルに情報を書き込んでいます...");
+			$this->info("ファイルに情報を書き込んでいます...");
 			$fp = fopen($local_filename, 'w');
 			fwrite($fp, $tmp);
 			fclose($fp);
-			$this->sendMessage("\x1b[38;5;83m完了\x1b[38;5;59m:{$local_filename}");
+			$this->info("\x1b[38;5;83m完了\x1b[38;5;59m:{$local_filename}");
 			return true;
 		}
 	}
@@ -125,6 +125,33 @@ class systemProcessing {
 		}
 	}
 
+	public function throwError($txt){
+		$this->sendMessage($txt,"error");
+	}
+
+	public function info($pr_disp,$type = "info",$thre = "PHPPO"){
+		$this->sendMessage($pr_disp,$type,$thre);
+	}
+
+	public function input($pr_disp){
+		$input = $this->sendMessage("{$pr_disp}","input");
+		return $input;
+	}
+
+	public function addlog($pr_disp,$type = "info"){
+		global $plugindata;
+		$dbg = debug_backtrace();
+		// var_dump($dbg);//////////////////////////////
+		$obj = $dbg[0]["object"];
+		foreach ($plugindata as $value) {
+			if (isset($value["class-object"])) {
+				if ($value["class-object"] == $obj) {
+					$plugin_name = $value["name"];
+				}
+			}
+		}
+		$this->sendMessage("\x1b[38;5;227m[{$plugin_name}]\x1b[38;5;231m" . $pr_disp,$type);
+	}
 
 	public function sendMessage($pr_disp,$type = "info",$thre = "PHPPO"){
 		global $pr_TipeTxt;
@@ -148,7 +175,7 @@ class systemProcessing {
 		global $outprompt;
 		global $raw_input;
 
-		usleep(30000);/////////
+		// usleep(30000);/////////
 		$display = new display;
 		$display->setThread($thre);
 		$prompt = $valuepros->getvalue("prompt");
@@ -343,7 +370,7 @@ class systemProcessing {
 		$scriptcommandpros->readExtension();
 		$pluginpros->install();
 		$system->terminal_set_title("PHP Prompt OS");
-		// $system->sendMessage("\x1b[38;5;63m起動完了！helpコマンドでコマンド一覧を表示。");
+		// $system->info("\x1b[38;5;63m起動完了！helpコマンドでコマンド一覧を表示。");
 		// file_put_contents(dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
 		if (isset($systemconf_ini_array["system"]["bootexec"])) {
 			if ($systemconf_ini_array["system"]["bootexec"] != "") {
@@ -372,7 +399,7 @@ class systemProcessing {
 			// 	echo "\x1b[38;5;227m";
 			// }
 
-			$tipe_text = $system->sendMessage("\x1b[38;5;227m>","input");
+			$tipe_text = $system->input("\x1b[38;5;227m>");
 			$stanby = false;
 			if ($logmode == 1) {
 				fwrite($writeData,PHP_EOL . $tipe_text);
@@ -418,21 +445,21 @@ class myPhar extends systemProcessing{
 		$result = $fileclass->list_files($dir);
 		var_dump($result);
 		foreach ($result as $path) {
-			$this->sendMessage("ファイルをスキャン中... : $path");
+			$this->info("ファイルをスキャン中... : $path");
 		}
 		$pharfilepath = rtrim(dirname(__FILE__),"commands\src\PHPPO") . "\\" . "$phar_name.phar";
 		$phar = new Phar($pharfilepath, 0);
 		if (!file_exists($pharfilepath)) {
-			$this->sendMessage("pharファイルを生成しています。:" . $pharfilepath);
+			$this->info("pharファイルを生成しています。:" . $pharfilepath);
 			touch($pharfilepath);
-			$this->sendMessage("pharファイルを生成しました。:" . $pharfilepath);
+			$this->info("pharファイルを生成しました。:" . $pharfilepath);
 		}
 		chmod( $pharfilepath, 0666 );
 		foreach ($result as $path) {
-			$this->sendMessage("ファイルを追加しています... : $path");
+			$this->info("ファイルを追加しています... : $path");
 			$phar->addFile($path);
 		}
-		$this->sendMessage("pharを作成しました。 : $pharfilepath");
+		$this->info("pharを作成しました。 : $pharfilepath");
 	}
 
 }

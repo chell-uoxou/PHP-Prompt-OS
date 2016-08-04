@@ -57,24 +57,31 @@ class Loader extends systemProcessing{
 				$plugin_src_path = $plugin_bin_path . "/" . $value["path"];
 				$plugin_version = $value["version"];
 				$plugin_main = $value["main"];
+				$plugin_name = $value["name"];
 				if (is_file($plugin_src_path)) {
-					$system->sendMessage("{$key} V.{$plugin_version}を読み込み中...");
+					$system->info("{$key} V.{$plugin_version}を読み込み中...");
 					if (!class_exists($plugin_main)) {
 						include_once($plugin_src_path);
-						$system->generateEvent("onLoad",$plugin_main);
+						if (!class_exists($plugin_main)) {
+							$this->plugin_cantload($key,"クラスが存在しない");
+						}else{
+							$plugindata[$plugin_name]["class-object"] = new $plugin_main;
+							// var_dump($plugindata[$plugin_name]["class-object"]);///////////////////////////////////////
+							$system->generateEvent("onLoad",$plugin_main);
+						}
 					}else{
-						$this->plugin_cantload("クラス定義の重複");
-						$plugindata[$key]["status"] = "disable";
+						$this->plugin_cantload($key,"クラス定義の重複");
 					}
 				}else {
-					$this->plugin_cantload("定義されたファイルが存在しない");
-					$plugindata[$key]["status"] = "disable";
+					$this->plugin_cantload($key,"定義されたファイルが存在しない");
 				}
 			}
 		}
 	}
 
-	public function plugin_cantload($reason="原因未定義"){
-		$this->sendMessage("プラグインの読み込みに失敗しました。:{$reason}","critical");
+	protected function plugin_cantload($name,$reason="原因未定義"){
+		global $plugindata;
+		$this->info("プラグインの読み込みに失敗しました。:{$reason}","critical");
+		$plugindata[$name]["status"] = "disable";
 	}
 }

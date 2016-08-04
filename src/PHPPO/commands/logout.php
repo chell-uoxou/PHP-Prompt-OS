@@ -20,8 +20,8 @@ class logout_command extends systemProcessing{
 	{
 
 		global $user;
-		$this->sendMessage($user . "さんのアカウントからログアウトします。");
-		$this->sendMessage("再起動を行います...");
+		$this->info($user . "さんのアカウントからログアウトします。");
+		$this->info("再起動を行います...");
 		bootSystem("logout");
 	}
 }

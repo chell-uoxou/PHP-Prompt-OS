@@ -16,19 +16,19 @@ class ls_command extends systemProcessing{
 		global $aryTipeTxt;
 		global $currentdirectory;
 		$filelist = scandir($currentdirectory, 1);
-		$this->sendMessage("\x1b[38;5;59m=====\x1b[38;5;37mDirectories\x1b[38;5;59m===== \x1b[38;5;59m:" . $currentdirectory);
+		$this->info("\x1b[38;5;59m=====\x1b[38;5;37mDirectories\x1b[38;5;59m===== \x1b[38;5;59m:" . $currentdirectory);
 		foreach ($filelist as $key => $value) {
 			$alp = $currentdirectory . "\\" . $value;
 			if (is_dir($alp)) {
-				$this->sendMessage($value);
+				$this->info($value);
 			}
 		}
 
-		$this->sendMessage("\x1b[38;5;59m========\x1b[38;5;37mFiles\x1b[38;5;59m======== \x1b[38;5;59m:" . $currentdirectory);
+		$this->info("\x1b[38;5;59m========\x1b[38;5;37mFiles\x1b[38;5;59m======== \x1b[38;5;59m:" . $currentdirectory);
 		foreach ($filelist as $key => $value) {
 			$alp = trim($currentdirectory) . "\\" . $value;
 			if (is_file($alp)) {
-				$this->sendMessage($value);
+				$this->info($value);
 			}
 		}
 	}

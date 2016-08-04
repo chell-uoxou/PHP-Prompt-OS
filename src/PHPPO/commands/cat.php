@@ -18,7 +18,7 @@ class cat_command extends systemProcessing{
 		// echo $currentdirectory;
 		$pathCount = count($aryTipeTxt);
 		if ($pathCount == 0) {
-			$this->sendMessage("パラメーターが不足しています。");
+			$this->info("パラメーターが不足しています。");
 return false;
 			return false;
 		}else {
@@ -27,17 +27,17 @@ return false;
 				$path .= $aryTipeTxt[$i] . " ";
 			}
 			if (is_file($path)) {
-				$this->sendMessage("\x1b[38;5;59m" . $path . "のデータを表示します。");
+				$this->info("\x1b[38;5;59m" . $path . "のデータを表示します。");
 				$data = file_get_contents($path);
 				$data = explode( "\n", $data );
 				foreach ($data as $key => $value) {
 					$a = $key + 1;
 					$space = str_repeat(" ",4 - strlen($a));
 					$int = "{$space}{$a}";
-					$this->sendMessage("\x1b[38;5;145m" . $int ."\x1b[38;5;59m|\x1b[38;5;231m". $value);
+					$this->info("\x1b[38;5;145m" . $int ."\x1b[38;5;59m|\x1b[38;5;231m". $value);
 				}
 			}else{
-				$this->sendMessage("ファイルの読み込みに失敗しました！:" . $path,"error");
+				$this->throwError("ファイルの読み込みに失敗しました！:" . $path);
 				return false;
 			}
 		}

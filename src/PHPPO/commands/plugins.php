@@ -20,10 +20,10 @@ class plugins_command extends systemProcessing{
 			// var_dump($value);////////////////////
 			if (isset($value["status"])) {
 				if ($value["status"] == "disable") {
-					$this->sendMessage("\x1b[38;5;203m{$plugin_name}\x1b[38;5;214m version {$plugin_version} : disabled");
+					$this->info("\x1b[38;5;203m{$plugin_name}\x1b[38;5;214m version {$plugin_version} : disabled");
 				}
 			}else{
-				$this->sendMessage("\x1b[38;5;83m{$plugin_name}\x1b[38;5;214m version {$plugin_version}");
+				$this->info("\x1b[38;5;83m{$plugin_name}\x1b[38;5;214m version {$plugin_version}");
 			}
 		}
 	}

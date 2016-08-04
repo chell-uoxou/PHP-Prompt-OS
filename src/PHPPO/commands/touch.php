@@ -19,7 +19,7 @@ class touch_command extends systemProcessing{
 		$cant = false;
 		foreach ($badstr as $key => $value) {
 			if(strpos($path,$value) !== false){
-				$this->sendMessage("ファイル名に使用できない文字列(\ / : * ? \" < > |)が含まれています。","error");
+				$this->throwError("ファイル名に使用できない文字列(\ / : * ? \" < > |)が含まれています。");
 				$cant = true;
 				break;
 			}
@@ -27,7 +27,7 @@ class touch_command extends systemProcessing{
 		if (!$cant) {
 					touch($path);
 		}
-		// $this->sendMessage("");
+		// $this->info("");
 	}
 }
 

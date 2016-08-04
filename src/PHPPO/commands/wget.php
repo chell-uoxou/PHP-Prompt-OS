@@ -17,7 +17,7 @@ class wget_command extends systemProcessing{
 		$pathCount = count($aryTipeTxt);
 		$path = "";
 		if ($pathCount == 0) {
-			$this->sendMessage("パラメーターが不足しています。");
+			$this->info("パラメーターが不足しています。");
 			return false;
 		}else {
 			for ($i=1; $i < $pathCount; $i++) {

@@ -15,8 +15,8 @@ class reboot_command extends systemProcessing{
 		global $aryTipeTxt;
 		global $writeData;
 		$this->sysCls(100);
-		$this->sendMessage("PHP Prompt OS を再起動します。");
-		$this->sendMessage("This window will be closed when the top of the thread has been completed");
+		$this->info("PHP Prompt OS を再起動します。");
+		$this->info("This window will be closed when the top of the thread has been completed");
 		if (isset($aryTipeTxt[1])) {
 			exec("start.cmd");
 		}else {

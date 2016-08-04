@@ -21,7 +21,7 @@ class exec_command extends systemProcessing{
 		global $pr_disp;
 		$messageCount = count($aryTipeTxt);
 		if ($messageCount <= 1) {
-			$this->sendMessage("パラメーターが不足しています。");
+			$this->info("パラメーターが不足しています。");
 return false;
 			}else{
 				$exec_command = '';
@@ -30,12 +30,12 @@ return false;
 				}
 			$exec_command = trim($exec_command);
 			// if (!$exececho == "") {
-			// 	$this->sendMessage("コンソールによる記述:" . PHP_EOL);
+			// 	$this->info("コンソールによる記述:" . PHP_EOL);
 			// 	print_r($exececho);
 			// }
 			printf(exec($exec_command));
-			$this->sendMessage("=============コンソールによる記述===============" . PHP_EOL);
-			$this->sendMessage($exec_command . "コマンドの実行を試みました。");
+			$this->info("=============コンソールによる記述===============" . PHP_EOL);
+			$this->info($exec_command . "コマンドの実行を試みました。");
 		}
 	}
 }

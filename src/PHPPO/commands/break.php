@@ -23,44 +23,44 @@ class break_command extends systemProcessing{
 			$running = false;
 			switch ($sign) {
 				case 1:
-					$this->sendMessage("端末との切断によるスクリプトの実行停止。");
+					$this->info("端末との切断によるスクリプトの実行停止。");
 					break;
 				case 2:
-					$this->sendMessage("キーボード割り込みによるスクリプトの実行停止。");
+					$this->info("キーボード割り込みによるスクリプトの実行停止。");
 					break;
 				case 3:
-					$this->sendMessage("キーボードからのスクリプトの実行停止。");
+					$this->info("キーボードからのスクリプトの実行停止。");
 					break;
 				case 4:
-					$this->sendMessage("不正な命令（Illegal instruction）によるスクリプトの実行停止。","critical");
+					$this->info("不正な命令（Illegal instruction）によるスクリプトの実行停止。","critical");
 					break;
 				case 5:
-					$this->sendMessage("トレース（Trace），ブレーク・ポイント・トラップ（breakpoint trap）によるスクリプトの実行停止。","critical");
+					$this->info("トレース（Trace），ブレーク・ポイント・トラップ（breakpoint trap）によるスクリプトの実行停止。","critical");
 					break;
 				case 6:
-					$this->sendMessage("breakコマンドによるスクリプトの実行停止。");
+					$this->info("breakコマンドによるスクリプトの実行停止。");
 					break;
 				case 8:
-					$this->sendMessage("浮動少数点例外（Arithematic exception）によるスクリプトの実行停止。","critical");
+					$this->info("浮動少数点例外（Arithematic exception）によるスクリプトの実行停止。","critical");
 					break;
 				case 9:
-					$this->sendMessage("killシグナルによるスクリプトの実行停止。");
+					$this->info("killシグナルによるスクリプトの実行停止。");
 					break;
 				case 11:
-					$this->sendMessage("Segmentation fault.","critical");
+					$this->info("Segmentation fault.","critical");
 					break;
 				case 13:
-					$this->sendMessage("パイプ破壊によるスクリプトの実行停止。","critical");
+					$this->info("パイプ破壊によるスクリプトの実行停止。","critical");
 					break;
 				case 15:
-					$this->sendMessage("終了（Termination）シグナルによるプロセスの終了");
+					$this->info("終了（Termination）シグナルによるプロセスの終了");
 					break;
 				default:
-					$this->sendMessage("スクリプトの実行停止。");
+					$this->info("スクリプトの実行停止。");
 					break;
 			}
 		}else {
-			$this->sendMessage("不正参照","error");
+			$this->throwError("不正参照");
 			return false;
 		}
 	}

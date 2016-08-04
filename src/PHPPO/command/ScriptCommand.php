@@ -41,7 +41,7 @@ class scriptCommand extends systemProcessing{
 		$extensioncommandsDescription = parse_ini_file($poPath . "/root/bin/extension_description.ini");
 		// var_dump($defaultcommands);
 		foreach ($extensioncommanddatas as $key => $value) {
-			// $this->sendMessage("{$key}:拡張コマンド");
+			// $this->info("{$key}:拡張コマンド");
 			$path = $poPath . "\\root\\" . $value;
 			// echo $path . PHP_EOL;
 			if (array_key_exists($key,$defaultcommands)) {
@@ -55,12 +55,12 @@ class scriptCommand extends systemProcessing{
 					}
 				}
 				// var_dump($line);///////////////////////////////////////////////////////////
-				$this->sendMessage("拡張コマンドの読み込み時に競合が発生したため、実装済みコマンドが優先されます。コマンド:\"" . $key . "\" on \"{$poPath}/root/bin/extensions.ini\" -> line {$line}","error");
+				$this->throwError("拡張コマンドの読み込み時に競合が発生したため、実装済みコマンドが優先されます。コマンド:\"" . $key . "\" on \"{$poPath}/root/bin/extensions.ini\" -> line {$line}");
 			}else{
 				if (!file_exists($path)) {
 					$plsdel[] = $key;
-					$this->sendMessage("記述された拡張コマンドにあたるパスは無効です。","error");
-					$this->sendMessage("Desabled [" . $key . "] Command :File not found --{$path}","error");
+					$this->throwError("記述された拡張コマンドにあたるパスは無効です。");
+					$this->throwError("Desabled [" . $key . "] Command :File not found --{$path}");
 				}else {
 					// if (isset($extensioncommandsDescription[$key])) {
 					// 	$extensioncommands[$key]["des"] = $extensioncommandsDescription[$key];

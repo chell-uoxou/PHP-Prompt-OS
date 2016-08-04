@@ -26,7 +26,7 @@ class echo_command extends systemProcessing{
 		$messageCount = count($aryTipeTxt);
 		$varname = "";
 		if ($messageCount <= 1) {
-			// $this->sendMessage("パラメーターが不足しています。");
+			// $this->info("パラメーターが不足しています。");
 			return false;
 			}else{
 				$aryTipeTxt[1] = trim($aryTipeTxt[1]);
@@ -61,7 +61,7 @@ class echo_command extends systemProcessing{
 							}
 						}
 						$message = $input;
-						$this->sendMessage($message);
+						$this->info($message);
 						break;
 				}
 

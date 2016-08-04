@@ -15,7 +15,7 @@ class wait_command extends systemProcessing{
 		global $aryTipeTxt;
 		$waitSecCount = count($aryTipeTxt);
 		if ($waitSecCount <= 1) {
-			$this->sendMessage("パラメーターが不足しています。");
+			$this->info("パラメーターが不足しています。");
 return false;
 			}else{
 				$aryTipeTxt[1] = trim($aryTipeTxt[1]);

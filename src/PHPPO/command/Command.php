@@ -14,13 +14,13 @@ $scriptcommandpros = new scriptCommand;
 // $addcom = new addcommand;
 //////////////////////
 $defaultcommands = array();
-$system->sendMessage("Command loaded:");
+$system->info("Command loaded:");
 $re_dircommands = scandir(dirname(__FILE__) . '/../commands');
 $i = 0;
 foreach ($re_dircommands as $key => $value) {
 	if ($value != "." && $value != "..") {
 		$dircommands[] = dirname(dirname(__FILE__)) . '\commands\\' . $value;
-		// $system->sendMessage($dircommands[$i]);
+		// $system->info($dircommands[$i]);
 		$i++;
 	}
 }
@@ -80,7 +80,7 @@ class command extends systemProcessing{
 						$script = new \phppo\command\defaults\script_command;
 						$onerror = $script->onCommand();
 					}else{
-						$system->sendMessage("\x1b[38;5;203m\"" . $baseCommand . "\"コマンドが見つかりませんでした。helpコマンドで確認してください。");
+						$system->info("\x1b[38;5;203m\"" . $baseCommand . "\"コマンドが見つかりませんでした。helpコマンドで確認してください。");
 						$onerror = false;
 					}
 				}

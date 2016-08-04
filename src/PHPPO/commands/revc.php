@@ -18,12 +18,12 @@ class revc_command extends systemProcessing{
 			$revcFunc = true;
 			$display->reverseColor(true);
 			$this->sysCls(100);
-			$this->sendMessage("色を反転して表示します。");
+			$this->info("色を反転して表示します。");
 		}else {
 			$revcFunc = false;
 			$display->reverseColor(false);
 			$this->sysCls(100);
-			$this->sendMessage("反転表示を終了します。");
+			$this->info("反転表示を終了します。");
 		}
 
 	}

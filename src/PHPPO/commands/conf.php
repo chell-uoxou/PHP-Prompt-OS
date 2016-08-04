@@ -16,14 +16,14 @@ class conf_command extends systemProcessing{
 		global $aryTipeTxt;
 		global $sysconfpros;
 		if (count($aryTipeTxt) < 2) {
-			$this->sendMessage("パラメーターが不足しています。");
+			$this->info("パラメーターが不足しています。");
 			return false;
 		}else{
 			$do = $aryTipeTxt[1];
 			switch ($do) {
 				case 'set':
 					if (count($aryTipeTxt) < 4) {
-						$this->sendMessage("パラメーターが不足しています。");
+						$this->info("パラメーターが不足しています。");
 						return false;
 					}else{
 						$setkey = $aryTipeTxt[2];
@@ -33,7 +33,7 @@ class conf_command extends systemProcessing{
 					break;
 				case 'edit':
 					if (count($aryTipeTxt) < 4) {
-						$this->sendMessage("パラメーターが不足しています。");
+						$this->info("パラメーターが不足しています。");
 						return false;
 					}else {
 						$setkey = $aryTipeTxt[2];
@@ -41,32 +41,32 @@ class conf_command extends systemProcessing{
 						$nowvalue = $this->getConvValue($setkey);
 						if (isset($nowvalue)) {
 							if (is_array($nowvalue)) {
-								$this->sendMessage("\"{$setkey}\"の値は配列です。\n=======================");
+								$this->info("\"{$setkey}\"の値は配列です。\n=======================");
 								foreach ($nowvalue as $key => $value) {
 									$var = var_export($value,true);
-									$this->sendMessage("\x1b[38;5;203m{$key} \x1b[38;5;145m:\x1b[38;5;227m {$var}");
-									$this->sendMessage("\x1b[38;5;59m-----------------------");
+									$this->info("\x1b[38;5;203m{$key} \x1b[38;5;145m:\x1b[38;5;227m {$var}");
+									$this->info("\x1b[38;5;59m-----------------------");
 								}
 								break;
 							}else{
-								$this->sendMessage("\"{$setkey}\"の値は\"{$nowvalue}\"です。");
+								$this->info("\"{$setkey}\"の値は\"{$nowvalue}\"です。");
 							}
 						}else{
 							$nowvalue = "NULL";
-							$this->sendMessage("設定値\"{$setkey}\"に値は存在しません。");
+							$this->info("設定値\"{$setkey}\"に値は存在しません。");
 						}
-						$okay = $this->sendMessage("\"{$setvalue}\"に変更しますか？(y)","input");
+						$okay = $this->input("\"{$setvalue}\"に変更しますか？(y)");
 						if ($okay == "y" || $okay == "Y") {
 							// $sysconfpros->setConfig($setkey,$setvalue);
 							$this->setConvValue($setkey,$setvalue);
-							$this->sendMessage("変更しました。");
+							$this->info("変更しました。");
 						}
 					}
 					break;
 
 				case 'reset':
 					if (count($aryTipeTxt) < 3) {
-						$this->sendMessage("パラメーターが不足しています。");
+						$this->info("パラメーターが不足しています。");
 						return false;
 					}else {
 						$delkey = $aryTipeTxt[2];
@@ -75,47 +75,47 @@ class conf_command extends systemProcessing{
 				break;
 
 				case 'reload':
-					$this->sendMessage("システム内部環境設定ファイルの再読み込みを行っています...");
+					$this->info("システム内部環境設定ファイルの再読み込みを行っています...");
 					$sysconfpros->reload();
-					$this->sendMessage("完了しました！");
+					$this->info("完了しました！");
 					break;
 
 				case 'veaw':
 					if (count($aryTipeTxt) < 3) {
-						$this->sendMessage("パラメーターが不足しています。");
+						$this->info("パラメーターが不足しています。");
 						return false;
 					}else {
 						$setkey = $aryTipeTxt[2];
 						$nowvalue = $this->getConvValue($setkey);
 						if (isset($nowvalue)) {
 							if (is_array($nowvalue)) {
-								$this->sendMessage("\"{$setkey}\"の値は配列です。\n=======================");
+								$this->info("\"{$setkey}\"の値は配列です。\n=======================");
 								foreach ($nowvalue as $key => $value) {
 									$var = var_export($value,true);
-									$this->sendMessage("\x1b[38;5;203m{$key} \x1b[38;5;145m:\x1b[38;5;227m {$var}");
-									$this->sendMessage("\x1b[38;5;59m-----------------------");
+									$this->info("\x1b[38;5;203m{$key} \x1b[38;5;145m:\x1b[38;5;227m {$var}");
+									$this->info("\x1b[38;5;59m-----------------------");
 								}
 							}else{
-								$this->sendMessage("\"{$setkey}\"の値は\"{$nowvalue}\"です。");
+								$this->info("\"{$setkey}\"の値は\"{$nowvalue}\"です。");
 							}
 						}else{
 							$nowvalue = "NULL";
-							$this->sendMessage("設定値\"{$setkey}\"に値は存在しません。");
+							$this->info("設定値\"{$setkey}\"に値は存在しません。");
 						}
 					}
 					break;
 
 				case 'help':
-					$this->sendMessage("////////confコマンド////////");
-					$this->sendMessage("PHPPOの内部環境設定の表示と変更を行います。");
-					$this->sendMessage("第一引数にサブコマンド、第二引数以降にそれぞれの値が入ります。");
-					$this->sendMessage("========使用方法========");
-					$this->sendMessage("conf set <設定値名> <値> : 設定値名に値を強制的に代入します。スクリプト実行時などで用いられます。");
-					$this->sendMessage("conf edit <設定値名> <値> : 設定値名に値をユーザーへの確認の上代入します。画面上の実行の場合setよりもこちらを推奨します。");
-					// $this->sendMessage("conf reset <設定値名>     : 指定された設定値名の値を既定の設定に戻します。");
-					$this->sendMessage("conf reload              :システム設定用ファイルの再読み込みを行います。");
-					$this->sendMessage("conf veaw <設定値名>      :指定された設定値名の値を表示します。");
-					$this->sendMessage("conf help              　  :confコマンドの使用法を表示します。");
+					$this->info("////////confコマンド////////");
+					$this->info("PHPPOの内部環境設定の表示と変更を行います。");
+					$this->info("第一引数にサブコマンド、第二引数以降にそれぞれの値が入ります。");
+					$this->info("========使用方法========");
+					$this->info("conf set <設定値名> <値> : 設定値名に値を強制的に代入します。スクリプト実行時などで用いられます。");
+					$this->info("conf edit <設定値名> <値> : 設定値名に値をユーザーへの確認の上代入します。画面上の実行の場合setよりもこちらを推奨します。");
+					// $this->info("conf reset <設定値名>     : 指定された設定値名の値を既定の設定に戻します。");
+					$this->info("conf reload              :システム設定用ファイルの再読み込みを行います。");
+					$this->info("conf veaw <設定値名>      :指定された設定値名の値を表示します。");
+					$this->info("conf help              　  :confコマンドの使用法を表示します。");
 					break;
 				default:
 

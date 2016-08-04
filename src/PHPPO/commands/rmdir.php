@@ -15,7 +15,7 @@ class rmdir_command extends systemProcessing{
 		global $currentdirectory;
 		$strCount = count($aryTipeTxt);
 		if ($strCount <= 1) {
-			$this->sendMessage("パラメーターが不足しています。");
+			$this->info("パラメーターが不足しています。");
 			return false;
 			}else{
 				$path = '';
@@ -27,18 +27,18 @@ class rmdir_command extends systemProcessing{
 					if (is_dir($path)) {
 						try {
 							rmdir($path);
-							$this->sendMessage("ディレクトリを削除しました。:\x1b[38;5;145m" . $path);
+							$this->info("ディレクトリを削除しました。:\x1b[38;5;145m" . $path);
 						} catch (Exception $e) {
-							$this->sendMessage("ディレクトリの削除に失敗しました。","error");
-							$this->sendMessage("指定したディレクトリは空ではない可能性があります。");
+							$this->throwError("ディレクトリの削除に失敗しました。");
+							$this->info("指定したディレクトリは空ではない可能性があります。");
 							return false;
 						}
 					}else {
-						$this->sendMessage("指定したファイルはディレクトリではありません。","error");
+						$this->throwError("指定したファイルはディレクトリではありません。");
 						return false;
 					}
 				}else{
-					$this->sendMessage("指定したファイルまたはディレクトリは存在しません。","error");
+					$this->throwError("指定したファイルまたはディレクトリは存在しません。");
 					return false;
 				}
 			}

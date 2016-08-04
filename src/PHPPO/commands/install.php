@@ -15,7 +15,7 @@ class install_command extends systemProcessing{
 		global $poPath;
 		$messageCount = count($aryTipeTxt);
 		if ($messageCount <= 1) {
-			$this->sendMessage("パラメーターが不足しています。");
+			$this->info("パラメーターが不足しています。");
 return false;
 			}else{
 				$aryTipeTxt[1] = trim($aryTipeTxt[1]);
@@ -45,7 +45,7 @@ return false;
 						// $phar->extractTo(dirname(__FILE__) . "/../../../src", null, true);
 						// すべてのファイルを展開し、上書きします
 					// } catch (Exception $e) {
-						// $this->sendMessage("アップデートを行う際は、表面ディレクトリに新しいバージョンのpharを置き、\"PHPPO.phar\"にリネームしてください。");
+						// $this->info("アップデートを行う際は、表面ディレクトリに新しいバージョンのpharを置き、\"PHPPO.phar\"にリネームしてください。");
 					// }
 				}
 			}

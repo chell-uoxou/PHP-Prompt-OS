@@ -18,7 +18,7 @@ class set_command extends systemProcessing{
 		global $valuepros;
 		$strCount = count($aryTipeTxt);
 		if ($strCount <= 2) {
-			$this->sendMessage("パラメーターが不足しています。");
+			$this->info("パラメーターが不足しています。");
 return false;
 			}else{
 				$name = $aryTipeTxt[1];

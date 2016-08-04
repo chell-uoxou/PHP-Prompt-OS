@@ -20,14 +20,14 @@ class exit_command extends systemProcessing{
 		global $aryTipeTxt;
 		global $writeData;
 		if (!isset($aryTipeTxt[1])){
-		$this->sendMessage("PHP Prompt OS by chell ruiを終了します...");
+		$this->info("PHP Prompt OS by chell ruiを終了します...");
 			}else{
 				$aryTipeTxt[1] = trim($aryTipeTxt[1]);
-				$this->sendMessage($aryTipeTxt[1] . "ミリ秒後にPHP Prompt OS by chell ruiを終了します...");
+				$this->info($aryTipeTxt[1] . "ミリ秒後にPHP Prompt OS by chell ruiを終了します...");
 				$waitSec = (int)$aryTipeTxt[1];
 				usleep($waitSec * 1000);
 		}
-		$this->sendMessage("(@^^)/~~~!");
+		$this->info("(@^^)/~~~!");
 		fwrite($writeData,"PHPPO was completed successfully.");
 		exit(0);
 	}

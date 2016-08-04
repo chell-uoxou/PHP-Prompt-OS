@@ -17,18 +17,18 @@ class unlink_command extends systemProcessing{
 		global $aryTipeTxt;
 		$path = $currentdirectory . "\\" . substr($raw_input,6);
 		if ($aryTipeTxt[1] == "") {
-			$this->sendMessage("パラメーターが不足しています。");
+			$this->info("パラメーターが不足しています。");
 return false;
 			return false;
 		}else{
 			if (file_exists($path)) {
-				$ask = $this->sendMessage("指定したファイルを削除します。よろしいですか？(y):","input");
+				$ask = $this->input("指定したファイルを削除します。よろしいですか？(y):");
 				if ($ask == "y"||$ask == "Y") {
 					unlink($path);
-					$this->sendMessage("ファイルを削除しました。:{$path}");
+					$this->info("ファイルを削除しました。:{$path}");
 				}
 			}else {
-				$this->sendMessage("指定したファイルまたはディレクトリは存在しません。","error");
+				$this->throwError("指定したファイルまたはディレクトリは存在しません。");
 				return false;
 			}
 		}

@@ -26,20 +26,20 @@ class log_command extends systemProcessing{
 		global $logMode;
 		$messageCount = count($aryTipeTxt);
 		if ($messageCount <= 1) {
-		  $this->sendMessage("Log modeは " . $logMode . " です。");
-		  $this->sendMessage("ログモードを変更する際は、第一引数に<on>か<off>の値を記入してください。");
+		  $this->info("Log modeは " . $logMode . " です。");
+		  $this->info("ログモードを変更する際は、第一引数に<on>か<off>の値を記入してください。");
 		  }else{
 			$aryTipeTxt[1] = trim($aryTipeTxt[1]);
 		  	if ($aryTipeTxt[1] == "on") {
 		  	$logMode = "on";
-			$this->sendMessage("ログファイルにログを書き出します。");
+			$this->info("ログファイルにログを書き出します。");
 					}else{
 					if ($aryTipeTxt[1] == "off") {
 				  	$logMode = "off";
-				  	$this->sendMessage("ログファイルにログを書き出しません。");
+				  	$this->info("ログファイルにログを書き出しません。");
 			  			}else{
-				  		$this->sendMessage("パラメーターの記法に誤りがあります。");
-				  		$this->sendMessage("第一引数(" . $aryTipeTxt[1] . ")に<on>か<off>の値を記入してください。");
+				  		$this->info("パラメーターの記法に誤りがあります。");
+				  		$this->info("第一引数(" . $aryTipeTxt[1] . ")に<on>か<off>の値を記入してください。");
 			  }
 		  }
 		}

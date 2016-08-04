@@ -27,8 +27,8 @@ class time_command extends systemProcessing{
 				$ampm = "午後";
 			}
 		}
-		$this->sendMessage($ampm . date("H時i分s秒"));
-		$this->sendMessage(date(""));
+		$this->info($ampm . date("H時i分s秒"));
+		$this->info(date(""));
 	}
 }
 

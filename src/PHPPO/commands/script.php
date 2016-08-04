@@ -25,7 +25,7 @@ class script_command extends systemProcessing{
 		global $display;
 		$pathCount = count($aryTipeTxt);
 		if ($pathCount <= 1) {
-			$this->sendMessage("パラメーターが不足しています。");
+			$this->info("パラメーターが不足しています。");
 			return false;
 			}else{
 				$aryTipeTxt[1] = trim($aryTipeTxt[1]);
@@ -51,7 +51,7 @@ class script_command extends systemProcessing{
 							$r_path = $path;
 							$file = file_get_contents($r_path, true);
 						}else{
-							$this->sendMessage("スクリプトの読み込みに失敗しました。指定したスクリプトは存在しない可能性があります。:{$current_path}","error");
+							$this->throwError("スクリプトの読み込みに失敗しました。指定したスクリプトは存在しない可能性があります。:{$current_path}");
 							return false;
 						}
 					}
@@ -96,7 +96,7 @@ class script_command extends systemProcessing{
 						if ($conf === false) {
 							$conf = array_key_exists($aryTipeTxt[0], $extensioncommands);
 							if ($conf === false) {
-								$this->sendMessage("Script error:確認されない命令\"{$value}\"が見つかりました。 in {$name} -> line{$line}","error");
+								$this->throwError("Script error:確認されない命令\"{$value}\"が見つかりました。 in {$name} -> line{$line}");
 								return false;
 								break;
 							}

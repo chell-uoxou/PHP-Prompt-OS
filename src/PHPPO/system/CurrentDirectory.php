@@ -29,7 +29,7 @@ class currentdirectory extends systemProcessing{
 			if (is_dir($all_path)) {
 				$currentdirectory = realpath($all_path);
 			}else {
-				$this->sendMessage("指定したパスはディレクトリではありません。","error");
+				$this->throwError("指定したパスはディレクトリではありません。");
 			}
 		}else{
 			if (substr_count($path,'../') !== 0) {
@@ -41,24 +41,24 @@ class currentdirectory extends systemProcessing{
 					if (is_dir($all_path)) {
 						$currentdirectory = $all_path;
 					}else {
-						$this->sendMessage("指定したパスはディレクトリではありません。","error");
+						$this->throwError("指定したパスはディレクトリではありません。");
 					}
 				}else{
 					if (file_exists(realpath($path))) {
 						if (is_dir(realpath($path))) {
 							$currentdirectory = realpath($path);
 						}else {
-							$this->sendMessage("指定したパスはディレクトリではありません。","error");
+							$this->throwError("指定したパスはディレクトリではありません。");
 						}
 					} else {
 						if (file_exists($path)) {
 							if (is_dir($path)) {
 								$currentdirectory = $path;
 							}else {
-								$this->sendMessage("指定したパスはディレクトリではありません。","error");
+								$this->throwError("指定したパスはディレクトリではありません。");
 							}
 						} else {
-							$this->sendMessage("No such file or directory:{$all_path}","error");
+							$this->throwError("No such file or directory:{$all_path}");
 						}
 					}
 				}

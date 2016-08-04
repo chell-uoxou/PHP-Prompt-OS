@@ -17,7 +17,7 @@ class vars_command extends systemProcessing{
 			$environmentVariables = unserialize(file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\\' . "environmentVariables.dat"));
 		}
 		foreach ($environmentVariables as $key => $value){
-			$this->sendMessage("\x1b[38;5;34m[" . $key . "]\x1b[38;5;207m:" . "\x1b[38;5;87m" . $value . "\x1b[38;5;145m-\x1b[38;5;59m(" . gettype($value) . ")");
+			$this->info("\x1b[38;5;34m[" . $key . "]\x1b[38;5;207m:" . "\x1b[38;5;87m" . $value . "\x1b[38;5;145m-\x1b[38;5;59m(" . gettype($value) . ")");
 		}
 	}
 }

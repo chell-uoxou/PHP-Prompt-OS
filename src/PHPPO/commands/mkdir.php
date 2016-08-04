@@ -30,7 +30,7 @@ class mkdir_command extends systemProcessing{
 		if (!file_exists($currentdirectory . "\\" . $name)) {
 			mkdir($currentdirectory . "\\" . $name);
 		}else {
-			$this->sendMessage("そのディレクトリは既に存在します！");
+			$this->info("そのディレクトリは既に存在します！");
 		}
 	}
 }
