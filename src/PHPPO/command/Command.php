@@ -57,6 +57,7 @@ class command extends systemProcessing{
 		global $plugincommands;
 		global $plugindata;
 		global $commands;
+		global $title_pros;
 		$commands = array_merge($defaultcommands,$plugincommands,$extensioncommands);
 		ksort($commands);
 		$valuepros->setvalue("time", date('A-H:i:s'));
@@ -66,24 +67,41 @@ class command extends systemProcessing{
 			if (array_key_exists($baseCommand,$defaultcommands)) {
 				$instname = "\phppo\command\defaults\\" . $baseCommand . "_command";
 				$com_inst = new $instname;
+				$system->setSystemStatusMessage("running [{$raw_input}]");
+				$title_pros->terminal_set_title();
 				$onerror = $com_inst->onCommand();
+				$runned = true;
 			}else {
 				if (array_key_exists($baseCommand,$plugincommands)) {
 					$plugin_name = $plugincommands[$baseCommand]["pluginname"];
-					// var_dump($plugincommands[$baseCommand])///////////////////////////////////;
 					$instname = $plugindata[$plugin_name]["main"];
 					$com_inst = new $instname;
+					$system->setSystemStatusMessage("running [{$raw_input}]");
+					$title_pros->terminal_set_title();
 					$onerror = $com_inst->onCommand();
+					$runned = true;
 				}else{
 					if (array_key_exists($baseCommand,$extensioncommands)) {
 						$aryTipeTxt = array("script",$extensioncommands[$baseCommand]["path"]);
 						$script = new \phppo\command\defaults\script_command;
+						$system->setSystemStatusMessage("running [{$raw_input}]");
+						$title_pros->terminal_set_title();
 						$onerror = $script->onCommand();
+						$runned = true;
 					}else{
-						$system->info("\x1b[38;5;203m\"" . $baseCommand . "\"コマンドが見つかりませんでした。helpコマンドで確認してください。");
-						$onerror = false;
+						$returns = $this->generateEvent("onCommand");
+						var_dump($returns);
+						if (in_array(true,$returns)) {
+							$runned = true;
+						}else {
+							$runned = false;
+						}
 					}
 				}
+			}
+			if (!$runned) {
+				$system->info("\x1b[38;5;203m\"" . $baseCommand . "\"コマンドが見つかりませんでした。helpコマンドで確認してください。");
+				$onerror = false;
 			}
 			$lastTipeTxt = $tipe_text;
 			if (!isset($onerror)) {

@@ -15,7 +15,13 @@ class delvar_command extends systemProcessing{
 	public function onCommand(){
 		global $aryTipeTxt;
 		$valuepros = new environmentVariables;
-		$valuepros->delvalue($aryTipeTxt[1]);
+		if (isset($aryTipeTxt[1])) {
+			$valuepros->delvalue($aryTipeTxt[1]);
+			return true;
+		}else{
+			$this->info("パラメーターが不足しています。");
+			return false;
+		}
 	}
 }
 

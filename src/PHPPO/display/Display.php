@@ -4,6 +4,7 @@
 namespace phppo;
 
 use phppo\system\systemProcessing as systemProcessing;
+include_once 'title.php';
 
 class display extends systemProcessing{
 

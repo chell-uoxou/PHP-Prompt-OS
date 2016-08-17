@@ -9,6 +9,7 @@ include_once 'environmentValues.php';
 include_once dirname(__FILE__) . '/../plugin/Manager.php';
 include_once 'currentdirectory.php';
 include_once 'sysconf.php';
+include_once dirname(__FILE__) . '/../event/event.php';
 
 use phppo\plugin\Manager as pluginManager;
 use phppo\display as display;
@@ -106,6 +107,8 @@ class systemProcessing {
 
 	public function generateEvent($name,$to = NULL){
 		// $arg_list = func_get_args();
+		$f_name = $name . "_event";
+		$returns = array();
 		if (isset($to)) {
 			$class = $to;
 			if (method_exists($class,$name)) {
@@ -116,13 +119,14 @@ class systemProcessing {
 			$declared_classes = get_declared_classes();
 			foreach ($declared_classes as $key => $class) {
 				// echo $class . "\n";/////////////////////////////////////
-				if (method_exists($class,$name)) {
+				if (method_exists($class,$f_name)) {
 					$obj[$key] = new $class;
 					// var_dump($obj[$key]);////////////////////////////////
-					$obj[$key]->$name();
+					$returns[] = $obj[$key]->$f_name();
 				}
 			}
 		}
+		return $returns;
 	}
 
 	public function throwError($txt){
@@ -174,10 +178,8 @@ class systemProcessing {
 		global $valuepros;
 		global $outprompt;
 		global $raw_input;
-
-		// usleep(30000);/////////
-		$display = new display;
 		$display->setThread($thre);
+		$this->generateEvent("sendMessage");
 		$prompt = $valuepros->getvalue("prompt");
 		date_default_timezone_set('Asia/Tokyo');
 		// echo "string";
@@ -238,6 +240,7 @@ class systemProcessing {
 		$array = array_values($array);
 		if ($type == "input") {
 			echo "\x1b[38;5;231m{$inprompt}{$pr_disp}";
+			$this->generateEvent("sentMessage");
 			$raw_input = trim(fgets(fopen("php://stdin", "r")));
 			$input = $this->inputProcessor($raw_input);
 			$GLOBALS['sender'] = "phppo.sys.input.default";
@@ -246,6 +249,7 @@ class systemProcessing {
 		}else {
 			foreach ($array as $key => $value) {
 				echo "\x1b[38;5;231m{$outprompt}{$value}\x1b[38;5;231m\n";
+				$this->generateEvent("sentMessage");
 				// /ログを吐く
 				if ($logmode == "on") {
 					if (isset($writeData)){
@@ -259,16 +263,6 @@ class systemProcessing {
 		}//てってってれってー
 	}//んーでってれってー
 
-	public function terminal_set_title($value){
-		global $term_title;
-		$term_title = $value;
-		echo "\x1b]0;" . $value . "\x07";
-	}
-
-	public function terminal_get_title($type=''){
-		global $term_title;
-		return $term_title;
-	}
 	public function inputProcessor($raw_input){
 		global $environmentVariables;
 		global $savevaluesmode;
@@ -297,6 +291,11 @@ class systemProcessing {
 			}
 		}
 		return $input;
+	}
+
+	public function setSystemStatusMessage($value=""){
+		global $system_status_text;
+		$system_status_text = $value;
 	}
 
 	public function commandProcessor($com){
@@ -367,9 +366,11 @@ class systemProcessing {
 		global $valuepros;
 		global $pluginpros;
 		global $scriptcommandpros;
+		global $title_pros;
+		global $term_base_title;
 		$scriptcommandpros->readExtension();
 		$pluginpros->install();
-		$system->terminal_set_title("PHP Prompt OS");
+		$title_pros->setBaseTitle("PHP Prompt OS : %status - %cd");
 		// $system->info("\x1b[38;5;63m起動完了！helpコマンドでコマンド一覧を表示。");
 		// file_put_contents(dirname(dirname(dirname(__FILE__))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
 		if (isset($systemconf_ini_array["system"]["bootexec"])) {
@@ -384,11 +385,11 @@ class systemProcessing {
 		}
 
 		while (True) {
-			$system->generateEvent("readyInputEvent");
+			$this->generateEvent("readyInputEvent");
+			$this->setSystemStatusMessage("ready.");
 			// var_dump($defined_vars);
 			file_put_contents(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\\' . "systemdefinedvars.dat", serialize($defined_vars));
 			$po_cd = str_replace(trim($poPath),"",trim($currentdirectory));
-			$system->terminal_set_title("PHP Prompt OS - " . $po_cd);
 			$stanby = True;
 			$display->setThread("PHPPO");
 
@@ -431,9 +432,6 @@ class systemProcessing {
 
 }//てってってれってー by @KOKKOKOKOKOOKO
 
-/**
-*
-*/
 class myPhar extends systemProcessing{
 
 	function __construct(){
@@ -464,38 +462,6 @@ class myPhar extends systemProcessing{
 
 }
 
-/**
- *
- */
-class events extends systemProcessing{
-
-	function __construct()
-	{
-		# code...
-	}
-	function readyInputEvent(){
-		// echo "a";///////////////
-		global $defined_vars;
-		global $currentdirectory;
-		global $valuepros;
-		global $defaultcurrentdirectory;
-		// $setcd = $valuepros->getvalue("currentdirectory");
-		// if ($defaultcurrentdirectory != $currentdirectory) {
-		// 	$currentdirectory = $setcd;
-		// }else {
-		//
-		// }
-		// $defaultcurrentdirectory = $currentdirectory;
-		$valuepros->setvalue("currentdirectory",$currentdirectory);
-		$defined_vars = get_defined_vars();
-	}
-}
-
-
-
-/**
-*
-*/
 class fileProcessing extends systemProcessing{
 
 	function __construct()

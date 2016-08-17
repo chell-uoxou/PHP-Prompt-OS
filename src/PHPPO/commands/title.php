@@ -16,22 +16,24 @@ class title_command extends systemProcessing{
 	{
 		# code...
 	}
-	public function onCommand()
-	{
+	public function onCommand(){
 		global $aryTipeTxt;
+		global $baseSystemTitle;
+		global $title_pros;
 		$messageCount = "";
-			$messageCount = count($aryTipeTxt);
-			if ($messageCount <= 1) {
-				$this->info("パラメーターが不足しています。");
-return false;
-				}else{
-					$aryTipeTxt[1] = trim($aryTipeTxt[1]);
-					$message = '';
-					for ($i=1; $i < $messageCount; $i++) {
-						$message .= $aryTipeTxt[$i] . " ";
-					}
-					cli_set_process_title($message);
-				}
+		$messageCount = count($aryTipeTxt);
+		if ($messageCount <= 1) {
+			$this->info("パラメーターが不足しています。");
+			return false;
+			}else{
+			$aryTipeTxt[1] = trim($aryTipeTxt[1]);
+			$message = '';
+			for ($i=1; $i < $messageCount; $i++) {
+				$message .= $aryTipeTxt[$i] . " ";
+			}
+			$baseSystemTitle = $message;
+			$title_pros->setBaseTitle($baseSystemTitle);
+		}
 	}
 }
 
