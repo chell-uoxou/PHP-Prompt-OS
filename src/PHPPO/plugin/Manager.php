@@ -57,7 +57,7 @@ class Manager extends systemProcessing{
 						$a = $this->input("インストールを行いますか？(Y/n):");
 						if ($a == "y"||$a == "Y") {
 							try {
-								$topath =  rtrim(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\plugins\\' . $fileplugins[$i],".phar");
+								$topath = dirname($poPath . '\root\bin\plugins\\' . $fileplugins[$i]);
 								$phar->extractTo($topath, null, true);
 								$i++;
 								$this->info("インストールが完了しました。再起動します。");

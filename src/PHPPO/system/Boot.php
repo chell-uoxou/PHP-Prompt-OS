@@ -14,10 +14,10 @@ $valuepros = new environmentVariables;
 
 
 if ($systemconf_ini_array["dev"]["devmode"] != 1) {
-	@$files = scandir(rtrim(trim(dirname(dirname(dirname(__FILE__)))),"system\PHPPO\src") . "/root/home/logs/",1);
+	@$files = scandir($poPath . "/root/home/logs/",1);
 	// var_dump($files);
 	if ($files != false) {
-		$lines = file(rtrim(trim(dirname(dirname(__FILE__))),"system\PHPPO\src") . "/root/home/logs/" . $files[0], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		$lines = file($poPath . "/root/home/logs/" . $files[0], FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 		$line = end($lines);
 		if ($line != "PHPPO was completed successfully."){
 			$system->info("システムが異常終了していた可能性があります！！","critical");
@@ -194,7 +194,6 @@ function bootSystem($tipe){
 	// curl_setopt($ch, CURLOPT_HEADER, false);
 	// $xml = curl_exec($ch);
 	// print_r($xml);
-	$poPath = rtrim(trim(dirname(dirname(__FILE__))),"system\PHPPO\src");
 	if ($currentdirectorymode == "on") {
 		$currentdirectory = $poPath . "\\root";
 		$defaultcurrentdirectory = $currentdirectory;
@@ -321,6 +320,7 @@ function readySetup($tipe){
 	global $savevaluesmode;
 	global $defined_vars;
 	global $writeData;
+	global $poPath;
 	if($first_time_boot){
 		$savevaluesmode = "off";
 		// askLicense();
@@ -331,7 +331,7 @@ function readySetup($tipe){
 		$pr_thread = "LOGIN";
 		$username = $system->input("ユーザー名を入力してください。:");
 		$user = $username;
-		$filename = rtrim(dirname(__FILE__),"\src\PHPPO") . "\\" . "user.json";
+		$filename = $poPath . "\\" . "user.json";
 		$json = file_get_contents($filename);
 		$config = json_decode($json,true);
 		if(empty($config[$username])){
@@ -378,10 +378,11 @@ function readScripts(){
 	global $aryScriptCommands;
 	global $aryScripts;
 	global $version;
+	global $poPath;
 	$aryScriptFiles = array();
 	$aryScripts = array();
 	// ディレクトリのパスを記述
-	$dir = rtrim(dirname(__FILE__),"system\PHPPO\src") . "/" . "scripts" ;
+	$dir = $poPath . "/" . "scripts" ;
 
 	// ディレクトリの存在を確認し、ハンドルを取得
 	$i = 0;
@@ -472,9 +473,11 @@ function endUserSetup($user, $password){
 }
 
 function loginSystem($user){
-	global $system;global $display;
+	global $system;
+	global $display;
 	global $systemconf_ini_array;
-	$filename = rtrim(dirname(__FILE__),"system\PHPPO\src") . "/" . "user.json";
+	global $poPath;
+	$filename = $poPath . "/" . "user.json";
 	$json = file_get_contents($filename);
 	$password_data = json_decode($json,true);
 	$askPassword = $system->input($user . "のパスワードを入力してください。:");

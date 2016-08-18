@@ -15,8 +15,8 @@ namespace phppo;
 use phppo\system\systemProcessing as systemProcessing;
 use phppo\display\title\terminal_title;
 echo "Library loaded!\nPHP Prompt OS booting...\n";
-
-$first_time_boot = !file_exists(rtrim(dirname(__FILE__),"\PHPPO\src") . "\\root\bin\\" . 'systemdefinedvars.dat');
+$poPath = dirname(dirname(dirname(__FILE__)));
+$first_time_boot = !file_exists($poPath . "\\root\bin\\" . 'systemdefinedvars.dat');
 if ($first_time_boot) {
 	include_once 'system/setup.php';
 }
