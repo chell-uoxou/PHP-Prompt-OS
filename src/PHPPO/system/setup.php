@@ -1,7 +1,7 @@
 <?php
 echo "Welcome to PHP Prompt OS." . PHP_EOL;
 echo "Installing..." . PHP_EOL;
-$poPath = rtrim(trim(dirname(dirname(__FILE__))),"system\PHPPO\src");
+$poPath = dirname(dirname(dirname(dirname(__FILE__))));
 echo "Configure the root..." . PHP_EOL;
 echo "Preparing..." . PHP_EOL;
 sleep(1);
