@@ -129,8 +129,8 @@ class systemProcessing {
 		return $returns;
 	}
 
-	public function throwError($txt){
-		$this->sendMessage($txt,"error");
+	public function throwError($txt,$type = "error"){
+		$this->sendMessage($txt,$type);
 	}
 
 	public function info($pr_disp,$type = "info",$thre = "PHPPO"){
@@ -146,10 +146,11 @@ class systemProcessing {
 		global $plugindata;
 		$dbg = debug_backtrace();
 		// var_dump($dbg);//////////////////////////////
-		$obj = $dbg[0]["object"];
+		$obj = get_class($dbg[0]["object"]);
 		foreach ($plugindata as $value) {
 			if (isset($value["class-object"])) {
-				if ($value["class-object"] == $obj) {
+				$class = get_class($value["class-object"]);
+				if ($class == $obj) {
 					$plugin_name = $value["name"];
 				}
 			}

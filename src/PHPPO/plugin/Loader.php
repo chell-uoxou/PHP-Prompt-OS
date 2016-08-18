@@ -24,6 +24,8 @@ class Loader extends systemProcessing{
 		@$fileplugins = scandir(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\plugins');
 		$i = 0;
 		$j = 0;
+		$dirplugins = array();
+		$plugindata = array();
 		if (isset($fileplugins)) {
 			foreach ($fileplugins as $key => $value) {
 				// var_dump($fileplugins[$i]);

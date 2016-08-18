@@ -15,6 +15,7 @@ class scriptCommand extends systemProcessing{
 		global $defaultcommands;
 		global $extensioncommands;
 		global $extensioncommandsDescription;
+		$extensioncommands = array();
 		if (!file_exists($poPath . "/root/bin/extensions.ini")) {
 			touch($poPath . "/root/bin/extensions.ini");
 			file_put_contents($poPath . "/root/bin/extensions.ini",'

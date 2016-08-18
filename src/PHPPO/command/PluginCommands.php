@@ -1,13 +1,13 @@
 <?php
 namespace phppo\command\plugincommand;
 use phppo\system\systemProcessing as systemProcessing;
+$plugincommands = array();
 /**
  *
  */
  class addcommand extends systemProcessing{
 
  	function __construct(){
- 		# code...
  	}
 
  	public function addcommand($plugin,$basecommand,$type='plugin',$des='',$usage='',$enadis='enable'){

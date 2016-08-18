@@ -2,6 +2,7 @@
 //////////////////////
 namespace phppo\command\defaults;
 use phppo\system\systemProcessing as systemProcessing;
+use phppo\system\myPhar as myPhar;
  include_once(dirname(__FILE__) . "/../system/System.php");
 include_once dirname(__FILE__) . "/../command/AddCommand.php";
 $addcom = new addcommand;
@@ -46,7 +47,7 @@ class makephar_command extends systemProcessing{
 						$this->info("\x1b[38;5;231m" .  "[" . date("\'y.m.d h:i:s") . "] PHP Prompt OS " . $version . " built. No. #" . $buildnumber);
 						$this->info("\x1b[38;5;227mCreateing...");
 						$pharpath = rtrim(dirname(__FILE__),"commands\src\PHPPO") . "\PHPPO-{$version}_#{$buildnumber}.phar";
-						$phar = new Phar($pharpath, 0, 'PHPPO.phar');
+						$phar = new \Phar($pharpath, 0, 'PHPPO.phar');
 						$phar->buildFromDirectory(rtrim(dirname(__FILE__),"commands\src\PHPPO") . "\src");
 						$pharstat = stat($pharpath);
 						$this->info("\x1b[38;5;83mSuccess. \x1b[38;5;145m:" . $pharpath);
@@ -64,7 +65,7 @@ class makephar_command extends systemProcessing{
 									$filename = basename($allpath);
 									$this->info("\x1b[38;5;227mCreateing...");
 									$pharpath = $currentdirectory . "\\{$filename}.phar";
-									$phar = new Phar($pharpath, 0, "{$filename}.phar");
+									$phar = new \Phar($pharpath, 0, "{$filename}.phar");
 									$phar->buildFromDirectory($allpath);
 									$pharstat = stat($pharpath);
 									$this->info("\x1b[38;5;83mSuccess. \x1b[38;5;145m:" . $pharpath);

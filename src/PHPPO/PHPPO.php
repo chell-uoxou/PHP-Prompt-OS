@@ -17,6 +17,9 @@ use phppo\display\title\terminal_title;
 echo "Library loaded!\nPHP Prompt OS booting...\n";
 
 $first_time_boot = !file_exists(rtrim(dirname(__FILE__),"\PHPPO\src") . "\\root\bin\\" . 'systemdefinedvars.dat');
+if ($first_time_boot) {
+	include_once 'system/setup.php';
+}
 include_once "system/System.php";
 include_once 'event/event.php';
 $display = new display;

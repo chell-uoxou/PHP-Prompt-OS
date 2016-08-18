@@ -22,7 +22,7 @@ class reboot_command extends systemProcessing{
 		}else {
 			exec("start.cmd");
 		}
-		exit(0);
+		exit;
 	}
 }
 

@@ -1,6 +1,6 @@
-name: TestPlugin
-path: src/chell_uoxou/test.php
-main: test\TestCommand
+name: OnigiriPlugin
+path: src/chell_uoxou/onigiri.php
+main: onigiri\onigiri
 version: 0.0.0
 api: 1.6.0_Dev
 load: STARTUP

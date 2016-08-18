@@ -90,7 +90,7 @@ class command extends systemProcessing{
 						$runned = true;
 					}else{
 						$returns = $this->generateEvent("onCommand");
-						var_dump($returns);
+						// var_dump($returns);////////////////////////////
 						if (in_array(true,$returns)) {
 							$runned = true;
 						}else {
