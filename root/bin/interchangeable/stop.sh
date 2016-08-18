@@ -1,3 +1,0 @@
-# cls
-# echo bye
-exit
