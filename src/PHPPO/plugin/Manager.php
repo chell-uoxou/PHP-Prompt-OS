@@ -13,6 +13,7 @@ class Manager extends systemProcessing{
 
 	public function install($type = ''){
 		global $poPath;
+		global $plugindata;
 		@$fileplugins = scandir($poPath . '/root/plugins');
 		$i = 0;
 		$j = 0;
@@ -21,15 +22,17 @@ class Manager extends systemProcessing{
 				// var_dump($fileplugins[$i]);
 				if ($fileplugins[$i] == "." || $fileplugins[$i] == ".." ) {
 				}else {
-					if (is_file($poPath . "/root/bin/installedplugin.ini")) {
-						$installedplugin = parse_ini_file($poPath . "/root/bin/installedplugin.ini");
-						if (!in_array($poPath . '/root/plugins/' . $fileplugins[$i],$installedplugin)) {
+					if (is_file($poPath . '/root/plugins/' . $fileplugins[$i])){
+						if (is_file($poPath . "/root/bin/installedplugin.ini")) {
+							$installedplugin = parse_ini_file($poPath . "/root/bin/installedplugin.ini");
+							if (!in_array($poPath . '/root/plugins/' . $fileplugins[$i],$installedplugin)) {
+								$dirplugins[$j] = $poPath . '/root/plugins/' . $fileplugins[$i];
+								$j++;
+							}
+						}else{
 							$dirplugins[$j] = $poPath . '/root/plugins/' . $fileplugins[$i];
 							$j++;
 						}
-					}else{
-						$dirplugins[$j] = $poPath . '/root/plugins/' . $fileplugins[$i];
-						$j++;
 					}
 				}
 				$i++;
@@ -51,13 +54,23 @@ class Manager extends systemProcessing{
 					if (!file_exists($pluginYamlPath)) {
 						$this->throwError("PHP Prompt OS専用のプラグインパッケージとして認識できませんでした。");
 					}else {
-						$plugindata = \Spyc::YAMLLoad($pluginYamlPath);
-						$plugin_version = $plugindata["version"];
-						$plugin_name = $plugindata["name"];
+						$inst_plugindata = \Spyc::YAMLLoad($pluginYamlPath);
+						$plugin_version = $inst_plugindata["version"];
+						$plugin_name = $inst_plugindata["name"];
+						if (array_key_exists($plugin_name,$plugindata)) {
+							$ard_plugin_name = $plugindata[$plugin_name]["name"];
+							$ard_plugin_version = $plugindata[$plugin_name]["version"];
+							if ($ard_plugin_version == $plugin_version) {
+								$this->info("既にインストールされています。");
+								goto a;
+							}
+							$this->info("現在このプラグインは読み込まれています。\nプラグインのソース情報が置き換わります。");
+							$this->info("[{$ard_plugin_name}] \x1b[38;5;203m v.{$ard_plugin_version} \x1b[38;5;145m=> \x1b[38;5;83mv.{$plugin_version}");
+						}
 						$a = $this->input("インストールを行いますか？(Y/n):");
 						if ($a == "y"||$a == "Y") {
 							try {
-								$topath = dirname($poPath . '\root\bin\plugins\\' . $fileplugins[$i]);
+								$topath = $poPath . '\root\bin\plugins\\' . $plugin_name;
 								$phar->extractTo($topath, null, true);
 								$i++;
 								$this->info("インストールが完了しました。再起動します。");
@@ -77,6 +90,7 @@ class Manager extends systemProcessing{
 				} catch (PharException $e) {
 					$this->throwError($e,"critical");
 				}
+				a:
 			}
 		}
 	}

@@ -12,7 +12,6 @@ if ($systemconf_ini_array["dev"]["currentdirectory"] == 1) {
 	$addcom->addcommand("cd","default","カレントディレクトリを指定します。","<絶対/相対パス>");
 }else {
 	$addcom->addcommand("cd","default","カレントディレクトリを指定します。","<絶対/相対パス>","disable");
-	// echo ":desable  ";////////////////////////////////
 }
 //////////////////////
 class cd_command extends systemProcessing{

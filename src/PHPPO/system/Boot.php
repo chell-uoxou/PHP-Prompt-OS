@@ -4,15 +4,10 @@ namespace phppo;
 use phppo\system\systemProcessing as systemProcessing;
 use phppo\system\environmentVariables as environmentVariables;
 use phppo\plugin\Manager as pluginManager;
-$systemconf_ini_array = parse_ini_file(dirname(dirname(dirname(dirname(__FILE__)))) . "\\config.ini", true);
+$systemconf_ini_array = parse_ini_file($poPath . "/config.ini", true);
 //異常終了check
 $echoFunc = "on";
 $valuepros = new environmentVariables;
-
-
-
-
-
 if ($systemconf_ini_array["dev"]["devmode"] != 1) {
 	@$files = scandir($poPath . "/root/home/logs/",1);
 	// var_dump($files);
@@ -80,7 +75,7 @@ $inPrompt = $systemconf_ini_array["display"]["in_prompt"];
 
 ////////////////////////////////////Version////////////////////////////////////////
 
-$version = "1.6.9_Beta";
+$version = "1.6.10_Beta";
 $versiontype = "Beta";//{Release}->{Alpha}->{Beta}->{Dev}
 
 ////////////////////////////////////////////////////////////////////////////////////
