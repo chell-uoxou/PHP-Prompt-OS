@@ -83,7 +83,20 @@ class Loader extends systemProcessing{
 
 	protected function plugin_cantload($name,$reason="原因未定義"){
 		global $plugindata;
+		global $disabledplugins;
+		global $plugincommands;
+		global $commands;
 		$this->info("プラグインの読み込みに失敗しました。:{$reason}","critical");
-		$plugindata[$name]["status"] = "disable";
+		foreach ($plugincommands as $key => $value) {
+			if (isset($value["pluginname"])) {
+				if ($value["pluginname"] == $name) {
+					$delcommand = $key;
+					unset($plugincommands[$delcommand]);
+					unset($commands[$delcommand]);
+				}
+			}
+		}
+		unset($plugindata[$name]);
+		$desabledplugins[] = $name;
 	}
 }
