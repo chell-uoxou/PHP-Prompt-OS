@@ -26,11 +26,15 @@ class mkdir_command extends systemProcessing{
 		// for ($i=1; $i < $nameCount; $i++) {
 		// 	$name .= $aryTipeTxt[$i] . " ";
 		// }
-		$name = substr($raw_input,6);
-		if (!file_exists($currentdirectory . "\\" . $name)) {
-			mkdir($currentdirectory . "\\" . $name);
-		}else {
-			$this->info("そのディレクトリは既に存在します！");
+		$name = trim(substr($raw_input,6));
+		if ($name != "") {
+			if (!file_exists($currentdirectory . "\\" . $name)) {
+				mkdir($currentdirectory . "\\" . $name);
+			}else {
+				$this->info("そのディレクトリは既に存在します！");
+			}
+		}else{
+			$this->info("パラメーターが不足しています。");
 		}
 	}
 }

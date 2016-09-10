@@ -19,6 +19,7 @@ class script_command extends systemProcessing{
 		global $commandpros;
 		global $raw_input;
 		global $extensioncommands;
+		global $plugincommands;
 		global $running;
 		global $runScriptPath;
 		global $lastTipeTxt;
@@ -40,16 +41,31 @@ class script_command extends systemProcessing{
 				$current_path = trim($currentdirectory) . "\\" . $name;
 				if (file_exists($current_path)) {
 					$r_path = $current_path;
-					$file = file_get_contents($r_path, true);
+					if (is_file($r_path)) {
+						$file = file_get_contents($r_path, true);
+					} else {
+						$this->throwError("スクリプトの読み込みに失敗しました。指定したスクリプトはスクリプトファイルではありません。:{$current_path}");
+						return false;
+					}
 				}else {
 					if (file_exists($name)) {
 						$r_path = $name;
-						$file = file_get_contents($r_path, true);
+						if (is_file($r_path)) {
+							$file = file_get_contents($r_path, true);
+						} else {
+							$this->throwError("スクリプトの読み込みに失敗しました。指定したスクリプトはスクリプトファイルではありません。:{$current_path}");
+							return false;
+						}
 					}else{
 						$path = trim($name,"\"");
 						if (file_exists($path)) {
-							$r_path = $path;
-							$file = file_get_contents($r_path, true);
+							if (is_file($path)) {
+								$r_path = $path;
+								$file = file_get_contents($r_path, true);
+							} else {
+								$this->throwError("スクリプトの読み込みに失敗しました。指定したスクリプトはスクリプトファイルではありません。:{$current_path}");
+								return false;
+							}
 						}else{
 							$this->throwError("スクリプトの読み込みに失敗しました。指定したスクリプトは存在しない可能性があります。:{$current_path}");
 							return false;
@@ -96,9 +112,12 @@ class script_command extends systemProcessing{
 						if ($conf === false) {
 							$conf = array_key_exists($aryTipeTxt[0], $extensioncommands);
 							if ($conf === false) {
-								$this->throwError("Script error:確認されない命令\"{$value}\"が見つかりました。 in {$name} -> line{$line}");
-								return false;
-								break;
+								$conf = array_key_exists($aryTipeTxt[0], $plugincommands);
+								if ($conf === false) {
+									$this->throwError("Script error:確認されない命令\"{$value}\"が見つかりました。 in {$name} -> line{$line}");
+									return false;
+									break;
+								}
 							}
 						}
 					}

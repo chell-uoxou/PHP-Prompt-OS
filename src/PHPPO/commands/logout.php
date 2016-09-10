@@ -22,7 +22,7 @@ class logout_command extends systemProcessing{
 		global $user;
 		$this->info($user . "さんのアカウントからログアウトします。");
 		$this->info("再起動を行います...");
-		bootSystem("logout");
+		$this->bootSystem("logout");
 	}
 }
 
