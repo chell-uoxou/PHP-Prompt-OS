@@ -58,7 +58,21 @@ class currentdirectory extends systemProcessing{
 								$this->throwError("指定したパスはディレクトリではありません。");
 							}
 						} else {
-							$this->throwError("No such file or directory:{$all_path}");
+							$preg_path = "{$currentdirectory}/" . '' . $path .'';
+							// var_dump($preg_path);
+							// var_dump(glob($preg_path,GLOB_ONLYDIR));
+							$glob = glob($preg_path,GLOB_ONLYDIR);
+							if (count($glob) == 1) {
+								$currentdirectory = $glob[0];
+							}else{
+								$this->throwError("No such file or directory:{$all_path}");
+								if (count($glob) > 1) {
+									$this->info("もしかして：");
+									foreach (glob($glob) as $key => $value) {
+										$this->info("	{$value}");
+									}
+								}
+							}
 						}
 					}
 				}
