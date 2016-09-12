@@ -1,0 +1,50 @@
+[
+    {
+        "name": "aura/intl",
+        "version": "2.x-dev",
+        "version_normalized": "2.9999999.9999999.9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/auraphp/Aura.Intl.git",
+            "reference": "ec390d37181e265b846262bcca308f69f189b50d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/auraphp/Aura.Intl/zipball/ec390d37181e265b846262bcca308f69f189b50d",
+            "reference": "ec390d37181e265b846262bcca308f69f189b50d",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.4.0|^7.0"
+        },
+        "time": "2016-07-06 13:20:31",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Aura\\Intl\\": "src/"
+            }
+        },
+        "notification-url": "http://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Aura Contributors",
+                "homepage": "https://github.com/auraphp/Aura.Intl/contributors"
+            }
+        ],
+        "description": "The Aura Intl package provides internationalization tools, specifically message translation.",
+        "homepage": "https://github.com/auraphp/Aura.Intl",
+        "keywords": [
+            "g11n",
+            "globalization",
+            "i18n",
+            "internationalization",
+            "intl",
+            "l10n",
+            "localization"
+        ]
+    }
+]

@@ -16,6 +16,7 @@ use phppo\system\systemProcessing as systemProcessing;
 use phppo\display\title\terminal_title;
 echo "Library loaded!\nPHP Prompt OS booting...\n";
 $poPath = dirname(dirname(dirname(__FILE__)));
+include_once $poPath . "/vendor/autoload.php";
 $first_time_boot = !file_exists($poPath . "\\root\bin\\" . 'systemdefinedvars.dat');
 if ($first_time_boot) {
 	include_once 'system/setup.php';

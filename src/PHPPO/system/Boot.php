@@ -4,7 +4,6 @@ namespace phppo;
 use phppo\system\systemProcessing as systemProcessing;
 use phppo\system\environmentVariables as environmentVariables;
 use phppo\plugin\Manager as pluginManager;
-$systemconf_ini_array = parse_ini_file($poPath . "/config.ini", true);
 //異常終了check
 $echoFunc = "on";
 $valuepros = new environmentVariables;
@@ -73,12 +72,18 @@ $inPrompt = $systemconf_ini_array["display"]["in_prompt"];
 // <<<<<<< HEAD
 
 
+
+
+
 ////////////////////////////////////Version////////////////////////////////////////
 
-$version = "1.6.10_Beta";
-$versiontype = "Beta";//{Release}->{Alpha}->{Beta}->{Dev}
+$version = "1.7.0_Dev";
+$versiontype = "Dev";//{Release}->{Alpha}->{Beta}->{Dev}
 
 ////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 
 // >>>>>>> master

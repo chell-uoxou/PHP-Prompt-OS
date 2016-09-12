@@ -20,3 +20,6 @@ root_/
 root/
 PHPPO-1.6.10_Beta_#49.phar
 saves.log
+lib/cowsayphp/
+PHPPO-1.7.0_Dev_#50.phar
+composer.lock

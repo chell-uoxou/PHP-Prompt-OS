@@ -21,6 +21,8 @@ class Loader extends systemProcessing{
 		global $plugindata;
 		global $dirplugins;
 		global $commands;
+		global $translators;
+		$translator = $translators->get('PO.System.Plugin.Package');
 		@$fileplugins = scandir(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\plugins');
 		$i = 0;
 		$j = 0;
@@ -61,11 +63,11 @@ class Loader extends systemProcessing{
 				$plugin_main = $value["main"];
 				$plugin_name = $value["name"];
 				if (is_file($plugin_src_path)) {
-					$system->info("{$key} V.{$plugin_version}を読み込み中...");
+					$system->info("{$key} V.{$plugin_version} " . $translator->translate('loading'));
 					if (!class_exists($plugin_main)) {
 						include_once($plugin_src_path);
 						if (!class_exists($plugin_main)) {
-							$this->plugin_cantload($key,"クラスが存在しない");
+							$this->plugin_cantload($key,$translator->translate('classNotFound'));
 						}else{
 							$plugindata[$plugin_name]["class-object"] = new $plugin_main;
 							// var_dump($plugindata[$plugin_name]["class-object"]);///////////////////////////////////////
@@ -86,7 +88,9 @@ class Loader extends systemProcessing{
 		global $disabledplugins;
 		global $plugincommands;
 		global $commands;
-		$this->info("プラグインの読み込みに失敗しました。:{$reason}","critical");
+		global $translators;
+		$translator = $translators->get('PO.System.Plugin.Package');
+		$this->info($translator->translate('CantLoad') . " : {$reason}","critical");
 		foreach ($plugincommands as $key => $value) {
 			if (isset($value["pluginname"])) {
 				if ($value["pluginname"] == $name) {

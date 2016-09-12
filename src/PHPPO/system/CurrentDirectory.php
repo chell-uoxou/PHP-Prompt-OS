@@ -68,7 +68,7 @@ class currentdirectory extends systemProcessing{
 								$this->throwError("No such file or directory:{$all_path}");
 								if (count($glob) > 1) {
 									$this->info("もしかして：");
-									foreach (glob($glob) as $key => $value) {
+									foreach ($glob as $key => $value) {
 										$this->info("	{$value}");
 									}
 								}

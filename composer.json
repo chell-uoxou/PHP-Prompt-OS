@@ -1,0 +1,9 @@
+{
+	"config": {
+		"secure-http" : false,
+		"disable-tls" : true
+	},
+	"require": {
+		"aura/intl": "2.x-dev"
+	}
+}

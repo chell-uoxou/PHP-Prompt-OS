@@ -3,19 +3,19 @@
 
 namespace phppo\system;
 
-
+$systemconf_ini_array = parse_ini_file($poPath . "/config.ini", true);
 include_once dirname(__FILE__) . '/../display/display.php';
 include_once 'environmentValues.php';
 include_once dirname(__FILE__) . '/../plugin/Manager.php';
 include_once 'currentdirectory.php';
 include_once 'sysconf.php';
-include_once dirname(__FILE__) . '/../event/event.php';
+include_once __DIR__ . '/../event/event.php';
+include_once __DIR__ . '/../languages/manager.php';
 
 use phppo\plugin\Manager as pluginManager;
 use phppo\display as display;
 $pluginpros = new pluginManager;
 $sysconfpros = new systemConfig("read");
-
 
 class systemProcessing {
 	private static function add_zip( $zip, $dir_path, $new_dir ){
@@ -384,7 +384,6 @@ class systemProcessing {
 				$script->onCommand();
 			}
 		}
-
 		while (True) {
 			$this->generateEvent("readyInputEvent");
 			$this->setSystemStatusMessage("ready.");
