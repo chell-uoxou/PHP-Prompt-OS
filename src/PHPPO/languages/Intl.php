@@ -1,7 +1,13 @@
 <?php
 use Aura\Intl\TranslatorLocatorFactory;
 use Aura\Intl\Package;
-$factory = new TranslatorLocatorFactory();
+if (class_exists("Aura\Intl\TranslatorLocatorFactory")) {
+	$factory = new TranslatorLocatorFactory();
+}else{
+	$system->throwError("Composer didn't load \"Aura\Intl\TranslatorLocatorFactory\" library!","critical");
+	$system->info("Aborting...");
+	exit(1);
+}
 $translators = $factory->newInstance();
 
 // get the package locator
