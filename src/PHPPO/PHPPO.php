@@ -15,8 +15,12 @@ namespace phppo;
 use phppo\system\systemProcessing as systemProcessing;
 use phppo\display\title\terminal_title;
 $poPath = dirname(dirname(dirname(__FILE__)));
-echo "Loading composer libraries...\n";
-include_once $poPath . "/vendor/autoload.php";
+echo "Loading other libraries...\n";
+if (is_file($poPath . "/vendor/autoload.php")) {
+	include_once $poPath . "/vendor/autoload.php";
+}else{
+	echo "composerのライブラリの読み込みに失敗しました。";
+}
 echo "Library loaded!\nPHP Prompt OS booting...\n";
 $first_time_boot = !file_exists($poPath . "\\root\bin\\" . 'systemdefinedvars.dat');
 if ($first_time_boot) {
