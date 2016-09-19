@@ -11,7 +11,7 @@ include_once 'currentdirectory.php';
 include_once 'sysconf.php';
 include_once __DIR__ . '/../event/event.php';
 include_once __DIR__ . '/../languages/manager.php';
-
+$system = new systemProcessing;
 use phppo\plugin\Manager as pluginManager;
 use phppo\display as display;
 $pluginpros = new pluginManager;
@@ -85,7 +85,6 @@ class systemProcessing {
 			@$local_filename = "{$dir}/{$p['filename']}.{$p['extension']}";
 		}
 		$a = 1;
-
 		while (file_exists($local_filename)) {
 			@$local_filename = "{$dir}/{$p['filename']}" . "({$a}).{$p['extension']}";
 			$a++;
@@ -101,7 +100,7 @@ class systemProcessing {
 			fwrite($fp, $tmp);
 			fclose($fp);
 			$this->info("\x1b[38;5;83m完了\x1b[38;5;59m:{$local_filename}");
-			return true;
+			return $local_filename;
 		}
 	}
 
@@ -150,7 +149,7 @@ class systemProcessing {
 		foreach ($plugindata as $value) {
 			if (isset($value["class-object"])) {
 				$class = get_class($value["class-object"]);
-				if ($class == $obj) {
+				if ($class === $obj) {
 					$plugin_name = $value["name"];
 				}
 			}
