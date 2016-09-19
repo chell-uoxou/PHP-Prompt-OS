@@ -5,7 +5,7 @@ namespace phppo;
 
 use phppo\system\systemProcessing as systemProcessing;
 include_once 'title.php';
-
+$display = new display;
 class display extends systemProcessing{
 
 	function __construct(){
