@@ -13,14 +13,18 @@ class plugins_command extends systemProcessing{
 	}
 	public function onCommand(){
 		global $plugindata;
-		$veawplugindata = ksort($plugindata);
-		foreach ($plugindata as $key => $value) {
+		global $desabledplugindatas;
+		// var_dump($desabledplugindatas);
+		$veawplugindata = array_merge($plugindata, $desabledplugindatas);
+		ksort($veawplugindata, SORT_NATURAL | SORT_FLAG_CASE);
+		// var_dump($veawplugindata);////////////
+		foreach ($veawplugindata as $key => $value) {
 			$plugin_version = $value["version"];
 			$plugin_name = $value["name"];
 			// var_dump($value);////////////////////
 			if (isset($value["status"])) {
 				if ($value["status"] == "disable") {
-					$this->info("\x1b[38;5;203m{$plugin_name}\x1b[38;5;214m version {$plugin_version} : disabled");
+					$this->info("\x1b[38;5;203m{$plugin_name}\x1b[38;5;214m version {$plugin_version} : \x1b[38;5;203mdisabled");
 				}
 			}else{
 				$this->info("\x1b[38;5;83m{$plugin_name}\x1b[38;5;214m version {$plugin_version}");
