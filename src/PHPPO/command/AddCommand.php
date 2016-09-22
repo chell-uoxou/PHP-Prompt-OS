@@ -4,7 +4,7 @@ namespace phppo\command;
 /**
  *
  */
-use phppo\system\systemProcessing as systemProcessing;
+use phppo\system\systemProcessing;
 
 class addcommand extends systemProcessing{
 

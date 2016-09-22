@@ -4,7 +4,8 @@
 namespace phppo\system;
 
 $systemconf_ini_array = parse_ini_file($poPath . "/config.ini", true);
-include_once dirname(__FILE__) . '/../display/display.php';
+
+
 include_once 'environmentValues.php';
 include_once dirname(__FILE__) . '/../plugin/Manager.php';
 include_once 'currentdirectory.php';
@@ -13,7 +14,7 @@ include_once __DIR__ . '/../event/event.php';
 include_once __DIR__ . '/../languages/manager.php';
 $system = new systemProcessing;
 use phppo\plugin\Manager as pluginManager;
-use phppo\display as display;
+use phppo\Display;
 $pluginpros = new pluginManager;
 $sysconfpros = new systemConfig("read");
 

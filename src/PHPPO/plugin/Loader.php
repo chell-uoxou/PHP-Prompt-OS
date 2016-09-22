@@ -4,7 +4,7 @@ namespace phppo\plugin;
 use phppo\system\systemProcessing as systemProcessing;
 $system = new systemProcessing;
 $pluginLoadPros = new Loader;
-require_once dirname(dirname(dirname(dirname(__FILE__)))) . "\lib\spyc-0.5\spyc.php";
+require_once dirname(dirname(dirname(dirname(__FILE__)))) . "/lib/spyc-0.5/spyc.php";
 
 /**
  *

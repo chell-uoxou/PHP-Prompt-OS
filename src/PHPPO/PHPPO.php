@@ -12,16 +12,23 @@
 * @author chell rui
 */
 namespace phppo;
+
 use phppo\system\systemProcessing as systemProcessing;
 use phppo\display\title\terminal_title;
-$poPath = dirname(dirname(dirname(__FILE__)));
-echo "Loading composer libraries...\n";
-include_once $poPath . "/vendor/autoload.php";
+use phppo;
+define(THIS_PATH, dirname(dirname(dirname(__FILE__))));
+
+
+echo THIS_PATH;
+include_once THIS_PATH . "/src/AutoLoader/AutoLoader.php";
+
+$autoLoader = new \AutoLoader\AutoLoader();
+$autoLoader->registerDir(THIS_PATH.'/src/PHPPO');
+$autoLoader->register();
+
+$s = new PHPPromptOS();
+
 echo "Library loaded!\nPHP Prompt OS booting...\n";
-$first_time_boot = !file_exists($poPath . "\\root\bin\\" . 'systemdefinedvars.dat');
-if ($first_time_boot) {
-	include_once 'system/setup.php';
-}
 include_once "system/System.php";
 include_once 'event/event.php';
 $system->setSystemStatusMessage("Booting...");

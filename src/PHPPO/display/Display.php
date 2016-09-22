@@ -1,12 +1,12 @@
 <?php
 // include_once(dirname(__FILE__) . "/../system/System.php");
 
-namespace phppo;
+namespace phppo\display;
 
-use phppo\system\systemProcessing as systemProcessing;
-include_once 'title.php';
-$display = new display;
-class display extends systemProcessing{
+use phppo\system\systemProcessing;
+
+
+class Display extends systemProcessing{
 
 	function __construct(){
 

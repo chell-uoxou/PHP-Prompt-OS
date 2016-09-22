@@ -1,8 +1,9 @@
 <?php
-namespace phppo\display\title;
+namespace phppo\display;
+
 use phppo\system\systemProcessing;
-$title_pros = new terminal_title;
-class terminal_title extends systemProcessing{
+
+class TerminalTitle extends systemProcessing{
 
 	public $term_title;
 	public $term_base_title;
