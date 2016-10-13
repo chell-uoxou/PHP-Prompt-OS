@@ -15,11 +15,8 @@ class clear_command extends systemProcessing{
 
 	}
 	public function onCommand(){
-		$this->sysCls(100);
-		for ($i=0; $i < 40; $i++) {
-			// echo('^[[A');
-		}
-
+		$this->sysCls(40);
+		printf("\033[%dA" ,40);
 	}
 }
 

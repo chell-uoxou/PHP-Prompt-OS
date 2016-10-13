@@ -237,7 +237,8 @@ function bootSystem($tipe){
 
 	if ($tipe != "script") {
 		// usleep(rand(0,500000));//演出
-		$system->sysCls(100);
+		$system->sysCls(40);
+		printf("\033[%dA" ,40);
 		$display->setThread("welcome");
 		$display->setInfo("INFO");
 		$system->info("		\x1b[38;5;214m╋┓　　　　　　　　　　　　　　　　　　　　　　   　　　┏╋");

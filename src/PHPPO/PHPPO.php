@@ -26,6 +26,7 @@ $first_time_boot = !file_exists($poPath . "\\root\bin\\" . 'systemdefinedvars.da
 if ($first_time_boot) {
 	include_once 'system/setup.php';
 }
+
 include_once "system/System.php";
 include_once 'event/event.php';
 $system->setSystemStatusMessage("Booting...");

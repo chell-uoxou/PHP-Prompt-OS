@@ -60,14 +60,15 @@ class systemProcessing {
 
 	public function sysCls($res){
 		global $revcFunc;
-		for($i = 0; $i < $res;$i++){
-			if ($revcFunc == true) {
-				echo "                                                                                                                                                     ";
-				echo PHP_EOL;
-			}else {
-				echo PHP_EOL;
-			}
-		}
+		echo str_repeat(PHP_EOL,$res);
+		// for($i = 0; $i < $res;$i++){
+		// 	if ($revcFunc == true) {
+		// 		echo "                                                                                                                                                     ";
+		// 		echo PHP_EOL;
+		// 	}else {
+		// 		echo PHP_EOL;
+		// 	}
+		// }
 	}
 
 	public function file_download($url, $dir='.', $save_base_name='' ){
