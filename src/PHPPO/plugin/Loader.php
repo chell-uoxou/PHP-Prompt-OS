@@ -67,7 +67,52 @@ class Loader extends systemProcessing{
 				if (is_file($plugin_src_path)) {
 					$system->info("{$key} V.{$plugin_version} " . $translator->translate('loading'));
 					if (!class_exists($plugin_main)) {
-						include_once($plugin_src_path);
+						include($plugin_src_path);
+						if (!class_exists($plugin_main)) {
+							$this->plugin_cantload($key,$translator->translate('classNotFound'));
+						}else{
+							$plugindata[$plugin_name]["class-object"] = new $plugin_main;
+							// var_dump($plugindata[$plugin_name]["class-object"]);///////////////////////////////////////
+							$system->generateEvent("onLoad",$plugin_main);
+						}
+					}else{
+						$this->plugin_cantload($key,"クラス定義の重複");
+					}
+				}else {
+					$this->plugin_cantload($key,"定義されたファイルが存在しない");
+				}
+			}
+		}
+	}
+
+	public function pluginPathLoad($path=''){
+		if (!is_dir($path)) {
+			if ($path != "plugin.yml") {
+				$this->throwError("File was not found.");
+			}
+		}else{
+			if (is_file($path . "/plugin.yml")) {
+				$replugindata[$key] = \Spyc::YAMLLoad($value . "/plugin.yml");
+				$replugindata[$key]["sys-bin-path"] = $value;
+			}else{
+				$this->throwError('"plugin.yml" was not found.');
+			}
+			if (isset($replugindata)) {
+				foreach ($replugindata as $key => $value) {
+					$pluginname = $value["name"];
+					$plugindata[$pluginname]= $value;
+				}
+			}
+			foreach ($plugindata as $key => $value) {
+				$plugin_bin_path = $value["sys-bin-path"];
+				$plugin_src_path = $plugin_bin_path . "/" . $value["path"];
+				$plugin_version = $value["version"];
+				$plugin_main = $value["main"];
+				$plugin_name = $value["name"];
+				if (is_file($plugin_src_path)) {
+					$system->info("{$key} V.{$plugin_version} " . $translator->translate('loading'));
+					if (!class_exists($plugin_main)) {
+						include($plugin_src_path);
 						if (!class_exists($plugin_main)) {
 							$this->plugin_cantload($key,$translator->translate('classNotFound'));
 						}else{
