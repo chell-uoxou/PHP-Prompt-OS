@@ -54,16 +54,16 @@ class Loader extends systemProcessing{
 
 					foreach ($replugindata as $key2 => $value2) {
 						if ($yaml["name"] == $value2["name"]) {
-							$this->info($translator->translate('CantLoad') . " : プラグイン名の重複 \x1b[38;5;59m(in {$value})","critical");
+							$this->info($translator->translate('CantLoad') . " : プラグイン名の重複","critical");
+							$this->info("\x1b[38;5;59merror plugin dir : {$value}");
 							goto scan_breakout;
 						}
 					}
 					$replugindata[$key] = $yaml;
 					$replugindata[$key]["sys-bin-path"] = $value;
+					scan_breakout:
 				}
 			}
-
-			scan_breakout:
 
 			if (isset($replugindata)) {
 				foreach ($replugindata as $key => $value) {
@@ -85,8 +85,8 @@ class Loader extends systemProcessing{
 				$plugin_version = $value["version"];
 				$plugin_main = $value["main"];
 				$plugin_name = $value["name"];
+				$system->info("{$key} V.{$plugin_version} " . $translator->translate('loading'));
 				if (is_file($plugin_src_path)) {
-					$system->info("{$key} V.{$plugin_version} " . $translator->translate('loading'));
 					if (!class_exists($plugin_main)) {
 						include($plugin_src_path);
 						if (!class_exists($plugin_main)) {
@@ -133,8 +133,8 @@ class Loader extends systemProcessing{
 				$plugin_version = $package_data["version"];
 				$plugin_main = $package_data["main"];
 				$plugin_name = $package_data["name"];
+				$this->info("{$plugin_name} V.{$plugin_version} " . $translator->translate('loading'));
 				if (is_file($plugin_src_path)) {
-					$this->info("{$plugin_name} V.{$plugin_version} " . $translator->translate('loading'));
 					if (!class_exists($plugin_main)) {
 						$plugindata[$plugin_name]= $package_data;
 						include($plugin_src_path);
@@ -163,8 +163,10 @@ class Loader extends systemProcessing{
 		global $translators;
 		// $desabledplugindata[] = $name;
 		// var_dump($desabledplugindatas);
+		$dir = $plugindata[$name]["sys-bin-path"];
 		$translator = $translators->get('PO.System.Plugin.Package');
 		$this->info($translator->translate('CantLoad') . " : {$reason}","critical");
+		$this->info("\x1b[38;5;59merror plugin dir : {$dir}");
 		foreach ($plugincommands as $key => $value) {
 			if (isset($value["pluginname"])) {
 				if ($value["pluginname"] == $name) {
