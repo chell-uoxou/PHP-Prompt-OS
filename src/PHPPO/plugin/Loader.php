@@ -40,12 +40,30 @@ class Loader extends systemProcessing{
 				$i++;
 			}
 
+			$this->info("Scaning plugin datas...");
+
+			$replugindata = array();
+
+			if (count($dirplugins) == 0) {
+				$this->info("Plugin was not found.");
+				goto load_breakout;
+			}
 			foreach ($dirplugins as $key => $value) {
 				if (is_file($value . "/plugin.yml")) {
-					$replugindata[$key] = \Spyc::YAMLLoad($value . "/plugin.yml");
+					$yaml = \Spyc::YAMLLoad($value . "/plugin.yml");
+
+					foreach ($replugindata as $key2 => $value2) {
+						if ($yaml["name"] == $value2["name"]) {
+							$this->info($translator->translate('CantLoad') . " : プラグイン名の重複 \x1b[38;5;59m(in {$value})","critical");
+							goto scan_breakout;
+						}
+					}
+					$replugindata[$key] = $yaml;
 					$replugindata[$key]["sys-bin-path"] = $value;
 				}
 			}
+
+			scan_breakout:
 
 			if (isset($replugindata)) {
 				foreach ($replugindata as $key => $value) {
@@ -58,6 +76,9 @@ class Loader extends systemProcessing{
 			// var_dump($plugindata);//////////////////////////////////////////////
 			// var_dump($dirplugins);//////////////////////////////////////////////
 			// ここからプラグイン読み込み
+
+			$this->info("Loading plugins...");
+
 			foreach ($plugindata as $key => $value) {
 				$plugin_bin_path = $value["sys-bin-path"];
 				$plugin_src_path = $plugin_bin_path . "/" . $value["path"];
@@ -82,6 +103,7 @@ class Loader extends systemProcessing{
 					$this->plugin_cantload($key,"定義されたファイルが存在しない");
 				}
 			}
+			load_breakout:
 		}
 	}
 
