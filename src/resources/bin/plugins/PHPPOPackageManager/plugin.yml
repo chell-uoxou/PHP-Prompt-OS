@@ -1,0 +1,16 @@
+name: PHPPOPackageManager
+path: src/chell_uoxou/main.php
+main: ppm\main
+version: 0.1.0
+api: 1.7.0_Beta
+load: STARTUP
+author: chell_uoxou
+description: To automate the installation of the package.
+commands:
+ ppm:
+  permission: ppm.command
+  usage: "ppm <#args...>"
+permissions:
+ ppm.command:
+  default: root
+  description: "allow all command"

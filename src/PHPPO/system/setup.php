@@ -12,6 +12,9 @@ $Install_dir_path_array = array(
 	"/root/bin/addcommands",
 	"/root/bin/interchangeable",
 	"/root/bin/plugins",
+	"/root/bin/plugins/PHPPOPackageManager",
+	"/root/bin/plugins/PHPPOPackageManager/src",
+	"/root/bin/plugins/PHPPOPackageManager/src/chell_uoxou",
 	"/root/home",
 	"/root/home/logs",
 	"/root/plugins",
@@ -30,7 +33,15 @@ $Install_file_path_array = array(
 	"/root/bin/welcome.sh" => "/src/resources/bin/welcome.sh",
 	"/root/bin/environmentVariables.dat" => "",
 	"/root/bin/systemconfig.dat" => "",
-	"/root/onigiri.sh" => "/src/resources/onigiri.sh"
+	"/root/onigiri.sh" => "/src/resources/onigiri.sh",
+	"/root/bin/plugins/PHPPOPackageManager/plugin.yml" => "/src/resources/bin/plugins/PHPPOPackageManager/plugin.yml",
+	"/root/bin/plugins/PHPPOPackageManager/README.md" => "/src/resources/bin/plugins/PHPPOPackageManager/README.md",
+	"/root/bin/plugins/PHPPOPackageManager/src/chell_uoxou/AA.php" => "/src/resources/bin/plugins/PHPPOPackageManager/src/chell_uoxou/AA.php",
+	"/root/bin/plugins/PHPPOPackageManager/src/chell_uoxou/help.php" => "/src/resources/bin/plugins/PHPPOPackageManager/src/chell_uoxou/help.php",
+	"/root/bin/plugins/PHPPOPackageManager/src/chell_uoxou/install.php" => "/src/resources/bin/plugins/PHPPOPackageManager/src/chell_uoxou/install.php",
+	"/root/bin/plugins/PHPPOPackageManager/src/chell_uoxou/main.php" => "/src/resources/bin/plugins/PHPPOPackageManager/src/chell_uoxou/main.php",
+	"/root/bin/plugins/PHPPOPackageManager/src/chell_uoxou/search.php" => "/src/resources/bin/plugins/PHPPOPackageManager/src/chell_uoxou/search.php",
+	"/root/bin/plugins/PHPPOPackageManager/src/chell_uoxou/setuper.php" => "/src/resources/bin/plugins/PHPPOPackageManager/src/chell_uoxou/setuper.php",
 );
 
 foreach ($Install_dir_path_array as $value) {
