@@ -86,45 +86,48 @@ class Loader extends systemProcessing{
 	}
 
 	public function pluginPathLoad($path=''){
+		global $fileplugins;
+		global $system;
+		global $plugindata;
+		global $dirplugins;
+		global $commands;
+		global $translators;
+		global $desabledplugindatas;
+		$translator = $translators->get('PO.System.Plugin.Package');
 		if (!is_dir($path)) {
 			if ($path != "plugin.yml") {
 				$this->throwError("File was not found.");
 			}
 		}else{
 			if (is_file($path . "/plugin.yml")) {
-				$replugindata[$key] = \Spyc::YAMLLoad($value . "/plugin.yml");
-				$replugindata[$key]["sys-bin-path"] = $value;
+				$package_data = \Spyc::YAMLLoad($path . "/plugin.yml");
+				$package_data["sys-bin-path"] = $path;
 			}else{
 				$this->throwError('"plugin.yml" was not found.');
 			}
-			if (isset($replugindata)) {
-				foreach ($replugindata as $key => $value) {
-					$pluginname = $value["name"];
-					$plugindata[$pluginname]= $value;
-				}
-			}
-			foreach ($plugindata as $key => $value) {
-				$plugin_bin_path = $value["sys-bin-path"];
-				$plugin_src_path = $plugin_bin_path . "/" . $value["path"];
-				$plugin_version = $value["version"];
-				$plugin_main = $value["main"];
-				$plugin_name = $value["name"];
+			if (isset($package_data)) {
+				$plugin_bin_path = $package_data["sys-bin-path"];
+				$plugin_src_path = $plugin_bin_path . "/" . $package_data["path"];
+				$plugin_version = $package_data["version"];
+				$plugin_main = $package_data["main"];
+				$plugin_name = $package_data["name"];
 				if (is_file($plugin_src_path)) {
-					$system->info("{$key} V.{$plugin_version} " . $translator->translate('loading'));
+					$this->info("{$plugin_name} V.{$plugin_version} " . $translator->translate('loading'));
 					if (!class_exists($plugin_main)) {
+						$plugindata[$plugin_name]= $package_data;
 						include($plugin_src_path);
 						if (!class_exists($plugin_main)) {
-							$this->plugin_cantload($key,$translator->translate('classNotFound'));
+							$this->plugin_cantload($plugin_name,$translator->translate('classNotFound'));
 						}else{
 							$plugindata[$plugin_name]["class-object"] = new $plugin_main;
 							// var_dump($plugindata[$plugin_name]["class-object"]);///////////////////////////////////////
-							$system->generateEvent("onLoad",$plugin_main);
+							$this->generateEvent("onLoad",$plugin_main);
 						}
 					}else{
-						$this->plugin_cantload($key,"クラス定義の重複");
+						$this->plugin_cantload($plugin_name,"クラス定義の重複");
 					}
 				}else {
-					$this->plugin_cantload($key,"定義されたファイルが存在しない");
+					$this->plugin_cantload($plugin_name,"定義されたファイルが存在しない");
 				}
 			}
 		}
