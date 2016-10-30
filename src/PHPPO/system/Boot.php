@@ -77,8 +77,8 @@ $inPrompt = $systemconf_ini_array["display"]["in_prompt"];
 
 ////////////////////////////////////Version////////////////////////////////////////
 
-$version = "1.7.0_Dev";
-$versiontype = "Dev";//{Release}->{Alpha}->{Beta}->{Dev}
+$version = "1.7.2_Beta";
+$versiontype = "Beta";//{Release}->{Alpha}->{Beta}->{Dev}
 
 ////////////////////////////////////////////////////////////////////////////////////
 
