@@ -13,9 +13,9 @@ class plugins_command extends systemProcessing{
 	}
 	public function onCommand(){
 		global $plugindata;
-		global $desabledplugindatas;
-		// var_dump($desabledplugindatas);
-		$veawplugindata = array_merge($plugindata, $desabledplugindatas);
+		global $disabledplugindatas;
+		// var_dump($disabledplugindatas);
+		$veawplugindata = array_merge($plugindata, $disabledplugindatas);
 		ksort($veawplugindata, SORT_NATURAL | SORT_FLAG_CASE);
 		// var_dump($veawplugindata);////////////
 		foreach ($veawplugindata as $key => $value) {

@@ -1,2 +1,2 @@
 <?php
-namespace command\permission;
+namespace phppo\command\permission;

@@ -22,8 +22,8 @@ class Loader extends systemProcessing{
 		global $dirplugins;
 		global $commands;
 		global $translators;
-		global $desabledplugindatas;
-		$desabledplugindatas = array();
+		global $disabledplugindatas;
+		$disabledplugindatas = array();
 		$translator = $translators->get('PO.System.Plugin.Package');
 		@$fileplugins = scandir(dirname(dirname(dirname(dirname(__FILE__)))) . '\root\bin\plugins');
 		$i = 0;
@@ -114,7 +114,7 @@ class Loader extends systemProcessing{
 		global $dirplugins;
 		global $commands;
 		global $translators;
-		global $desabledplugindatas;
+		global $disabledplugindatas;
 		$translator = $translators->get('PO.System.Plugin.Package');
 		if (!is_dir($path)) {
 			if ($path != "plugin.yml") {
@@ -157,12 +157,12 @@ class Loader extends systemProcessing{
 
 	protected function plugin_cantload($name,$reason="原因未定義"){
 		global $plugindata;
-		global $desabledplugindatas;
+		global $disabledplugindatas;
 		global $plugincommands;
 		global $commands;
 		global $translators;
-		// $desabledplugindata[] = $name;
-		// var_dump($desabledplugindatas);
+		// $disabledplugindata[] = $name;
+		// var_dump($disabledplugindatas);
 		$dir = $plugindata[$name]["sys-bin-path"];
 		$translator = $translators->get('PO.System.Plugin.Package');
 		$this->info($translator->translate('CantLoad') . " : {$reason}","critical");
@@ -176,8 +176,8 @@ class Loader extends systemProcessing{
 				}
 			}
 		}
-		$desabledplugindatas[$name] = $plugindata[$name];
+		$disabledplugindatas[$name] = $plugindata[$name];
 		unset($plugindata[$name]);
-		$desabledplugindatas[$name]["status"] = "disable";
+		$disabledplugindatas[$name]["status"] = "disable";
 	}
 }

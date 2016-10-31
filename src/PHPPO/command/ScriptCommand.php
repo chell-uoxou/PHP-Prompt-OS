@@ -61,7 +61,7 @@ class scriptCommand extends systemProcessing{
 				if (!file_exists($path)) {
 					$plsdel[] = $key;
 					$this->throwError("記述された拡張コマンドにあたるパスは無効です。");
-					$this->throwError("Desabled [" . $key . "] Command :File not found --{$path}");
+					$this->throwError("disabled [" . $key . "] Command :File not found --{$path}");
 				}else {
 					// if (isset($extensioncommandsDescription[$key])) {
 					// 	$extensioncommands[$key]["des"] = $extensioncommandsDescription[$key];
